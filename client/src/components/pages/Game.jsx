@@ -29,18 +29,10 @@ const Game = () => {
     });
     return () => {
       socket.off("update");
-    }
+    };
   }, []);
 
   const processUpdate = (update) => {
-    // set winnerModal if update has defined winner
-    if (update.winner) {
-      setWinnerModal(
-        <div className="Game-winner">the winner is {update.winner} yay cool cool</div>
-      );
-    } else {
-      setWinnerModal(null);
-    }
     drawCanvas(update, canvasRef);
   };
 
@@ -69,9 +61,11 @@ const Game = () => {
   return (
     <>
       <div>
-        <body>
-            <p>hi</p>
-        </body>
+        {/* important: canvas needs id to be referenced by canvasManager */}
+        <canvas ref={canvasRef} width="500" height="500" />
+        {loginModal}
+        {winnerModal}
+        {spawnButton}
       </div>
     </>
   );
