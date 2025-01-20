@@ -1,1 +1,30 @@
-/* Fill me in :) */
+.login {
+  display: flex;
+  flex-direction: column;
+  /* text-align: center; */
+  /* justify-content: center; Centers horizontally */
+  /* font-family: Arial, sans-serif;
+  padding: 20px; */
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+/* .google-login {
+  display: flex; /* Enables Flexbox */
+/* justify-content: center; /* Centers horizontally */
+/* align-items: center; /* Centers vertically */
+/* }  */
+
+button {
+  width: 200px;
+  padding: 10px;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
