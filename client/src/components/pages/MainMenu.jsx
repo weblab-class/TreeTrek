@@ -3,7 +3,7 @@ import './MainMenu.css';
 
 const MainMenu = () => {
     return (
-        <div className = "main-menu">  
+        <div className = "main-menu">
             <h1> Welcome to the Main Menu </h1>
             <div className = "menu-options">
                 <button> Singleplayer </button>

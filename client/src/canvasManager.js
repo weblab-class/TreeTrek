@@ -37,12 +37,7 @@ const drawSprite = (
 
 const drawPlayer = (context, x, y, animal) => {
     const { drawX, drawY } = convertCoord(x, y);
-    drawSprite(context, drawX, drawY, radius, color);
-};
-
-const drawCircle = (context, x, y, radius, color) => {
-    const { drawX, drawY } = convertCoord(x, y);
-    fillCircle(context, drawX, drawY, radius, color);
+    drawSprite(context, drawX, drawY, animal);
 };
 
 export const drawCanvas = (drawState, canvasRef) => {
@@ -52,16 +47,11 @@ export const drawCanvas = (drawState, canvasRef) => {
     const context = canvas.getContext("2d");
 
     // clear the canvas to black
-    context.fillStyle = "black";
+    context.fillStyle = "green";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw all the players
     Object.values(drawState.players).forEach((p) => {
-        drawPlayer(context, p.position.x, p.position.y, p.radius, p.color);
-    });
-
-    // draw all the foods
-    Object.values(drawState.food).forEach((f) => {
-        drawCircle(context, f.position.x, f.position.y, f.radius, f.color);
+        drawPlayer(context, p.position.x, p.position.y, p.avatar);
     });
 };

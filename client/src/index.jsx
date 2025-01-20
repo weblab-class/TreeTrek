@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
-import Skeleton from "./components/pages/Skeleton";
 import NotFound from "./components/pages/NotFound";
+import Skeleton from "./components/pages/Skeleton";
+import MainMenu from "./components/pages/MainMenu";
 import Game from "./components/pages/Game";
 
 import {
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
       <Route path="/" element={<Skeleton />} />
+      <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/game/" element={<Game />} />
     </Route>
   )

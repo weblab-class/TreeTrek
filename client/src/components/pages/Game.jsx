@@ -64,7 +64,6 @@ const Game = () => {
         {/* important: canvas needs id to be referenced by canvasManager */}
         <canvas ref={canvasRef} width="500" height="500" />
         {loginModal}
-        {winnerModal}
         {spawnButton}
       </div>
     </>

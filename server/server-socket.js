@@ -5,7 +5,6 @@ let io;
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
 
-const getAllConnectedUsers = () => Object.values(socketToUserMap);
 const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.sockets.get(socketid);
@@ -15,9 +14,10 @@ const sendGameState = () => {
 };
 
 const startRunningGame = () => {
+  gameLogic.spawnBranches();
   setInterval(() => {
     gameLogic.updateGameState();
-    sendGameState();
+    sendGameState(); // sends to frontend game component
   }, 1000 / 60); // 60 frames per second
 };
 

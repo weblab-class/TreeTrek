@@ -47,21 +47,27 @@ const spawnPlayer = (id) => {
       position: {x: gameState.branches[0], y: INITIAL_HEIGHT},
       avatar: "cat", // idk how to find avatar for now
     };
-  };
+};
+
+const removePlayer = (id) => {
+  if (gameState.players[id] != undefined) {
+    delete gameState.players[id];
+  }
+};
 
 /** Moves a player based off the sent data from the "move" socket msg */
-const movePlayer = (id, dir) => {  
+const movePlayer = (id, dir) => {
     // If player doesn't exist, don't move anything
     if (gameState.players[id] == undefined) {
       return;
     }
-  
+
     // Initialize a desired position to move to
     const desiredPosition = {
       x: gameState.players[id].position.x,
       y: gameState.players[id].position.y,
     };
-  
+
     // Calculate desired position
     if (dir === "right") {
       desiredPosition.x = RIGHT_POS; // idk what the correct coords are atm
@@ -69,7 +75,7 @@ const movePlayer = (id, dir) => {
       desiredPosition.x = LEFT_POS;
     }
     // need to check if direction is correct & change height
-  
+
     // Move player
     gameState.players[id].position = desiredPosition;
 };
@@ -78,4 +84,16 @@ const movePlayer = (id, dir) => {
 /** After player moves, updates branches accordingly */
 const updateBranches = () => {
 
+};
+
+/** Update the game state. This function is called once per server tick. */
+const updateGameState = () => {
+};
+
+module.exports = {
+  gameState,
+  spawnBranches,
+  spawnPlayer,
+  removePlayer,
+  updateGameState,
 };

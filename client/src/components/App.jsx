@@ -8,7 +8,6 @@ import "../utilities.css";
 import { socket } from "../client-socket";
 
 import { get, post } from "../utilities";
-import MainMenu from "./pages/MainMenu";
 
 export const UserContext = createContext(null);
 
@@ -17,7 +16,7 @@ export const UserContext = createContext(null);
  */
 const App = () => {
   const [userId, setUserId] = useState(undefined);
-  
+
   useEffect(() => {
     get("/api/whoami").then((user) => {
       if (user._id) {
@@ -49,10 +48,11 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={authContextValue}>
-      <Outlet />
-      <div><MainMenu /></div>
-    </UserContext.Provider>
+    <>
+      <UserContext.Provider value={authContextValue}>
+        <Outlet context={{ userId: userId }}/>
+      </UserContext.Provider>
+    </>
   );
 };
 
