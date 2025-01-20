@@ -8,6 +8,15 @@ Object.keys(sprites).forEach((key) => {
     sprites[key].src = `/player-avatars/${key}.png`;
 });
 
+// converts a coordinate in a normal X Y plane to canvas coordinates
+const convertCoord = (x, y) => {
+    if (!canvas) return;
+    return {
+      drawX: x,
+      drawY: canvas.height - y,
+    };
+  };
+
 const drawSprite = (
     context,
     x,
