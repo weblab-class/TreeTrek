@@ -2,17 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { drawCanvas } from "../../canvasManager";
-//import { handleInput } from "../../input";
+import { handleInput } from "../../input";
 import { useOutletContext } from "react-router-dom";
 
 import "../../utilities.css";
-//import "./Game.css";
 
 const Game = () => {
   let props = useOutletContext();
   const canvasRef = useRef(null);
-
-  const [winnerModal, setWinnerModal] = useState(null);
 
   // add event listener on mount
   useEffect(() => {
