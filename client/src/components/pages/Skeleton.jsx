@@ -9,7 +9,7 @@ import { UserContext } from "../App";
 const Skeleton = () => {
   const { userId, handleLogin, handleLogout } = useContext(UserContext);
   return (
-    <div className = "login">
+    <div className = "login-container">
       <h1>TreeTrek</h1>
       <div>
         {userId ? (

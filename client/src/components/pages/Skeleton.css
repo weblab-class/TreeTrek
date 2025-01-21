@@ -1,22 +1,39 @@
-.login {
+.login-container {
   display: flex;
   flex-direction: column;
-  /* text-align: center; */
-  /* justify-content: center; Centers horizontally */
-  /* font-family: Arial, sans-serif;
-  padding: 20px; */
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
+@font-face {
+  font-family: "Micro 5";
+  font-style: normal;
+  font-weight: 400;
+
+  src: url("https://fonts.googleapis.com/css2?family=Micro+5&display=swap") format("ttf");
+}
 h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  /* font-size: 2.5rem;
+  margin-bottom: 20px; */
+  color: #eac820;
+  font-family: "Micro 5";
+  font-size: 152px;
+  /* font-weight: 400;
+  font-size: 152px; */
+  /* font-style: normal; */
 }
 
-/* .google-login {
-  display: flex; /* Enables Flexbox */
-/* justify-content: center; /* Centers horizontally */
-/* align-items: center; /* Centers vertically */
-/* }  */
+body {
+  height: 100vh;
+  width: 100vw;
+  background-image: url("background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 button {
   width: 200px;
