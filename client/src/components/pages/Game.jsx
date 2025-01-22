@@ -49,7 +49,7 @@ const Game = () => {
 
   // set a spawn button if the player is not in the game
   let spawnButton = null;
-  if (props.userId) {
+  if (!gameOverModal && props.userId) {
     spawnButton = (
       <div className="Game-spawn">
         <button
