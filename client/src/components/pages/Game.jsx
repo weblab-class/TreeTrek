@@ -12,6 +12,8 @@ const Game = () => {
   let props = useOutletContext();
   const canvasRef = useRef(null);
 
+  const [gameOverModal, setGameOverModal] = useState(null);
+
   // add event listener on mount
   useEffect(() => {
     window.addEventListener("keydown", handleInput);
@@ -34,6 +36,14 @@ const Game = () => {
   }, []);
 
   const processUpdate = (update) => {
+    // show GameOver if game is over
+    if (update.gameOver) { // erm this doesnt work so... someone pls fix :pray:
+      setGameOverModal(
+        <div className="Game-over">Game Over!</div>
+      );
+    } else {
+      setGameOverModal(null);
+    }
     drawCanvas(update, canvasRef, props.userId);
   };
 
@@ -65,6 +75,7 @@ const Game = () => {
 
       <div className="Game-hud">
         {loginModal}
+        {gameOverModal}
         {spawnButton}
       </div>
     </div>

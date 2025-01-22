@@ -61,9 +61,10 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     // draw current 6 branches on screen
     if (drawState.players[pid]) {
         for (let b = 0; b < 6; b++) {
-            console.log(drawState.players);
             let player = drawState.players[pid];
-            const branch = player.index + b;
+            console.log(drawState);
+            console.log(player.index);
+            const branch = player.index + b - 1;
             drawBranch(context, b * canvas.height / 8, drawState.branches[branch]);
         }
     }

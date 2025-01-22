@@ -1,5 +1,4 @@
 /** constants */
-const MAP_LENGTH = 600;
 const ACORN_PROB = 0.2; // probability of acorn at any given branch
 const RIGHT_POS = 450; // position of right branch/player
 const LEFT_POS = 150; // position of left branch/player
@@ -9,24 +8,18 @@ const avatars = ["cat", "beaver"];
 
 /** Utils! */
 
-/** Helper to check a player eating a piece of food */
-const playerAttemptEatFood = (pid1, f) => {
-  const player1Position = gameState.players[pid1].position;
-  const foodPosition = f.position;
-  const x1 = player1Position.x;
-  const y1 = player1Position.y;
-  const x2 = foodPosition.x;
-  const y2 = foodPosition.y;
-  if (x1 === x2 && y1 === y2) {
-    removeAcorn(f);
+/** Helper to check a player eating an acorn */
+const playerAttemptEatAcorns = (pid1, acornIndex) => {
+  if (gameState.players[pid1].index === acornIndex) {
+    removeAcorn(acornIndex);
   }
 };
 
-/** Attempts all pairwise eating between each player and all foods */
-const computePlayersEatFoods = () => {
+/** Attempts all pairwise eating between each player and all acorns */
+const computePlayersEatAcorns = () => {
   Object.keys(gameState.players).forEach((pid1) => {
-    gameState.food.forEach((f) => {
-      playerAttemptEatFood(pid1, f);
+    gameState.acorns.forEach((f) => {
+      playerAttemptEatAcorns(pid1, f);
     });
   });
 };
@@ -37,7 +30,7 @@ const gameState = {
     gameOver: false, // singleplayer end game condition
     players: {}, // dict of ids pointing to dictionary of position & avatar ex: {'13523': {position: {x: "left", y: altitude}, avatar: "beaver", index: branchIndex}}
     branches: [], // array of branch directions ex: ["right", "left", ...]
-    food: [], // array of indices representing the branch index each acorn is on
+    acorns: [], // array of indices representing the branch index each acorn is on
     lowestBranchIndex: 0 // number of branches that have been popped for efficiency purposes
 };
 
@@ -64,11 +57,11 @@ const spawnPlayer = (id) => {
     };
 };
 
-/** Adds a food to the game state, initialized with random probability */
-const spawnFood = () => {
+/** Adds acorns to the game state, initialized with random probability */
+const spawnAcorns = () => {
   for (let index = 0; index < (VISIBLE_BRANCHES + 1); index++) {
     if (Math.random() < ACORN_PROB) {
-      gameState.food.push({x: gameState.branches[index], y: index})
+      gameState.acorns.push(index);
     }
   }
 };
@@ -95,12 +88,14 @@ const movePlayer = (id, dir) => {
 
   // check if direction is correct & change altitude
   const currIndex = desiredPosition.y / BRANCH_SEP;
-  const branchIndex = currIndex + gameState.lowestBranchIndex; // should be correct indexing?
+  const branchIndex = currIndex + gameState.lowestBranchIndex;
   if (dir === gameState.branches[branchIndex]) {
     updateBranches();
     updateAcorns(branchIndex);
     gameState.players[id].position = desiredPosition;
-  } else {
+    gameState.players[id].index += 1;
+  } else if (dir in ["right", "left"]) { // p sure the if condition is why gameOver isnt changing
+    // but without the if condition gameOver is always false D: so idk what to do
     gameState.gameOver = true;
   }
 };
@@ -108,7 +103,6 @@ const movePlayer = (id, dir) => {
 /** Check multiplayer win condition (only player left) */
 const checkWin = () => {
   if (Object.keys(gameState.players).length == 1) {
-    gameState.gameOver = true;
     gameState.winner = Object.keys(gameState.players);
     return true;
   }
@@ -123,7 +117,7 @@ const checkGameOver = () => {
 const updateGameState = () => {
   checkWin();
   checkGameOver();
-  computePlayersEatFoods();
+  computePlayersEatAcorns();
 };
 
 /** Remove a player from the game state if they fall off a branch */
@@ -134,26 +128,26 @@ const removePlayer = (id) => {
 };
 
 /** Remove an acorn from the game state if it gets eaten, given reference to acorn object */
-const removeAcorn = (f) => {
-  let ix = gameState.food.indexOf(f);
+const removeAcorn = (acornIndex) => {
+  let ix = gameState.acorns.indexOf(acornIndex);
   if (ix !== -1) {
-    gameState.food.splice(ix, 1);
+    gameState.acorns.splice(ix, 1);
   }
 };
 
 /** After player moves, updates branches accordingly */
 const updateBranches = () => {
   if (Math.random() < 0.5) {
-    gameState.branches.push(RIGHT_POS);
+    gameState.branches.push("right");
   } else {
-    gameState.branches.push(LEFT_POS);
+    gameState.branches.push("left");
   }
 };
 
 /** For every newly generated branch, possibly add an acorn */
 const updateAcorns = (index) => {
   if (Math.random() < ACORN_PROB) {
-    gameState.food.push(index);
+    gameState.acorns.push(index);
   }
 }
 
@@ -166,7 +160,7 @@ module.exports = {
   gameState,
   spawnPlayer,
   spawnBranches,
-  spawnFood,
+  spawnAcorns,
   movePlayer,
   removePlayer,
   updateGameState,
