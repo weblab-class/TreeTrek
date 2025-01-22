@@ -17,9 +17,9 @@ const LoginPage = () => {
   }, [userId, navigate]);
 
   return (
-    <div className = "LoginPage-container">
+    <div className = "login-container">
       <h1>TreeTrek</h1>
-      <div>
+      <div className = "login-button">
         {userId ? (
           <button
             onClick={() => {
