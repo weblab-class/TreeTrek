@@ -12,6 +12,7 @@ const Game = () => {
   let props = useOutletContext();
   const canvasRef = useRef(null);
 
+  const [playModal, setPlayModal] = useState(null);
   const [gameOverModal, setGameOverModal] = useState(null);
 
   // add event listener on mount
@@ -24,6 +25,29 @@ const Game = () => {
       post("/api/despawn", { userid: props.userId });
     };
   }, []);
+
+
+  // set a spawn button if the player is not in the game
+  let spawnButton = null;
+  if (props.userId) {
+    spawnButton = (
+      <div>
+        <button className="Game-spawn"
+          onClick={() => {
+            post("/api/spawn", { userid: props.userId });
+          }}
+        >
+          Play!
+        </button>
+      </div>
+    );
+  }
+
+  // display text if the player is not logged in
+  let loginModal = null;
+  if (!props.userId) {
+    loginModal = <div className="Game-login"> Please login first! </div>;
+  }
 
   // update game periodically
   useEffect(() => {
@@ -51,34 +75,17 @@ const Game = () => {
           Game Over!
         </div>
       );
+      setPlayModal(
+        <div>
+          {spawnButton}
+        </div>
+      )
     } else {
       setGameOverModal(null);
+      setPlayModal(null);
     }
     drawCanvas(update, canvasRef, props.userId);
   };
-
-  // set a spawn button if the player is not in the game
-  let spawnButton = null;
-  if (props.userId) {
-    spawnButton = (
-      <div className="Game-spawn">
-
-        <button
-          onClick={() => {
-            post("/api/spawn", { userid: props.userId });
-          }}
-        >
-          Play!
-        </button>
-      </div>
-    );
-  }
-
-  // display text if the player is not logged in
-  let loginModal = null;
-  if (!props.userId) {
-    loginModal = <div className="Game-spawn"> Please Login First! </div>;
-  }
 
   return (
     <div className="Game-game">
@@ -87,7 +94,7 @@ const Game = () => {
       <div>
         {loginModal}
         {gameOverModal}
-        {spawnButton}
+        {playModal}
       </div>
     </div>
   );

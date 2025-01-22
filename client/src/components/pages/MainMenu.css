@@ -21,6 +21,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.menu-options button:hover {
+  top: 120%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+}
+
 /*
  .singlePlayerButton {
   width: 100px;
@@ -57,7 +64,7 @@
   border-radius: 5px;
   cursor: pointer;
 } */
-/* 
+/*
 button:hover {
   background-color: #0056b3;
 } */

@@ -43,6 +43,10 @@ body {
   background-position: center;
 }
 
+button {
+  font-family: "Micro 5", serif;
+}
+
 form {
   flex-grow: 1;
 }

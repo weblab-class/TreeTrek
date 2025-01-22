@@ -1,10 +1,33 @@
 .Game-spawn {
   position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  padding: 20px 40px;
+  background-color: #eac820;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Game-spawn:hover {
+  background-color: #497b28;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(10deg);
+}
+
+.Game-login {
+  position: absolute;
   top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 40px;
-  background-color: #115f11;
+  background-color: #3f3f3f;
+  font-size: 40px;
   color: white;
 }
 
@@ -18,7 +41,7 @@
 
 .Game-over {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 120px;
