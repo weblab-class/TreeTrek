@@ -1,11 +1,8 @@
 /** constants */
 const MAP_LENGTH = 600;
-const PLAYER_RADIUS = 75 / 2; // necessary if there's a degree of error when trying to get acorn
-const ACORN_SIZE = 10; // same as above
 const ACORN_PROB = 0.2; // probability of acorn at any given branch
 const RIGHT_POS = 450; // position of right branch/player
 const LEFT_POS = 150; // position of left branch/player
-const INITIAL_HEIGHT = 200; // initial height of player
 const VISIBLE_BRANCHES = 6; // number of visible branches onscreen at any given moment
 const BRANCH_SEP = 150; // distance between branches
 const avatars = ["cat", "beaver"];
@@ -38,11 +35,10 @@ const computePlayersEatFoods = () => {
 const gameState = {
     winner: null, // multiplayer end game condition
     gameOver: false, // singleplayer end game condition
-    players: {}, // dict of ids pointing to dictionary of position & avatar ex: {'13523': {position: {x: 350, y: 150}, avatar: "beaver", altitude: 1450}}
-    branches: [], // array of branch directions ex: [RIGHT_POS, LEFT_POS, ...]
+    players: {}, // dict of ids pointing to dictionary of position & avatar ex: {'13523': {position: {x: "left", y: altitude}, avatar: "beaver", index: branchIndex}}
+    branches: [], // array of branch directions ex: ["right", "left", ...]
     food: [], // array of indices representing the branch index each acorn is on
-    lowestBranchIndex: 0 // number of branches that have been popped
-    // position has an x and y: position.x & position.y
+    lowestBranchIndex: 0 // number of branches that have been popped for efficiency purposes
 };
 
 
@@ -52,9 +48,9 @@ const gameState = {
 const spawnBranches = () => {
     for (let index = 0; index < (VISIBLE_BRANCHES + 1); index++) {
         if (Math.random() < 0.5) {
-            gameState.branches.push(RIGHT_POS);
+            gameState.branches.push("right");
         } else {
-            gameState.branches.push(LEFT_POS);
+            gameState.branches.push("left");
         }
     }
 };
@@ -62,7 +58,7 @@ const spawnBranches = () => {
 /** Adds a player to the game state, initialized with position of 1st branch */
 const spawnPlayer = (id) => {
     gameState.players[id] = {
-      position: {x: gameState.branches[0], y: INITIAL_HEIGHT},
+      position: {x: gameState.branches[0], y: 0},
       avatar: "cat", // idk how to find avatar for now
     };
 };
@@ -90,15 +86,14 @@ const movePlayer = (id, dir) => {
   };
 
   // Calculate desired position
-  if (dir === "right") {
-    desiredPosition.x = RIGHT_POS;
-  } else if (dir === "left") {
-    desiredPosition.x = LEFT_POS;
+  if (dir === "right" || dir === "left") {
+    desiredPosition.x = dir;
+    desiredPosition.y += BRANCH_SEP;
   }
   // could possibly insert message to press L & R arrow if user presses other key
 
-  // check if direction is correct & change height
-  const currIndex = (desiredPosition.y - INITIAL_HEIGHT) / BRANCH_SEP;
+  // check if direction is correct & change altitude
+  const currIndex = desiredPosition.y / BRANCH_SEP;
   const branchIndex = currIndex + gameState.lowestBranchIndex; // should be correct indexing?
   if (dir === gameState.branches[branchIndex]) {
     updateBranches();
@@ -157,7 +152,7 @@ const updateBranches = () => {
 /** For every newly generated branch, possibly add an acorn */
 const updateAcorns = (index) => {
   if (Math.random() < ACORN_PROB) {
-    gameState.food.push()
+    gameState.food.push(index);
   }
 }
 

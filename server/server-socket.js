@@ -52,7 +52,11 @@ const removeUser = (user, socket) => {
   }
   delete socketToUserMap[socket.id];
 };
-
+  spawnFood,
+  movePlayer,
+  removePlayer,
+  updateGameState,
+  resetGame,
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);
