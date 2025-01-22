@@ -1,60 +1,79 @@
 let canvas;
 
 let sprites = {
+    leftBranch: null,
+    rightBranch: null,
     cat: null,
 };
 Object.keys(sprites).forEach((key) => {
     sprites[key] = new Image(400, 400);
-    sprites[key].src = `/player-avatars/${key}.png`;
+    sprites[key].src = `/${key}.png`;
 });
 
 // converts a coordinate in a normal X Y plane to canvas coordinates
-const convertCoord = (x, y) => {
+const convertCoord = (y) => {
     if (!canvas) return;
-    return {
-      drawX: x,
-      drawY: canvas.height - y,
-    };
-  };
+    return  canvas.height - y;
+};
 
 const drawSprite = (
     context,
     x,
     y,
-    animal
+    sprite,
+    scale
     ) => {
-    const sprite = sprites[animal];
-    if (sprite.complete && sprite.naturalHeight !== 0) {
-        context.save();
-        context.drawImage(sprite, x, y, canvas.height * 0.1, canvas.height * 0.1);
-        context.restore();
+    const drawSprite = sprites[sprite];
+    if (drawSprite.complete && drawSprite.naturalHeight !== 0) {
+        context.drawImage(drawSprite, x, y, canvas.height * scale, canvas.height * scale);
     } else {
-        console.error(`Sprite ${animal} is not loaded yet.`);
+        console.error(`Sprite ${sprite} is not loaded yet.`);
     }
 };
 
 /** drawing functions */
 
 const drawPlayer = (context, x, y, animal) => {
-    const { drawX, drawY } = convertCoord(x, y);
-    drawSprite(context, drawX, drawY, animal);
+    drawSprite(context, x, convertCoord(y), animal, 0.1);
 };
 
-export const drawCanvas = (drawState, canvasRef) => {
+const drawBranch = (context, y, dir) => {
+    if (dir === "left") {
+        drawSprite(context, canvas.width / 4, convertCoord(y), "leftBranch", 0.2);
+    } else {
+        drawSprite(context, 3 * canvas.width / 4, convertCoord(y), "rightBranch", 0.2);
+    };
+};
+
+export const drawCanvas = (drawState, canvasRef, pid) => {
     // use canvas reference of canvas element to get reference to canvas object
     canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth/2;
-    canvas.height = window.innerHeight - 100;
+    canvas.width = window.innerWidth / 2;
+    canvas.height = window.innerHeight;
 
-    // clear the canvas to black
+    // clear the canvas to green
     context.fillStyle = "green";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
+    // draw current 6 branches on screen
+    for (let b = 0; b < 6; b++) {
+        console.log(drawState.players);
+        // player = drawState.players[pid];
+        // const branch = player.index + b;
+        // drawBranch(context, b * canvas.height / 8, drawState.branches[branch]);
+    }
+
     // draw all the players
     Object.values(drawState.players).forEach((p) => {
-        drawPlayer(context, p.position.x, p.position.y, p.avatar);
+        let x;
+        if (p.position.x === "left") {
+            x = canvas.width / 4;
+        } else {
+            x = 3 * canvas.width / 4;
+        }
+        drawPlayer(context, x, 100, p.avatar);
     });
 };

@@ -60,6 +60,7 @@ const spawnPlayer = (id) => {
     gameState.players[id] = {
       position: {x: gameState.branches[0], y: 0},
       avatar: "cat", // idk how to find avatar for now
+      index: 0
     };
 };
 
