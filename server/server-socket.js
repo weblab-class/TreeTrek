@@ -15,6 +15,7 @@ const sendGameState = () => {
 
 const startRunningGame = () => {
   gameLogic.spawnBranches();
+  console.log("Starting game loop");
   setInterval(() => {
     gameLogic.updateGameState();
     sendGameState(); // sends to frontend game component
