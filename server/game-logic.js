@@ -94,8 +94,7 @@ const movePlayer = (id, dir) => {
     updateAcorns(branchIndex);
     gameState.players[id].position = desiredPosition;
     gameState.players[id].index += 1;
-  } else if (dir in ["right", "left"]) { // p sure the if condition is why gameOver isnt changing
-    // but without the if condition gameOver is always false D: so idk what to do
+  } else if (dir === "right" || dir === "left") {
     gameState.gameOver = true;
   }
 };
@@ -154,6 +153,13 @@ const updateAcorns = (index) => {
 const resetGame = () => {
   gameState.winner = null;
   gameState.gameOver = false;
+  // gameState = { // resets game state
+  //   winner: null,
+  //   gameOver: false,
+  //   players: {},
+  //   acorns: [],
+  //   lowestBranchIndex: 0
+  // };
 };
 
 module.exports = {

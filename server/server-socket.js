@@ -14,6 +14,7 @@ const sendGameState = () => {
 };
 
 const startRunningGame = () => {
+  // gameLogic.resetGame(); // added this at the beginning to make it reusable??
   gameLogic.spawnBranches();
   console.log("Starting game loop");
   setInterval(() => {
@@ -53,6 +54,10 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 
+// const resetGame = () => { // intended to reset the game
+//   startRunningGame();
+// };
+
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);
@@ -79,5 +84,6 @@ module.exports = {
   getSocketFromSocketID: getSocketFromSocketID,
   addUserToGame: addUserToGame,
   removeUserFromGame: removeUserFromGame,
+  // resetGame: resetGame,
   getIo: () => io,
 };

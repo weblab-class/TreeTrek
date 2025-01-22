@@ -37,9 +37,19 @@ const Game = () => {
 
   const processUpdate = (update) => {
     // show GameOver if game is over
-    if (update.gameOver) { // erm this doesnt work so... someone pls fix :pray:
+    if (update.gameOver) {
+      post("/api/despawn", { userid: props.userId });
       setGameOverModal(
-        <div className="Game-over">Game Over!</div>
+        <div className="Game-over" >
+          {/* <button
+            onClick={() => {
+              post("/api/reset", { userid: props.userId });
+            }}
+          >
+            Respawn
+          </button> */}
+          Game Over!
+        </div>
       );
     } else {
       setGameOverModal(null);
