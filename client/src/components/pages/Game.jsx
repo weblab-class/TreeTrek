@@ -40,7 +40,7 @@ const Game = () => {
     if (update.gameOver) {
       post("/api/despawn", { userid: props.userId });
       setGameOverModal(
-        <div className="Game-over" >
+        <div className="Game-over">
           {/* <button
             onClick={() => {
               post("/api/reset", { userid: props.userId });
@@ -59,15 +59,16 @@ const Game = () => {
 
   // set a spawn button if the player is not in the game
   let spawnButton = null;
-  if (!gameOverModal && props.userId) {
+  if (props.userId) {
     spawnButton = (
       <div className="Game-spawn">
+
         <button
           onClick={() => {
             post("/api/spawn", { userid: props.userId });
           }}
         >
-          Spawn
+          Play!
         </button>
       </div>
     );
@@ -83,7 +84,7 @@ const Game = () => {
     <div className="Game-game">
       <canvas ref={canvasRef}/>
 
-      <div className="Game-hud">
+      <div>
         {loginModal}
         {gameOverModal}
         {spawnButton}

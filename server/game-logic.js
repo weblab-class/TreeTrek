@@ -39,22 +39,22 @@ const gameState = {
 
 /** Adds first (VISIBLE_BRANCHES + 1) branches to game state, with random directions */
 const spawnBranches = () => {
-    for (let index = 0; index < (VISIBLE_BRANCHES + 1); index++) {
-        if (Math.random() < 0.5) {
-            gameState.branches.push("right");
-        } else {
-            gameState.branches.push("left");
-        }
-    }
+  for (let index = 0; index < (VISIBLE_BRANCHES + 1); index++) {
+      if (Math.random() < 0.5) {
+          gameState.branches.push("right");
+      } else {
+          gameState.branches.push("left");
+      }
+  }
 };
 
 /** Adds a player to the game state, initialized with position of 1st branch */
 const spawnPlayer = (id) => {
-    gameState.players[id] = {
-      position: {x: gameState.branches[0], y: 0},
-      avatar: "cat", // idk how to find avatar for now
-      index: 0
-    };
+  gameState.players[id] = {
+    position: {x: gameState.branches[0], y: 0},
+    avatar: "cat", // idk how to find avatar for now
+    index: 0
+  };
 };
 
 /** Adds acorns to the game state, initialized with random probability */
@@ -153,6 +153,9 @@ const updateAcorns = (index) => {
 const resetGame = () => {
   gameState.winner = null;
   gameState.gameOver = false;
+  gameState.players = {};
+  gameState.branches = [];
+  spawnBranches();
   // gameState = { // resets game state
   //   winner: null,
   //   gameOver: false,

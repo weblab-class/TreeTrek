@@ -14,9 +14,7 @@ const sendGameState = () => {
 };
 
 const startRunningGame = () => {
-  // gameLogic.resetGame(); // added this at the beginning to make it reusable??
   gameLogic.spawnBranches();
-  console.log("Starting game loop");
   setInterval(() => {
     gameLogic.updateGameState();
     sendGameState(); // sends to frontend game component
@@ -26,6 +24,7 @@ const startRunningGame = () => {
 startRunningGame();
 
 const addUserToGame = (user) => {
+  gameLogic.resetGame(); // should not keep resetGame here for multiplayer... temporary fix
   gameLogic.spawnPlayer(user._id);
 };
 
