@@ -26,7 +26,7 @@ const drawSprite = (
     const sprite = sprites[animal];
     if (sprite.complete && sprite.naturalHeight !== 0) {
         context.save();
-        context.drawImage(sprite, x, y);
+        context.drawImage(sprite, x, y, canvas.height * 0.1, canvas.height * 0.1);
         context.restore();
     } else {
         console.error(`Sprite ${animal} is not loaded yet.`);
@@ -45,6 +45,9 @@ export const drawCanvas = (drawState, canvasRef) => {
     canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth/2;
+    canvas.height = window.innerHeight - 100;
 
     // clear the canvas to black
     context.fillStyle = "green";

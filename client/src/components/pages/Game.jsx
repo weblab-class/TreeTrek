@@ -6,6 +6,7 @@ import { handleInput } from "../../input";
 import { useOutletContext } from "react-router-dom";
 
 import "../../utilities.css";
+import "./Game.css";
 
 const Game = () => {
   let props = useOutletContext();
@@ -40,7 +41,7 @@ const Game = () => {
   let spawnButton = null;
   if (props.userId) {
     spawnButton = (
-      <div>
+      <>
         <button
           onClick={() => {
             post("/api/spawn", { userid: props.userId });
@@ -48,7 +49,7 @@ const Game = () => {
         >
           Spawn
         </button>
-      </div>
+      </>
     );
   }
 
@@ -59,14 +60,14 @@ const Game = () => {
   }
 
   return (
-    <>
-      <div>
-        {/* important: canvas needs id to be referenced by canvasManager */}
-        <canvas ref={canvasRef} width="500" height="500" />
+    <div className="Game-game">
+      <canvas ref={canvasRef}/>
+
+      <div className="Game-hud">
         {loginModal}
         {spawnButton}
       </div>
-    </>
+    </div>
   );
 };
 
