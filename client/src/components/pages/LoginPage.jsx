@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { GoogleLogin, googleLogout } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
 import "./LoginPage.css";
@@ -8,7 +8,7 @@ import { UserContext } from "../App";
 
 const LoginPage = () => {
   const { userId, handleLogin, handleLogout } = useContext(UserContext);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(userId) {
@@ -17,7 +17,7 @@ const LoginPage = () => {
   }, [userId, navigate]);
 
   return (
-    <div className = "login-container">
+    <div className = "LoginPage-container">
       <h1>TreeTrek</h1>
       <div>
         {userId ? (
