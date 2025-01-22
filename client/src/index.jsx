@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
 import NotFound from "./components/pages/NotFound";
-import Skeleton from "./components/pages/Skeleton";
+import LoginPage from "./components/pages/LoginPage";
 import MainMenu from "./components/pages/MainMenu";
 import Game from "./components/pages/Game";
 
@@ -21,7 +21,7 @@ const GOOGLE_CLIENT_ID = "740397720964-3fo97kk41qmd6j2pnggs9gkhffrvn2gs.apps.goo
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFound />} element={<App />}>
-      <Route path="/" element={<Skeleton />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/game/" element={<Game />} />
     </Route>

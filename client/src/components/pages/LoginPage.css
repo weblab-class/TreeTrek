@@ -8,23 +8,10 @@
   transform: translate(-50%, -50%);
 }
 
-/* @font-face {
-  font-family: "Micro 5";
-  font-style: normal;
-  font-weight: 400;
-
-  src: url("https://fonts.googleapis.com/css2?family=Micro+5&display=swap") format("ttf");
-} */
-
 h1 {
-  /* font-size: 2.5rem;
-  margin-bottom: 20px; */
   color: #eac820;
   font-family: "Micro 5";
   font-size: 152px;
-  /* font-weight: 400;
-  font-size: 152px; */
-  /* font-style: normal; */
 }
 
 /* body {
