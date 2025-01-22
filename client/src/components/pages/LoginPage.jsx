@@ -3,11 +3,10 @@ import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom"; 
 
 import "../../utilities.css";
-import "./Skeleton.css";
+import "./LoginPage.css";
 import { UserContext } from "../App";
 
-
-const Skeleton = () => {
+const LoginPage = () => {
   const { userId, handleLogin, handleLogout } = useContext(UserContext);
   const navigate = useNavigate();  
 
@@ -39,4 +38,4 @@ const Skeleton = () => {
   );
 };
 
-export default Skeleton;
+export default LoginPage;

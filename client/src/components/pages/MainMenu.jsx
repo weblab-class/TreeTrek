@@ -1,32 +1,24 @@
 import React, {useState} from 'react'
+import { useNavigate } from "react-router-dom";
+
 import './MainMenu.css';
-// import { useNavigate } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
 
 const MainMenu = () => {
-    // let navigate = useNavigate();
-    // let history = useHistory();
-    
-   return (
-        <div>
-            <div className = "main-menu">
-                <h1> Welcome to the Main Menu </h1>
-                <div className = "menu-options">
-                    <button> Singleplayer </button>
-                    <button> Multiplayer </button>
-                    <button> Settings </button>
-                    <button> High Scores </button>
-                </div>
+    let navigate = useNavigate(); 
+    const routeChange = () =>{ 
+        navigate("/game");
+    }
+        return (
+        <div className = "main-menu">
+            <h1> Welcome to the Main Menu </h1>
+            <div className = "menu-options">
+                <button onClick={routeChange}> Singleplayer </button>
+                <button> Multiplayer </button>
+                <button> Settings </button>
+                <button> High Scores </button>
             </div>
-
-            {/* <div className = "back-button">
-                <button onClick = {() => history.goBack()}> Back </button>
-            </div> */}
         </div>
-
-      
     );
-
 };
 
 export default MainMenu;
