@@ -6,7 +6,7 @@ let sprites = {
     cat: null,
 };
 Object.keys(sprites).forEach((key) => {
-    sprites[key] = new Image(400, 400);
+    sprites[key] = new Image();
     sprites[key].src = `/${key}.png`;
 });
 
@@ -25,7 +25,11 @@ const drawSprite = (
     ) => {
     const drawSprite = sprites[sprite];
     if (drawSprite.complete && drawSprite.naturalHeight !== 0) {
-        context.drawImage(drawSprite, x, y, canvas.width * scale, canvas.height * scale);
+        let scaledHeight = canvas.height * scale;
+        let scaledWidth = drawSprite.naturalWidth * scaledHeight / drawSprite.naturalHeight;
+        let drawX = x - scaledWidth / 2;
+        let drawY = y - scaledHeight / 2;
+        context.drawImage(drawSprite, drawX, drawY, scaledWidth, scaledHeight);
     } else {
         console.error(`Sprite ${sprite} is not loaded yet.`);
     }
@@ -39,9 +43,9 @@ const drawPlayer = (context, x, y, animal) => {
 
 const drawBranch = (context, y, dir) => {
     if (dir === "left") {
-        drawSprite(context, canvas.width / 4, convertCoord(y), "leftBranch", 0.2);
+        drawSprite(context, canvas.width / 4, convertCoord(y), "leftBranch", 0.15);
     } else {
-        drawSprite(context, 3 * canvas.width / 4, convertCoord(y), "rightBranch", 0.2);
+        drawSprite(context, 3 * canvas.width / 4, convertCoord(y), "rightBranch", 0.15);
     };
 };
 
@@ -55,17 +59,19 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     canvas.height = window.innerHeight;
 
     // clear the canvas to green
-    context.fillStyle = "green";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    // context.fillStyle = "green";
+    // context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // draw tree trunk
+    context.fillStyle = "#a05b2d";
+    context.fillRect(7 * canvas.width / 16, 0, canvas.width / 8, canvas.height);
 
     // draw current 6 branches on screen
     if (drawState.players[pid]) {
         for (let b = 0; b < 6; b++) {
             let player = drawState.players[pid];
-            console.log(drawState);
-            console.log(player.index);
-            const branch = player.index + b - 1;
-            drawBranch(context, b * canvas.height / 8, drawState.branches[branch]);
+            const branch = player.index + b;
+            drawBranch(context, (b + 0.5) * canvas.height / 7, drawState.branches[branch]);
         }
     }
 
@@ -77,6 +83,6 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
         } else {
             x = 3 * canvas.width / 4;
         }
-        drawPlayer(context, x, 100, p.avatar);
+        drawPlayer(context, x, canvas.height / 8, p.avatar);
     });
 };
