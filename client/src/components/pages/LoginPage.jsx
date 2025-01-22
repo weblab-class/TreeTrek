@@ -12,7 +12,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if(userId) {
-      navigate("/mainmenu/");
+      navigate("../mainmenu/");
     }
   }, [userId, navigate]);
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
           <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
         )}
       </div>
-      {/* <button>Play As Guest</button> */}
+      {/* <button>Play As Guest</button> */} {/* to be implemented later */}
     </div>
   );
 };

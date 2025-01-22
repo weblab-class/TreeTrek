@@ -3,36 +3,26 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 40%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .main-menu h1 {
   color: #eac820;
-  font-size: 60px;
+  font-size: 70px;
 }
-/*
-.main-menu {
-  text-align: center;
-  font-family: "Micro 5";
-  padding: 20px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.menu-options button {
+  background: none;
+  border: none;
   position: absolute;
-  top: 45%;
+  top: 120%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-h1 {
-  font-size: 4rem;
-  margin-bottom: 20px;
-}
-/*  */
-/* .singlePlayerButton {
+/*
+ .singlePlayerButton {
   width: 100px;
   height: 100px;
   background-image: url("singleplayerbutton.png");
