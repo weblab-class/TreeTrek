@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
 
+import "../../utilities.css";
 import './MainMenu.css';
 
 const MainMenu = () => {
@@ -10,12 +11,14 @@ const MainMenu = () => {
     }
         return (
         <div className = "main-menu">
-            <h1> Welcome to the Main Menu </h1>
+            <h1>Main Menu </h1>
             <div className = "menu-options">
-                <button onClick={routeChange}> Singleplayer </button>
-                <button> Multiplayer </button>
+                <button onClick={routeChange}>
+                    <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"150px", height:"auto"}}/>
+                </button>
+                {/* <button> Multiplayer </button>
                 <button> Settings </button>
-                <button> High Scores </button>
+                <button> High Scores </button> */}
             </div>
         </div>
     );

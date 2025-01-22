@@ -1,35 +1,21 @@
-.LoginPage-container {
+.login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 45%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-h1 {
+.login-container h1 {
   color: #eac820;
-  font-family: "Micro 5";
-  font-size: 152px;
+  font-size: 120px;
 }
 
-/* body {
-  height: 100vh;
-  width: 100vw;
-  background-image: url("background.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-} */
-
-button {
-  width: 200px;
-  padding: 10px;
-  font-size: 1.2rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.login-button {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
