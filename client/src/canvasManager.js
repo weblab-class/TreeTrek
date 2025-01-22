@@ -25,7 +25,7 @@ const drawSprite = (
     ) => {
     const drawSprite = sprites[sprite];
     if (drawSprite.complete && drawSprite.naturalHeight !== 0) {
-        context.drawImage(drawSprite, x, y, canvas.height * scale, canvas.height * scale);
+        context.drawImage(drawSprite, x, y, canvas.width * scale, canvas.height * scale);
     } else {
         console.error(`Sprite ${sprite} is not loaded yet.`);
     }
@@ -59,11 +59,13 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw current 6 branches on screen
-    for (let b = 0; b < 6; b++) {
-        console.log(drawState.players);
-        // player = drawState.players[pid];
-        // const branch = player.index + b;
-        // drawBranch(context, b * canvas.height / 8, drawState.branches[branch]);
+    if (drawState.players[pid]) {
+        for (let b = 0; b < 6; b++) {
+            console.log(drawState.players);
+            let player = drawState.players[pid];
+            const branch = player.index + b;
+            drawBranch(context, b * canvas.height / 8, drawState.branches[branch]);
+        }
     }
 
     // draw all the players
