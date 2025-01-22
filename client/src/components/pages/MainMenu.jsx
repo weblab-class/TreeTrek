@@ -11,19 +11,17 @@ const MainMenu = () => {
     }
 
     return (
-       // <body>
             <div className = "main-menu">
                 <h1>Main Menu </h1>
                 <div className = "menu-options">
                     <button onClick={routeChange}>
-                        <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
+                        <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
                     </button>
                     {/* <button> Multiplayer </button> ##to be implemented later##
                     <button> Settings </button>
                     <button> High Scores </button> */}
                 </div>
             </div>
-       // </body>
     );
 };
 
