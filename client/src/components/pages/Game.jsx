@@ -13,6 +13,11 @@ const Game = () => {
   const canvasRef = useRef(null);
 
   const [gameOverModal, setGameOverModal] = useState(null);
+  const [showButton, setShowButton] = useState(true);
+
+  const toggleButton = () => {
+    setShowButton(false); // Ensure the button is hidden after being clicked
+  };
 
   // add event listener on mount
   useEffect(() => {
@@ -62,22 +67,24 @@ const Game = () => {
   if (props.userId) {
     spawnButton = (
       <div>
+        {showButton && 
         <button className="Game-spawn"
-          onClick={() => {
+          onClick= {() => {
             post("/api/spawn", { userid: props.userId });
-          }}
+            toggleButton(); // Call the function correctly
+          }} 
         >
           Play!
-        </button>
+        </button>}
       </div>
     );
-  }
+  };
 
   // display text if the player is not logged in
   let loginModal = null;
   if (!props.userId) {
     loginModal = <div className="Game-login"> Please login first! </div>;
-  }
+  };
 
   return (
     <div className="Game-game">

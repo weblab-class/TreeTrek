@@ -6,7 +6,7 @@
   font-size: 40px;
   padding: 20px 40px;
   background-color: #eac820;
-  color: #FFFFFF;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -44,6 +44,7 @@
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
   font-size: 120px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
