@@ -5,6 +5,7 @@ import NotFound from "./components/pages/NotFound";
 import LoginPage from "./components/pages/LoginPage";
 import MainMenu from "./components/pages/MainMenu";
 import Game from "./components/pages/Game";
+import GameOverS from "./components/pages/GameOverS";
 
 import {
   createBrowserRouter,

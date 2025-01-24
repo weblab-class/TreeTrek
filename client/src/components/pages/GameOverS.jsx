@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../utilities.css";
 import './GameOver.css';
 
-const GameOver = () => {
+const GameOverS = () => {
     let navigate = useNavigate();
 
     return (
@@ -22,4 +22,4 @@ const GameOver = () => {
     );
 };
 
-export default GameOver;
+export default GameOverS;
