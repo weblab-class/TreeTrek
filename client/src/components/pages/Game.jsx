@@ -17,7 +17,6 @@ const Game = () => {
   // add event listener on mount
   useEffect(() => {
     window.addEventListener("keydown", handleInput);
-    post("/api/spawn", { userid: userId });
 
     // remove event listener on unmount
     return () => {

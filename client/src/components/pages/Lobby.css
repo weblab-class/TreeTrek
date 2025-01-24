@@ -32,7 +32,7 @@
   border-left: 50px solid blue;
   background: none;
 }
-/* 
+/*
 .left-arrow {
   position: absolute;
   top: 50%;
@@ -57,11 +57,7 @@
   border-left: 50px solid blue;
 }
 
-.Game-spawn {
-  position: absolute;
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.Lobby-spawn {
   font-size: 40px;
   padding: 20px 40px;
   background-color: var(--primary);
@@ -72,9 +68,7 @@
   transition: background-color 0.3s ease;
 }
 
-.Game-spawn:hover {
+.Lobby-spawn:hover {
   background-color: var(--primary--dim);
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(10deg);
+  transform: rotate(10deg);
 }

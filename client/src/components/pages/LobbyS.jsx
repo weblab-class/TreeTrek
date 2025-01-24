@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../App';
 
 import "../../utilities.css";
-import './LobbyS.css';
+import './Lobby.css';
 
 const LobbyS = () => {
     const { userId } = useContext(UserContext);
@@ -14,17 +15,17 @@ const LobbyS = () => {
     if (userId) {
         spawnButton = (
             <div>
-                <button className="Game-spawn"
+                <button className="Lobby-spawn"
                     onClick={() => {
-                    post("/api/spawn", { userid: userId });
-                    navigate("/game");
+                        post("/api/spawn", { userid: userId });
+                        navigate("/game");
                     }}
                 >
                     Play!
                 </button>
             </div>
         );
-    }; 
+    };
 
     return (
 
@@ -39,7 +40,7 @@ const LobbyS = () => {
                     <div className = "character">
 
                     </div>
-                    <button className = "left-button"> 
+                    <button className = "left-button">
 
                     </button>
                     <button className = "right-button">
