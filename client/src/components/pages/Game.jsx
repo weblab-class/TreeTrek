@@ -9,7 +9,7 @@ import "../../utilities.css";
 import "./Game.css";
 
 const Game = () => {
-  const { userId, handleLogin, handleLogout } = useContext(UserContext);
+  const { userId } = useContext(UserContext);
   console.log(userId);
   const canvasRef = useRef(null);
 
@@ -68,7 +68,7 @@ const Game = () => {
   if (userId) {
     spawnButton = (
       <div>
-        {showButton && 
+        {showButton &&
         <button className="Game-spawn"
           onClick={() => {
             post("/api/spawn", { userid: userId });

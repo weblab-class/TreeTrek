@@ -1,4 +1,4 @@
-.main-menu {
+.MainMenu {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,12 +8,12 @@
   transform: translate(-50%, -50%);
 }
 
-.main-menu h1 {
-  color: #eac820;
+.MainMenu h1 {
+  color: var(--primary);
   font-size: 70px;
 }
 
-.menu-options button {
+.MainMenu-options button {
   background: none;
   border: none;
   position: absolute;
@@ -22,7 +22,7 @@
   transform: translate(-50%, -50%);
 }
 
-.menu-options button:hover {
+.MainMenu-options button:hover {
   top: 120%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-10deg);

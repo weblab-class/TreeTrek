@@ -24,6 +24,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<LoginPage />} />
       <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/game/" element={<Game />} />
+      <Route path="/gameovers/" element={<GameOverS />} />
     </Route>
   )
 );

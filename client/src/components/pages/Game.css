@@ -5,8 +5,8 @@
   transform: translate(-50%, -50%);
   font-size: 40px;
   padding: 20px 40px;
-  background-color: #eac820;
-  color: #ffffff;
+  background-color: var(--primary);
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -14,7 +14,7 @@
 }
 
 .Game-spawn:hover {
-  background-color: #497b28;
+  background-color: var(--primary--dim);
   top: 70%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(10deg);
@@ -46,5 +46,5 @@
   transform: translate(-50%, -50%);
   text-align: center;
   font-size: 120px;
-  color: #ffffff;
+  color: white;
 }

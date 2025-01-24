@@ -1,4 +1,4 @@
-.login-container {
+.LoginPage-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,12 +8,12 @@
   transform: translate(-50%, -50%);
 }
 
-.login-container h1 {
-  color: #eac820;
+.LoginPage-container h1 {
+  color: var(--primary);
   font-size: 120px;
 }
 
-.login-button {
+.LoginPage-button {
   position: absolute;
   top: 80%;
   left: 50%;

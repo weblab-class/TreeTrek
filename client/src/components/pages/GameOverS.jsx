@@ -2,9 +2,9 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
-import './MainMenu.css';
+import './GameOver.css';
 
-const MainMenu = () => {
+const GameOver = () => {
     let navigate = useNavigate();
 
     return (
@@ -22,4 +22,4 @@ const MainMenu = () => {
     );
 };
 
-export default MainMenu;
+export default GameOver;
