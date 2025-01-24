@@ -8,16 +8,11 @@ const GameOverS = () => {
     let navigate = useNavigate();
 
     return (
-            <div className = "MainMenu">
-                <h1>Main Menu</h1>
-                <div className = "MainMenu-options">
-                    <button onClick={() => navigate("/game")}>
-                        <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
-                    </button>
-                    {/* <button> Multiplayer </button> ##to be implemented later##
-                    <button> Settings </button>
-                    <button> High Scores </button> */}
-                </div>
+            <div className = "GameOver">
+                <h1>Game Over!</h1>
+                <button onClick={() => navigate("/lobbys")}>
+                    Play Again
+                </button>
             </div>
     );
 };

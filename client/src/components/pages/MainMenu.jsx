@@ -11,7 +11,7 @@ const MainMenu = () => {
             <div className = "MainMenu">
                 <h1>Main Menu</h1>
                 <div className = "MainMenu-options">
-                    <button onClick={() => navigate("/game")}>
+                    <button onClick={() => navigate("/lobbys")}>
                         <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
                     </button>
                     {/* <button> Multiplayer </button> ##to be implemented later##

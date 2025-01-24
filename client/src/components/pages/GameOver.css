@@ -3,27 +3,28 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 35%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
 
-  .MainMenu h1 {
+.GameOver h1 {
     color: var(--primary);
-    font-size: 70px;
-  }
+    font-size: 120px;
+}
 
-  .MainMenu-options button {
-    background: none;
+.GameOver button {
+    font-size: 40px;
+    padding: 20px 40px;
+    background-color: var(--primary);
+    color: white;
     border: none;
-    position: absolute;
-    top: 120%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-  .MainMenu-options button:hover {
-    top: 120%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-10deg);
-  }
+.GameOver button:hover {
+  background-color: var(--primary--dim);
+  transform: rotate(10deg);
+}
