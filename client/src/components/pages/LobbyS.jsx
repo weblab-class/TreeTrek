@@ -8,17 +8,18 @@ import './Lobby.css';
 
 const LobbyS = () => {
     const { userId } = useContext(UserContext);
-    console.log(userId);
     let navigate = useNavigate();
 
     let spawnButton = null;
     if (userId) {
+        post("/api/newgame");
         spawnButton = (
             <div>
                 <button className="Lobby-spawn"
                     onClick={() => {
-                        post("/api/spawn", { userid: userId });
-                        navigate("/game");
+                        if(post("/api/spawn", { userid: userId })) {
+                            navigate("/game");
+                        }
                     }}
                 >
                     Play!
@@ -28,33 +29,30 @@ const LobbyS = () => {
     };
 
     return (
+        <div className = "character-selection">
+            <h1>Character Selection</h1>
+            <div className = "message-box">
 
-
-
-            <div className = "character-selection">
-                <h1>Character Selection</h1>
-                <div className = "message-box">
-
-                </div>
-                <div className = "character-selection-options">
-                    <div className = "character">
-
-                    </div>
-                    <button className = "left-button">
-
-                    </button>
-                    <button className = "right-button">
-
-
-                    </button>
-                </div>
-                {/* <div className = "MainMenu-options">
-                    <button onClick={() => navigate("/game")}>
-                        <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
-                    </button>
-                </div> */}
-                {spawnButton}
             </div>
+            <div className = "character-selection-options">
+                <div className = "character">
+
+                </div>
+                <button className = "left-button">
+
+                </button>
+                <button className = "right-button">
+
+
+                </button>
+            </div>
+            {/* <div className = "MainMenu-options">
+                <button onClick={() => navigate("/game")}>
+                    <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
+                </button>
+            </div> */}
+            {spawnButton}
+        </div>
     );
 };
 

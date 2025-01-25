@@ -47,7 +47,7 @@ router.post("/spawn", (req, res) => {
   if (req.user) {
     socketManager.addUserToGame(req.user);
   }
-  res.send({});
+  res.send(true);
 });
 
 router.post("/despawn", (req, res) => {
@@ -56,6 +56,11 @@ router.post("/despawn", (req, res) => {
   }
   res.send({});
 });
+
+router.post("/newgame", (req, res) => {
+  socketManager.resetGame();
+  res.send({});
+})
 
 // router.post("/reset", (req, res) => { // intended to reset the game
 //   if (req.user) {

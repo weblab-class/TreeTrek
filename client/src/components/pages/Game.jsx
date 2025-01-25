@@ -38,6 +38,7 @@ const Game = () => {
   const processUpdate = (update) => {
     // goes to GameOver if game is over
     if (update.gameOver) {
+      update.gameOver = false;
       post("/api/despawn", { userid: userId });
       // assuming singleplayer, directly go to gameover page
       navigate("/gameovers");

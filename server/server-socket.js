@@ -23,8 +23,11 @@ const startRunningGame = () => {
 
 startRunningGame();
 
+const resetGame = () => {
+  gameLogic.resetGame();
+}
+
 const addUserToGame = (user) => {
-  gameLogic.resetGame(); // should not keep resetGame here for multiplayer... temporary fix
   gameLogic.spawnPlayer(user._id);
 };
 
@@ -83,6 +86,6 @@ module.exports = {
   getSocketFromSocketID: getSocketFromSocketID,
   addUserToGame: addUserToGame,
   removeUserFromGame: removeUserFromGame,
-  // resetGame: resetGame,
+  resetGame: resetGame,
   getIo: () => io,
 };
