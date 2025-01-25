@@ -26,7 +26,8 @@ function getOrCreateUser(user) {
     const newUser = new User({
       name: user.name,
       googleid: user.sub,
-      highestAltitude: 0,
+      highestGame: 0,
+      lastGame: 0,
     });
 
     return newUser.save();

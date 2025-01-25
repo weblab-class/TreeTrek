@@ -10,7 +10,7 @@ import "./Timer.css";
 const Timer = (props) => {
   return (
     <div className="Time">
-      {30 - props.time}
+      time remaining: {30 - props.time}s
     </div>
   );
 };

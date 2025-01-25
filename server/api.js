@@ -75,6 +75,21 @@ router.post("/newgame", (req, res) => {
 //   res.send({});
 // });
 
+router.post("/gameover", async (req, res) => {
+  let userDB = await User.findOne({ googleid: req.user.googleid });
+  let higherBranch = req.body.gameBranch > userDB.highestGame ? req.body.gameBranch : userDB.highestGame;
+
+  User.updateOne({ googleid: req.user.googleid }, {
+    $set: {highestGame: higherBranch, lastGame: req.body.gameBranch}
+  }).then(res.send({}));
+})
+
+router.get("/gameover", (req, res) => {
+  User.findOne({ googleid: req.user.googleid }).then((userDB) => {
+    res.send({ highestGame: userDB.highestGame, lastGame: userDB.lastGame });
+  })
+})
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);

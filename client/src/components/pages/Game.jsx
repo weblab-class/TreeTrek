@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import Timer from "../modules/Timer";
+import BranchCounter from "../modules/BranchCounter";
+
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { drawCanvas } from "../../canvasManager";
@@ -16,6 +18,7 @@ const Game = () => {
   const canvasRef = useRef(null);
 
   const [time, setTime] = useState(0); // stores time in ms
+  const [branch, setBranch] = useState(0); // stores player's branch index
 
   // add event listener on mount
   useEffect(() => {
@@ -24,7 +27,7 @@ const Game = () => {
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keydown", handleInput);
-      post("/api/despawn", { userid: userId });
+      post("/api/despawn");
     };
   }, []);
 
@@ -41,12 +44,15 @@ const Game = () => {
 
   const processUpdate = (update) => {
     setTime(update.time);
+    setBranch(update.players[userId].index);
     // goes to GameOver if game is over
     if (update.gameOver) {
       update.gameOver = false;
-      post("/api/despawn", { userid: userId });
-      // assuming singleplayer, directly go to gameover page
-      navigate("/gameovers");
+      post("/api/gameover", { gameBranch: update.players[userId].index }).then(() =>
+        post("/api/despawn")
+      ).then(() =>
+        navigate("/gameovers") // assuming singleplayer, directly go to gameover page
+      );
     }
     drawCanvas(update, canvasRef, userId);
   };
@@ -63,6 +69,7 @@ const Game = () => {
 
   return (
     <div className="Game-game">
+      <BranchCounter branch={branch}/>
       <Timer time={time / 1000 | 0}/> {/*display time in seconds */}
       <canvas ref={canvasRef}/>
 

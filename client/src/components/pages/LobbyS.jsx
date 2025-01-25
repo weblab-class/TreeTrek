@@ -13,7 +13,7 @@ const LobbyS = () => {
     let spawnButton = null;
     if (userId) {
         post("/api/newlobby");
-        post("/api/spawn", { userid: userId })
+        post("/api/spawn");
         spawnButton = (
             <div>
                 <button className="Lobby-spawn"
