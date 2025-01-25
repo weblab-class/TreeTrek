@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import Timer from "../modules/Timer";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { drawCanvas } from "../../canvasManager";
@@ -13,6 +14,8 @@ const Game = () => {
   let navigate = useNavigate();
   const { userId } = useContext(UserContext);
   const canvasRef = useRef(null);
+
+  const [time, setTime] = useState(0); // stores time in ms
 
   // add event listener on mount
   useEffect(() => {
@@ -29,6 +32,7 @@ const Game = () => {
   useEffect(() => {
     socket.on("update", (update) => {
       processUpdate(update);
+      //setTime(prevTime => prevTime + 1); // using local timer is still slow
     });
     return () => {
       socket.off("update");
@@ -36,6 +40,7 @@ const Game = () => {
   }, []);
 
   const processUpdate = (update) => {
+    setTime(update.time);
     // goes to GameOver if game is over
     if (update.gameOver) {
       update.gameOver = false;
@@ -52,8 +57,13 @@ const Game = () => {
     loginModal = <div className="Game-login"> Please login first! </div>;
   };
 
+  useEffect(() => {
+    post("/api/newgame");  // This could be triggering multiple times
+  }, []);
+
   return (
     <div className="Game-game">
+      <Timer time={time / 1000 | 0}/> {/*display time in seconds */}
       <canvas ref={canvasRef}/>
 
       <div>

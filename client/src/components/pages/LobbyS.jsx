@@ -12,14 +12,13 @@ const LobbyS = () => {
 
     let spawnButton = null;
     if (userId) {
-        post("/api/newgame");
+        post("/api/newlobby");
+        post("/api/spawn", { userid: userId })
         spawnButton = (
             <div>
                 <button className="Lobby-spawn"
                     onClick={() => {
-                        if(post("/api/spawn", { userid: userId })) {
-                            navigate("/game");
-                        }
+                        navigate("/game");
                     }}
                 >
                     Play!

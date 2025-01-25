@@ -57,8 +57,13 @@ router.post("/despawn", (req, res) => {
   res.send({});
 });
 
+router.post("/newlobby", (req, res) => {
+  socketManager.newLobby();
+  res.send({});
+})
+
 router.post("/newgame", (req, res) => {
-  socketManager.resetGame();
+  socketManager.startGame();
   res.send({});
 })
 

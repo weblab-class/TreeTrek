@@ -1,25 +1,3 @@
-.Game-spawn {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 40px;
-  padding: 20px 40px;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.Game-spawn:hover {
-  background-color: var(--primary--dim);
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(10deg);
-}
-
 .Game-login {
   position: absolute;
   top: 80%;
@@ -37,14 +15,4 @@
   align-items: center;
   justify-content: flex-start;
   height: 100vh;
-}
-
-.Game-over {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  font-size: 120px;
-  color: white;
 }

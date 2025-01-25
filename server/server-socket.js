@@ -13,15 +13,32 @@ const sendGameState = () => {
   io.emit("update", gameLogic.gameState);
 };
 
-const startRunningGame = () => {
-  gameLogic.spawnBranches();
-  setInterval(() => {
-    gameLogic.updateGameState();
+const runGame = () => {
+  let time = 0; // time in ms
+  const intervalID = setInterval(() => {
+    //console.log("interval start time " + timesRun);
+    gameLogic.updateGameState(time);
     sendGameState(); // sends to frontend game component
-  }, 1000 / 60); // 60 frames per second
-};
 
-startRunningGame();
+    time += 1000 / 60;
+    //console.log("time " + timesRun);
+    if (gameLogic.gameState.gameOver || time >= 30 * 1000) {
+      //console.log('its over');
+      gameLogic.gameState.gameOver = true;
+      sendGameState();
+      clearInterval(intervalID);
+    }
+  }, 1000 / 60); // 60 frames per second
+}
+
+const newLobby = () => {
+  gameLogic.resetGame();
+}
+
+const startGame = () => {
+  gameLogic.spawnBranches();
+  runGame();
+}
 
 const resetGame = () => {
   gameLogic.resetGame();
@@ -56,10 +73,6 @@ const removeUser = (user, socket) => {
   delete socketToUserMap[socket.id];
 };
 
-// const resetGame = () => { // intended to reset the game
-//   startRunningGame();
-// };
-
 module.exports = {
   init: (http) => {
     io = require("socket.io")(http);
@@ -86,6 +99,8 @@ module.exports = {
   getSocketFromSocketID: getSocketFromSocketID,
   addUserToGame: addUserToGame,
   removeUserFromGame: removeUserFromGame,
+  newLobby: newLobby,
+  startGame: startGame,
   resetGame: resetGame,
   getIo: () => io,
 };

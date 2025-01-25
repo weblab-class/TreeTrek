@@ -31,7 +31,8 @@ const gameState = {
     players: {}, // dict of ids pointing to dictionary of position & avatar ex: {'13523': {position: {x: "left", y: altitude}, avatar: "beaver", index: branchIndex}}
     branches: [], // array of branch directions ex: ["right", "left", ...]
     acorns: [], // array of indices representing the branch index each acorn is on
-    lowestBranchIndex: 0 // number of branches that have been popped for efficiency purposes
+    lowestBranchIndex: 0, // number of branches that have been popped for efficiency purposes
+    time: 0, // how many milliseconds in the game
 };
 
 
@@ -113,7 +114,8 @@ const checkGameOver = () => {
 };
 
 /** Update the game state. This function is called once per server tick. */
-const updateGameState = () => {
+const updateGameState = (serverTime) => {
+  gameState.time = serverTime;
   checkWin();
   checkGameOver();
   computePlayersEatAcorns();
@@ -155,6 +157,7 @@ const resetGame = () => {
   gameState.gameOver = false;
   gameState.players = {};
   gameState.branches = [];
+  gameState.time = 0;
   spawnBranches();
   // gameState = { // resets game state
   //   winner: null,
