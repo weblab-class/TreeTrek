@@ -26,30 +26,34 @@ const LobbyS = () => {
             </div>
         );
     };
+    
+    const sprites = [
+        { name: 'cat', src: './cat.png' },
+        { name: 'beaver', src: './beaver.png' }
+    ];
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % sprites.length);
+    };
+    const handlePrevious = () => {
+        setCurrentIndex((prevIndex) =>
+          (prevIndex - 1 + sprites.length) % sprites.length);
+    };
 
     return (
-        <div className = "character-selection">
+        <div className="character-selection">
             <h1>Character Selection</h1>
-            <div className = "message-box">
-
-            </div>
-            <div className = "character-selection-options">
-                <div className = "character">
-
+            <div className="message-box"></div>
+            <div className="character-selection-options">
+                <button className="left-button" onClick={handlePrevious}></button>
+                <div className="character-container">
+                    <img src={sprites[currentIndex].src} 
+                    alt={sprites[currentIndex].name}
+                    style={{width:"270px", height:"auto"}}/>
                 </div>
-                <button className = "left-button">
-
-                </button>
-                <button className = "right-button">
-
-
-                </button>
+                <button className="right-button" onClick={handleNext}></button>
             </div>
-            {/* <div className = "MainMenu-options">
-                <button onClick={() => navigate("/game")}>
-                    <img src="../singleplayerButton.png" alt="SinglePlayer" style={{width:"205px", height:"auto"}}/>
-                </button>
-            </div> */}
             {spawnButton}
         </div>
     );
