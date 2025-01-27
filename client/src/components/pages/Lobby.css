@@ -1,60 +1,67 @@
-.left-button {
-  /* width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 50px solid blue; */
+.character-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
-  top: 50%;
-  left: 40%;
+  top: 45%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-right: 50px solid blue;
+  text-align: center; /* Center text */
 }
 
-.right-button {
-  /* width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 50px solid blue; */
-  position: absolute;
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 50px solid blue;
-  background: none;
+.character-selection h1 {
+  color: var(--primary);
+  font-size: 70px;
+  text-align: center; /* Ensure text is centered */
+  margin-bottom: 20px; /* Add space below the h1 */
 }
-/*
-.left-arrow {
-  position: absolute;
-  top: 50%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-right: 50px solid blue;
-} */
 
-.right-arrow {
-  position: absolute;
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 50px solid blue;
+.character-selection-options {
+  display: flex;
+  flex: row;
+  align-items: center;
+  gap: 20px;
+  /* justify-content: space-evenly; */
+  /* row-gap: 300px; */
+}
+
+.character-selection .character-container {
+  display: flex;
+  gap: 50px;
+}
+
+.character-selection .left-button {
+  --r: 18px; /* border radius */
+  width: 100px;
+  aspect-ratio: 1/2;
+  --_g: calc(var(--r) / tan(22.5deg)) right var(--r), #000 98%, #0000 101%;
+  -webkit-mask: conic-gradient(
+        from 247.5deg at calc(100% + 100% / tan(22.5deg) - var(--r) / (3 * sqrt(2) - 4)) 50%,
+        #000 45deg,
+        #0000 0
+      )
+      100% 0 / calc(100% - var(--r) / sqrt(2)) no-repeat,
+    radial-gradient(var(--r) at calc(var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%),
+    radial-gradient(var(--r) at top var(--_g)), radial-gradient(var(--r) at bottom var(--_g));
+  clip-path: polygon(0 50%, 100% 100%, 100% 0);
+  background: linear-gradient(45deg, #fa6900, #c02942);
+}
+
+.character-selection .right-button {
+  --r: 18px; /* border radius */
+  width: 100px;
+  aspect-ratio: 1/2;
+  --_g: calc(var(--r) / tan(22.5deg)) left var(--r), #000 98%, #0000 101%;
+  -webkit-mask: conic-gradient(
+        from 67.5deg at calc(var(--r) / (3 * sqrt(2) - 4) - 100% / tan(22.5deg)) 50%,
+        #000 45deg,
+        #0000 0
+      )
+      0 0 / calc(100% - var(--r) / sqrt(2)) no-repeat,
+    radial-gradient(var(--r) at calc(100% - var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%),
+    radial-gradient(var(--r) at top var(--_g)), radial-gradient(var(--r) at bottom var(--_g));
+  clip-path: polygon(100% 50%, 0 100%, 0 0);
+  background: linear-gradient(45deg, #fa6900, #c02942);
 }
 
 .Lobby-spawn {
@@ -66,6 +73,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 30px;
 }
 
 .Lobby-spawn:hover {
