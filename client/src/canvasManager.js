@@ -78,15 +78,30 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     // });
 };
 
+const animatedPlayerSpecs = (player, bottomIndex, branchSpacing) => {
+    let specs = {
+        y: (player.index - bottomIndex) * branchSpacing,
+        scale: 0,
+    }
+
+    if (player.animation <= 3) {
+        specs.y += branchSpacing * 0.1 * player.animation;
+        specs.scale = -0.005 * player.animation;
+    } else { // shouldnt happen
+        specs.y = 0;
+        specs.scale = 0;
+    }
+
+    return specs;
+}
+
 export const drawPlayer = (player, canvasRef) => {
-    console.log("drewplayer2");
     // use canvas reference of canvas element to get reference to canvas object
     canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
     canvas.width = window.innerWidth / 2;
     canvas.height = window.innerHeight;
-    console.log("made canvas");
 
     let x;
     if (player.xPosition === "left") {
@@ -94,8 +109,6 @@ export const drawPlayer = (player, canvasRef) => {
     } else {
         x = 3 * canvas.width / 4;
     }
-    drawSprite(context, x, convertCoord(canvas.height / 8), player.avatar, 0.1);
-    //context.clearRect(0, 0, canvas.width, canvas.height);
-    //drawSprite(context, x, convertCoord(canvas.height / 8), player.avatar, 0.3);
-    console.log("drew player " + player);
+    let { y, scale } = animatedPlayerSpecs(player, player.index, canvas.height / 7);
+    drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar, 0.1 + scale);
 };

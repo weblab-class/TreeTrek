@@ -29,7 +29,7 @@ const gameState = {
     winner: null, // multiplayer end game condition
     gameOver: false, // singleplayer end game condition
     players: {}, // dict of ids pointing to dictionary of position & avatar
-      // ex: {'13523': xPosition: "left", avatar: "beaver", index: branchIndex}, animate: false}
+      // ex: {'13523': xPosition: "left", avatar: "beaver", index: branchIndex}, animation: 0}
     branches: [], // array of branch directions ex: ["right", "left", ...]
     acorns: [], // array of indices representing the branch index each acorn is on
     lowestBranchIndex: 0, // number of branches that have been popped for efficiency purposes
@@ -55,7 +55,8 @@ const spawnPlayer = (id) => {
   gameState.players[id] = {
     xPosition: gameState.branches[0],
     avatar: "cat", // idk how to find avatar for now
-    index: 0
+    index: 0,
+    animation: 0,
   };
 };
 
@@ -74,14 +75,6 @@ const movePlayer = (id, dir) => {
   if (gameState.players[id] == undefined) {
     return;
   }
-
-  // Initialize a desired position to move to
-  const desiredPosition = gameState.players[id].xPosition;
-
-  // Calculate desired position
-  if (dir === "right" || dir === "left") {
-    desiredPosition = dir;
-  }
   // could possibly insert message to press L & R arrow if user presses other key
 
   // check if direction is correct & change altitude
@@ -90,9 +83,18 @@ const movePlayer = (id, dir) => {
   if (dir === gameState.branches[branchIndex]) {
     updateBranches();
     updateAcorns(branchIndex);
-    gameState.players[id].xPosition = desiredPosition;
+    gameState.players[id].xPosition = dir;
+    gameState.players[id].animation = 1;
   } else if (dir === "right" || dir === "left") {
     gameState.gameOver = true;
+  }
+};
+
+const updateAnimation = (pid, update) => {
+  if (update == 0) {
+    gameState.players[pid].animation = 0;
+  } else {
+    gameState.players[pid].animation += 1;
   }
 };
 
@@ -114,7 +116,7 @@ const updateGameState = (serverTime) => {
   gameState.time = serverTime;
   checkWin();
   checkGameOver();
-  computePlayersEatAcorns();
+  //computePlayersEatAcorns();
 };
 
 /** Remove a player from the game state if they fall off a branch */
@@ -170,6 +172,7 @@ module.exports = {
   spawnBranches,
   spawnAcorns,
   movePlayer,
+  updateAnimation,
   removePlayer,
   updateGameState,
   resetGame,

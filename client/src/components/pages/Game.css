@@ -19,9 +19,4 @@
 
 .Game-game canvas {
   position: absolute;
-  transition: transform 0.3s ease; /* Smooth transition */
-}
-
-.canvas-animate {
-    transform: scale(1.2); /* Increase size by 20% */
 }

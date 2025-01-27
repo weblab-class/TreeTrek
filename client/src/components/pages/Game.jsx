@@ -59,12 +59,6 @@ const Game = () => {
     // Object.values(update.players).forEach((player) => {
     //     drawPlayer2(player, playerRef);
     // });
-
-    if (true) { //make player animate boolean
-      playerRef.current.classList.add("canvas-animate"); // Add scaling class
-    } else {
-      playerRef.current.classList.remove("canvas-animate"); // Remove scaling class
-    }
   };
 
   // display text if the player is not logged in
@@ -82,7 +76,7 @@ const Game = () => {
       <BranchCounter branch={branch}/>
       <Timer time={time / 1000 | 0}/> {/*display time in seconds */}
       <canvas ref={canvasRef}/>
-      <canvas className="Game-player" ref={playerRef}/>
+      <canvas ref={playerRef}/>
 
       <div>
         {loginModal}
