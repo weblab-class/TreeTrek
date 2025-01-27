@@ -10,28 +10,11 @@ const LobbyS = () => {
     const { userId } = useContext(UserContext);
     let navigate = useNavigate();
 
-    let spawnButton = null;
-    if (userId) {
-        post("/api/newlobby");
-        post("/api/spawn");
-        spawnButton = (
-            <div>
-                <button className="Lobby-spawn"
-                    onClick={() => {
-                        navigate("/game");
-                    }}
-                >
-                    Play!
-                </button>
-            </div>
-        );
-    };
     
     const sprites = [
         { name: 'cat', src: './cat.png' },
         { name: 'beaver', src: './beaver.png' }
     ];
-
     const [currentIndex, setCurrentIndex] = useState(0);
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % sprites.length);
@@ -40,6 +23,21 @@ const LobbyS = () => {
         setCurrentIndex((prevIndex) =>
           (prevIndex - 1 + sprites.length) % sprites.length);
     };
+
+
+    let spawnButton = null;
+    if (userId) {
+        post("/api/newlobby");
+        post("/api/spawn");
+        spawnButton = (
+            <div>
+                <button className="Lobby-spawn" onClick={() => {navigate("/game"); }}>
+                    Play!
+                </button>
+            </div>
+        );
+    };
+    
 
     return (
         <div className="character-selection">
@@ -50,7 +48,7 @@ const LobbyS = () => {
                 <div className="character-container">
                     <img src={sprites[currentIndex].src} 
                     alt={sprites[currentIndex].name}
-                    style={{width:"270px", height:"auto"}}/>
+                    style={{width:"275px", height:"auto"}}/>
                 </div>
                 <button className="right-button" onClick={handleNext}></button>
             </div>

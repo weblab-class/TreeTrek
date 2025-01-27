@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 35%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -12,18 +12,18 @@
   color: var(--primary);
   font-size: 70px;
 }
-
+.MainMenu-options {
+  display: flex;
+  flex-direction: column; /* Ensure buttons are in one column */
+  align-items: center;
+}
 .MainMenu-options button {
   background: none;
   border: none;
-  position: absolute;
-  top: 120%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: -15px;
 }
 
 .MainMenu-options button:hover {
-  top: 120%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-10deg);
+  transform: translate(-5px, -5px) rotate(-5deg);
+  filter: brightness(110%);
 }

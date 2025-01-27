@@ -7,6 +7,7 @@ import MainMenu from "./components/pages/MainMenu";
 import LobbyS from "./components/pages/LobbyS";
 import Game from "./components/pages/Game";
 import GameOverS from "./components/pages/GameOverS";
+import Tutorial from "./components/pages/Tutorial";
 
 import {
   createBrowserRouter,
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="/lobbys/" element={<LobbyS />} />
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
+      <Route path="/tutorial/" element={<Tutorial />} />
     </Route>
   )
 );
