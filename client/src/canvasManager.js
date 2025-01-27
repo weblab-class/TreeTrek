@@ -37,10 +37,6 @@ const drawSprite = (
 
 /** drawing functions */
 
-const drawPlayer = (context, x, y, animal) => {
-    drawSprite(context, x, convertCoord(y), animal, 0.1);
-};
-
 const drawBranch = (context, y, dir) => {
     if (dir === "left") {
         drawSprite(context, canvas.width / 4, convertCoord(y), "leftBranch", 0.15);
@@ -54,13 +50,8 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
-
     canvas.width = window.innerWidth / 2;
     canvas.height = window.innerHeight;
-
-    // clear the canvas to green
-    // context.fillStyle = "green";
-    // context.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw tree trunk
     context.fillStyle = "#a05b2d";
@@ -70,19 +61,41 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     if (drawState.players[pid]) {
         for (let b = 0; b < 6; b++) {
             let player = drawState.players[pid];
-            const branch = player.index + b;
-            drawBranch(context, (b + 0.5) * canvas.height / 7, drawState.branches[branch]);
+            drawBranch(context, (b + 0.5) * canvas.height / 7, drawState.branches[player.index + b]);
         }
     }
 
     // draw all the players
-    Object.values(drawState.players).forEach((p) => {
-        let x;
-        if (p.position.x === "left") {
-            x = canvas.width / 4;
-        } else {
-            x = 3 * canvas.width / 4;
-        }
-        drawPlayer(context, x, canvas.height / 8, p.avatar);
-    });
+    // const player =
+    // Object.values(drawState.players).forEach((p) => {
+    //     let x;
+    //     if (p.xPosition === "left") {
+    //         x = canvas.width / 4;
+    //     } else {
+    //         x = 3 * canvas.width / 4;
+    //     }
+    //     drawPlayer(context, x, canvas.height / 8, p.avatar);
+    // });
+};
+
+export const drawPlayer = (player, canvasRef) => {
+    console.log("drewplayer2");
+    // use canvas reference of canvas element to get reference to canvas object
+    canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    canvas.width = window.innerWidth / 2;
+    canvas.height = window.innerHeight;
+    console.log("made canvas");
+
+    let x;
+    if (player.xPosition === "left") {
+        x = canvas.width / 4;
+    } else {
+        x = 3 * canvas.width / 4;
+    }
+    drawSprite(context, x, convertCoord(canvas.height / 8), player.avatar, 0.1);
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+    //drawSprite(context, x, convertCoord(canvas.height / 8), player.avatar, 0.3);
+    console.log("drew player " + player);
 };

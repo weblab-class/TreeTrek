@@ -28,7 +28,8 @@ const computePlayersEatAcorns = () => {
 const gameState = {
     winner: null, // multiplayer end game condition
     gameOver: false, // singleplayer end game condition
-    players: {}, // dict of ids pointing to dictionary of position & avatar ex: {'13523': {position: {x: "left", y: altitude}, avatar: "beaver", index: branchIndex}}
+    players: {}, // dict of ids pointing to dictionary of position & avatar
+      // ex: {'13523': xPosition: "left", avatar: "beaver", index: branchIndex}, animate: false}
     branches: [], // array of branch directions ex: ["right", "left", ...]
     acorns: [], // array of indices representing the branch index each acorn is on
     lowestBranchIndex: 0, // number of branches that have been popped for efficiency purposes
@@ -52,7 +53,7 @@ const spawnBranches = () => {
 /** Adds a player to the game state, initialized with position of 1st branch */
 const spawnPlayer = (id) => {
   gameState.players[id] = {
-    position: {x: gameState.branches[0], y: 0},
+    xPosition: gameState.branches[0],
     avatar: "cat", // idk how to find avatar for now
     index: 0
   };
@@ -75,26 +76,21 @@ const movePlayer = (id, dir) => {
   }
 
   // Initialize a desired position to move to
-  const desiredPosition = {
-    x: gameState.players[id].position.x,
-    y: gameState.players[id].position.y,
-  };
+  const desiredPosition = gameState.players[id].xPosition;
 
   // Calculate desired position
   if (dir === "right" || dir === "left") {
-    desiredPosition.x = dir;
-    desiredPosition.y += BRANCH_SEP;
+    desiredPosition = dir;
   }
   // could possibly insert message to press L & R arrow if user presses other key
 
   // check if direction is correct & change altitude
-  const currIndex = desiredPosition.y / BRANCH_SEP;
-  const branchIndex = currIndex + gameState.lowestBranchIndex;
+  gameState.players[id].index += 1;
+  const branchIndex = gameState.players[id].index;
   if (dir === gameState.branches[branchIndex]) {
     updateBranches();
     updateAcorns(branchIndex);
-    gameState.players[id].position = desiredPosition;
-    gameState.players[id].index += 1;
+    gameState.players[id].xPosition = desiredPosition;
   } else if (dir === "right" || dir === "left") {
     gameState.gameOver = true;
   }
