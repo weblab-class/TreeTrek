@@ -4,7 +4,7 @@ import BranchCounter from "../modules/BranchCounter";
 
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
-import { drawCanvas } from "../../canvasManager";
+import { drawCanvas, drawPlayer } from "../../canvasManager";
 import { handleInput } from "../../input";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const Game = () => {
   let navigate = useNavigate();
   const { userId } = useContext(UserContext);
   const canvasRef = useRef(null);
+  const playerRef = useRef(null);
 
   const [time, setTime] = useState(0); // stores time in ms
   const [branch, setBranch] = useState(0); // stores player's branch index
@@ -27,7 +28,6 @@ const Game = () => {
     // remove event listener on unmount
     return () => {
       window.removeEventListener("keydown", handleInput);
-      post("/api/despawn");
     };
   }, []);
 
@@ -55,6 +55,10 @@ const Game = () => {
       );
     }
     drawCanvas(update, canvasRef, userId);
+    drawPlayer(update.players[userId], playerRef);
+    // Object.values(update.players).forEach((player) => {
+    //     drawPlayer2(player, playerRef);
+    // });
   };
 
   // display text if the player is not logged in
@@ -64,7 +68,7 @@ const Game = () => {
   };
 
   useEffect(() => {
-    post("/api/newgame");  // This could be triggering multiple times
+    post("/api/newgame");  // runs again when paged refreshed... causes bug
   }, []);
 
   return (
@@ -72,6 +76,7 @@ const Game = () => {
       <BranchCounter branch={branch}/>
       <Timer time={time / 1000 | 0}/> {/*display time in seconds */}
       <canvas ref={canvasRef}/>
+      <canvas ref={playerRef}/>
 
       <div>
         {loginModal}

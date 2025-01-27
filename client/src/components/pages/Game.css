@@ -16,3 +16,8 @@
   justify-content: flex-start;
   height: 100vh;
 }
+
+.Game-game canvas {
+  position: absolute;
+  z-index: 1;
+}
