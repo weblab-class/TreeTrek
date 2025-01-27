@@ -4,6 +4,7 @@ let sprites = {
     leftBranch: null,
     rightBranch: null,
     cat: null,
+    beaver: null
 };
 Object.keys(sprites).forEach((key) => {
     sprites[key] = new Image();
@@ -21,13 +22,21 @@ const drawSprite = (
     x,
     y,
     sprite,
-    scale
+    scale,
+    orient
     ) => {
     const drawSprite = sprites[sprite];
     if (drawSprite.complete && drawSprite.naturalHeight !== 0) {
         let scaledHeight = canvas.height * scale;
         let scaledWidth = drawSprite.naturalWidth * scaledHeight / drawSprite.naturalHeight;
-        let drawX = x - scaledWidth / 2;
+        let drawX;
+        if (orient === "left") {
+            drawX = x;
+        } else if (orient === "center") {
+            drawX = x - scaledWidth / 2
+        } else if (orient === "right") {
+            drawX = x - scaledWidth;
+        }
         let drawY = y - scaledHeight / 2;
         context.drawImage(drawSprite, drawX, drawY, scaledWidth, scaledHeight);
     } else {
@@ -39,9 +48,9 @@ const drawSprite = (
 
 const drawBranch = (context, y, dir) => {
     if (dir === "left") {
-        drawSprite(context, canvas.width / 4, convertCoord(y), "leftBranch", 0.15);
+        drawSprite(context, 15 * canvas.width / 32, y, "leftBranch", 0.15, "right");
     } else {
-        drawSprite(context, 3 * canvas.width / 4, convertCoord(y), "rightBranch", 0.15);
+        drawSprite(context, 17 * canvas.width / 32, y, "rightBranch", 0.15, "left");
     };
 };
 
@@ -50,32 +59,20 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
     canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext("2d");
-    canvas.width = window.innerWidth / 2;
+    canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     // draw tree trunk
     context.fillStyle = "#a05b2d";
-    context.fillRect(7 * canvas.width / 16, 0, canvas.width / 8, canvas.height);
+    context.fillRect(15 * canvas.width / 32, 0, canvas.width / 16, canvas.height);
 
     // draw current 6 branches on screen
     if (drawState.players[pid]) {
         for (let b = 0; b < 6; b++) {
             let player = drawState.players[pid];
-            drawBranch(context, (b + 0.5) * canvas.height / 7, drawState.branches[player.index + b]);
+            drawBranch(context, convertCoord((b + 0.5) * canvas.height / 7), drawState.branches[player.index + b]);
         }
     }
-
-    // draw all the players
-    // const player =
-    // Object.values(drawState.players).forEach((p) => {
-    //     let x;
-    //     if (p.xPosition === "left") {
-    //         x = canvas.width / 4;
-    //     } else {
-    //         x = 3 * canvas.width / 4;
-    //     }
-    //     drawPlayer(context, x, canvas.height / 8, p.avatar);
-    // });
 };
 
 const animatedPlayerSpecs = (player, bottomIndex, branchSpacing) => {
@@ -110,5 +107,5 @@ export const drawPlayer = (player, canvasRef) => {
         x = 3 * canvas.width / 4;
     }
     let { y, scale } = animatedPlayerSpecs(player, player.index, canvas.height / 7);
-    drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar, 0.1 + scale);
+    drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar, 0.1 + scale, "center");
 };
