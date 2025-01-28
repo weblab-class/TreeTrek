@@ -107,6 +107,20 @@ router.get("/gameover", (req, res) => {
   })
 })
 
+router.post("/spriteselect", (req, res) => {
+  User.updateOne({ googleid: req.user.googleid }, {
+    $set: {sprite: req.body.sprite}
+  }).then(res.send({}));
+})
+
+router.get("/spriteselect", (req, res) => {
+  User.findOne({ googleid: req.user.googleid }).then((userDB) => {
+    res.send({ sprite: userDB.sprite });
+  })
+})
+
+
+
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
