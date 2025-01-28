@@ -5,6 +5,8 @@ import NotFound from "./components/pages/NotFound";
 import LoginPage from "./components/pages/LoginPage";
 import MainMenu from "./components/pages/MainMenu";
 import LobbyS from "./components/pages/LobbyS";
+import LobbyM from "./components/pages/LobbyM";
+import LobbyMWaitingRoom from "./components/pages/LobbyMWaitingRoom";
 import Game from "./components/pages/Game";
 import GameOverS from "./components/pages/GameOverS";
 
@@ -26,6 +28,8 @@ const router = createBrowserRouter(
       <Route path="/" element={<LoginPage />} />
       <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/lobbys/" element={<LobbyS />} />
+      <Route path="/lobbym/" element={<LobbyM />} />
+      <Route path="/lobbymwr/:lobbyId" element={<LobbyMWaitingRoom />}/>
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
     </Route>
