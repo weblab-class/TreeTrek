@@ -46,7 +46,7 @@ const Game = () => {
     setTime(update.time);
     setBranch(update.players[userId].index);
     // goes to GameOver if game is over
-    if (update.gameOver) {
+    if (update.gameOver) { // idk why but this runs twice..
       update.gameOver = false;
       post("/api/gameover", { gameBranch: update.players[userId].index }).then(() =>
         post("/api/despawn")

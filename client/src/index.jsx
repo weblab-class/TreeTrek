@@ -4,6 +4,7 @@ import App from "./components/App";
 import NotFound from "./components/pages/NotFound";
 import LoginPage from "./components/pages/LoginPage";
 import MainMenu from "./components/pages/MainMenu";
+import GlobalLeaderboard from "./components/pages/GlobalLeaderboard";
 import LobbyS from "./components/pages/LobbyS";
 import Game from "./components/pages/Game";
 import GameOverS from "./components/pages/GameOverS";
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
     <Route errorElement={<NotFound />} element={<App />}>
       <Route path="/" element={<LoginPage />} />
       <Route path="/mainmenu/" element={<MainMenu />} />
+      <Route path="/leaderboard/" element={<GlobalLeaderboard />} />
       <Route path="/lobbys/" element={<LobbyS />} />
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />

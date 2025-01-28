@@ -1,0 +1,43 @@
+.Leaderboard {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #00000077;
+    border-radius: 8px;
+  }
+
+  .Leaderboard-title {
+    text-align: center;
+    font-size: 96px;
+    margin-bottom: 20px;
+    color: var(--primary);
+  }
+
+  .Leaderboard-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .Leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 36px;
+  }
+
+  .Leaderboard-item:nth-child(even) {
+    background-color: #f1f1f130;
+  }
+
+  .Leaderboard-item:nth-child(odd) {
+    background-color: #81818130;
+  }
+
+  .Leaderboard-item .player {
+    color: white;
+  }
+
+  .Leaderboard-item .score {
+    color: #3a9d23;
+  }

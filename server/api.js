@@ -11,6 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
+const Leader = require("./models/leader");
 
 // import authentication library
 const auth = require("./auth");
@@ -42,6 +43,15 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.get("/leaderboard", async (req, res) => {
+  const leaders = {};
+  let leadersDB = await Leader.find();
+  leadersDB.forEach((leader) => {
+    leaders[leader.name] = leader.highestGame;
+  });
+  res.send(leaders);
+})
 
 router.post("/spawn", (req, res) => {
   if (req.user) {
@@ -78,6 +88,13 @@ router.post("/newgame", (req, res) => {
 router.post("/gameover", async (req, res) => {
   let userDB = await User.findOne({ googleid: req.user.googleid });
   let higherBranch = req.body.gameBranch > userDB.highestGame ? req.body.gameBranch : userDB.highestGame;
+  let lowestLeader = await Leader.findOne().sort({highestGame: 1});
+  if (lowestLeader.highestGame < higherBranch) {
+    console.log(lowestLeader);
+    await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
+      $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
+    })
+  }
 
   User.updateOne({ googleid: req.user.googleid }, {
     $set: {highestGame: higherBranch, lastGame: req.body.gameBranch}
