@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Leaderboard from "../modules/Leaderboard";
 
 import { get, post } from "../../utilities";
@@ -10,16 +10,20 @@ import './GlobalLeaderboard.css';
 const GlobalLeaderboard = () => {
     let navigate = useNavigate();
 
+    const [userID, setUserID] = useState("a");
     const [leaders, setLeaders] = useState({});
     useEffect(() => {
+        get("/api/whoami").then((res) => {
+            setUserID(res.googleid);
+        });
         get("/api/leaderboard").then((leaders) => {
             setLeaders(leaders);
-        })
+        });
     }, []);
 
     return (
         <div className="GlobalLeaderboard-container">
-            <Leaderboard players={leaders} />
+            <Leaderboard playerid={userID} players={leaders} />
         </div>
     );
 };

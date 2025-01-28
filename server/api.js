@@ -48,7 +48,7 @@ router.get("/leaderboard", async (req, res) => {
   const leaders = {};
   let leadersDB = await Leader.find();
   leadersDB.forEach((leader) => {
-    leaders[leader.name] = leader.highestGame;
+    leaders[leader.googleid] = {name: leader.name, highestGame: leader.highestGame};
   });
   res.send(leaders);
 })
@@ -88,12 +88,19 @@ router.post("/newgame", (req, res) => {
 router.post("/gameover", async (req, res) => {
   let userDB = await User.findOne({ googleid: req.user.googleid });
   let higherBranch = req.body.gameBranch > userDB.highestGame ? req.body.gameBranch : userDB.highestGame;
-  let lowestLeader = await Leader.findOne().sort({highestGame: 1});
-  if (lowestLeader.highestGame < higherBranch) {
-    console.log(lowestLeader);
-    await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
-      $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
+  // if user is already on leaderboard, update score
+  if (await Leader.findOne({ googleid: req.user.googleid })) {
+    await Leader.updateOne({ googleid: req.user.googleid }, {
+      $set: {highestGame: higherBranch}
     })
+  } else {
+    let lowestLeader = await Leader.findOne().sort({highestGame: 1});
+    if (lowestLeader.highestGame < higherBranch) {
+      console.log(lowestLeader);
+      await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
+        $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
+      })
+    }
   }
 
   User.updateOne({ googleid: req.user.googleid }, {
