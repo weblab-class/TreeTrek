@@ -3,8 +3,42 @@ let canvas;
 let sprites = {
     leftBranch: null,
     rightBranch: null,
-    cat: null,
-    beaver: null
+    bearleft: null,
+    bearright: null,
+    birdleft: null,
+    birdright: null,
+    chickenleft: null,
+    chickenright: null,
+    deerleft: null,
+    deerright: null,
+    dogleft: null,
+    dogright: null,
+    duckleft: null,
+    duckright: null,
+    foxleft: null,
+    foxright: null,
+    hedgehogleft: null,
+    hedgehogright: null,
+    horseleft: null,
+    horseright: null,
+    lionleft: null,
+    lionright: null,
+    mouseleft: null,
+    mouseright: null,
+    pandaleft: null,
+    pandaright: null,
+    penguinleft: null,
+    penguinright: null,
+    rabbitleft: null,
+    rabbitright: null,
+    skunkleft: null,
+    skunkright: null,
+    squirrelleft: null,
+    squirrelright: null,
+    tigerleft: null,
+    tigerright: null,
+    timleft: null,
+    timright: null,
 };
 Object.keys(sprites).forEach((key) => {
     sprites[key] = new Image();
@@ -81,9 +115,9 @@ const animatedPlayerSpecs = (player, bottomIndex, branchSpacing) => {
         scale: 0,
     }
 
-    if (player.animation <= 3) {
+    if (player.animation <= 5) {
         specs.y += branchSpacing * 0.1 * player.animation;
-        specs.scale = -0.005 * player.animation;
+        specs.scale = 0.002 * player.animation;
     } else { // shouldnt happen
         specs.y = 0;
         specs.scale = 0;
@@ -107,5 +141,5 @@ export const drawPlayer = (player, canvasRef) => {
         x = 3 * canvas.width / 4;
     }
     let { y, scale } = animatedPlayerSpecs(player, player.index, canvas.height / 7);
-    drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar, 0.1 + scale, "center");
+    drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar + `${player.xPosition}`, 0.1 + scale, "center");
 };

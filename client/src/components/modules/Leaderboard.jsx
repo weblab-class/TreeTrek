@@ -5,7 +5,7 @@ import "./Leaderboard.css";
  * Component that shows countdown from 30 seconds
  *
  * Proptypes
- * @param {String} playerid userid NEEDS TO BE GOOGLE ID???
+ * @param {String} playerid
  * @param {dict} players key: googleid, value: {name, highestGame}
  */
 const Leaderboard = (props) => {

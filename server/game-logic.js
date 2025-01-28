@@ -54,7 +54,7 @@ const spawnBranches = () => {
 const spawnPlayer = (id) => {
   gameState.players[id] = {
     xPosition: gameState.branches[0],
-    avatar: "cat", // idk how to find avatar for now
+    avatar: "tim", // idk how to find avatar for now
     index: 0,
     animation: 0,
   };

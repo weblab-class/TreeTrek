@@ -12,7 +12,7 @@ const getSocketFromSocketID = (socketid) => io.sockets.sockets.get(socketid);
 const sendGameState = () => {
   io.emit("update", gameLogic.gameState);
   Object.keys(gameLogic.gameState.players).forEach((pid) => {
-    if (gameLogic.gameState.players[pid].animation == 3) {
+    if (gameLogic.gameState.players[pid].animation == 5) {
       gameLogic.updateAnimation(pid, 0);
     }
     else if (gameLogic.gameState.players[pid].animation != 0) {
