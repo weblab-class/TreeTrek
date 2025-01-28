@@ -11,7 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-const Leader = require("./models/leader");
+const Lobby = require("./models/lobby");
 
 // import authentication library
 const auth = require("./auth");
@@ -19,8 +19,11 @@ const auth = require("./auth");
 // api endpoints: all these paths will be prefixed with "/api/"
 const router = express.Router();
 
-//initialize socket
+// initialize socket
 const socketManager = require("./server-socket");
+
+// import random ID generator library
+const uuid = require('uuid');
 
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
@@ -77,14 +80,6 @@ router.post("/newgame", (req, res) => {
   res.send({});
 })
 
-// router.post("/reset", (req, res) => { // intended to reset the game
-//   if (req.user) {
-//     socketManager.addUserToGame(req.user);
-//     socketManager.resetGame(); // comes from server-socket function
-//   }
-//   res.send({});
-// });
-
 router.post("/gameover", async (req, res) => {
   let userDB = await User.findOne({ googleid: req.user.googleid });
   let higherBranch = req.body.gameBranch > userDB.highestGame ? req.body.gameBranch : userDB.highestGame;
@@ -113,6 +108,41 @@ router.get("/gameover", (req, res) => {
     res.send({ highestGame: userDB.highestGame, lastGame: userDB.lastGame });
   })
 })
+
+// Helper function to generate 4-letter lobby code
+const generateCode = () => {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return code;
+};
+
+// Create a new lobby
+router.post('/create-lobby', async (req, res) => {
+  const lobbyId = generateCode();
+  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  console.log(lobby);
+  await lobby.save();
+  res.json({ lobbyId });
+});
+
+// Join a lobby
+router.get('/join-lobby/:code', async (req, res) => {
+  const code = req.params.code;
+  const lobby = await Lobby.findOne({ code: code });
+  console.log(lobby);
+  if (!lobby) {
+    // res.status(404).json({ error: 'Lobby not found' });
+    console.log('Lobby not found');
+  } else {
+    await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
+    await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
+    console.log(lobby);
+    res.send({});
+  }
+});
 
 router.post("/spriteselect", (req, res) => {
   User.updateOne({ googleid: req.user.googleid }, {
