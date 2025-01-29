@@ -46,24 +46,26 @@ const LobbyS = () => {
     };
 
     return (
-        <div>
-            <NavBar />
-            <div className="character-selection">
-                <h1>Character Selection</h1>
-                {/* <div className="decor">
-                    <img src = "/butterflygif.gif" alt="butterflygif"/>
-                </div> */}
-                <div className="character-selection-options">
-                    <button className="left-button" onClick={handlePrevious}></button>
-                    <div className="character-container">
-                        <img src={sprites[currentIndex].src}
-                        style={{width:"275px", height:"auto"}}/>
+        <body class = "waitingBg">
+            <div>
+                <NavBar />
+                <div className="character-selection">
+                    <h1>Character Selection</h1>
+                    {/* <div className="decor">
+                        <img src = "/butterflygif.gif" alt="butterflygif"/>
+                    </div> */}
+                    <div className="character-selection-options">
+                        <button className="left-button" onClick={handlePrevious}></button>
+                        <div className="character-container">
+                            <img src={sprites[currentIndex].src}
+                            style={{width:"275px", height:"auto"}}/>
+                        </div>
+                        <button className="right-button" onClick={handleNext}></button>
                     </div>
-                    <button className="right-button" onClick={handleNext}></button>
+                    {playButton}
                 </div>
-                {playButton}
             </div>
-        </div>
+        </body>
     );
 };
 

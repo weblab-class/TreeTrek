@@ -30,17 +30,17 @@ const FindLobby = () => {
       <div className = "lobby-container">
         {/* <h2>Lobby Page</h2> */}
         <button onClick={handleCreateLobby}className = "create-button">
-          Create Lobby
+          CREATE LOBBY
         </button>
         <input
           type="text"
           value={lobbyCode}
           onChange={(e) => setLobbyCode(e.target.value)}
-          placeholder="enter lobby code"
+          placeholder="ENTER LOBBY CODE"
           className="input-box"
         />
         <button onClick={handleJoinLobby} className = "join-button">
-          Join Lobby
+          JOIN LOBBY
         </button>
       </div>
     </div>

@@ -1,7 +1,13 @@
-.character-selection {
+.waitingBg {
   background-image: url("../../waitingbg.jpg");
   background-size: cover;
   background-position: center;
+  z-index: -1;
+}
+.character-selection {
+  /* background-image: url("../../waitingbg.jpg");
+  background-size: cover;
+  background-position: center; */
   height: 100%;
   width: 100%;
   position: absolute;
@@ -15,6 +21,7 @@
   transform: translate(-50%, -50%);
   color: var(--primary);
   font-size: 70px;
+  letter-spacing: 10px;
 }
 
 .character-selection-options {
@@ -26,8 +33,6 @@
   flex: row;
   align-items: center;
   gap: 20px;
-  /* justify-content: space-evenly; */
-  /* row-gap: 300px; */
 }
 
 .character-selection .character-container {

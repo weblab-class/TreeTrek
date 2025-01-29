@@ -50,18 +50,20 @@ const LobbyM = () => {
 
 
   return (
-    <div className="character-selection">
-        <h1>Lobby ID: {props.lobbyId}</h1>
-        <div className="character-selection-options">
-            <button className="left-button" onClick={handlePrevious}></button>
-            <div className="character-container">
-                <img src={sprites[currentIndex].src}
-                style={{width:"275px", height:"auto"}}/>
+    <body class = "waitingBg">
+        <div className="character-selection">
+            <h1>Lobby ID: {props.lobbyId}</h1>
+            <div className="character-selection-options">
+                <button className="left-button" onClick={handlePrevious}></button>
+                <div className="character-container">
+                    <img src={sprites[currentIndex].src}
+                    style={{width:"275px", height:"auto"}}/>
+                </div>
+                <button className="right-button" onClick={handleNext}></button>
             </div>
-            <button className="right-button" onClick={handleNext}></button>
+            {playButton}
         </div>
-        {playButton}
-    </div>
+    </body>
   );
 };
 
