@@ -49,10 +49,10 @@ const spawnBranches = () => {
 };
 
 /** Adds a player to the game state, initialized with position of 1st branch */
-const spawnPlayer = (id) => {
+const spawnPlayer = (id, avatar) => {
   gameState.players[id] = {
     xPosition: gameState.branches[0],
-    avatar: "cat", // idk how to find avatar for now
+    avatar: avatar,
     index: 0,
     alive: true,
     animation: 0,
@@ -60,6 +60,10 @@ const spawnPlayer = (id) => {
   if (gameState.players.length == 2) {
     gameState.multiplayer = true;
   }
+};
+
+const setAvatar = (id, avatar) => {
+  gameState.players[id].avatar = avatar;
 };
 
 /** Adds acorns to the game state, initialized with random probability */

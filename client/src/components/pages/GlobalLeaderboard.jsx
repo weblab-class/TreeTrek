@@ -10,7 +10,7 @@ import './GlobalLeaderboard.css';
 const GlobalLeaderboard = () => {
     let navigate = useNavigate();
 
-    const [userID, setUserID] = useState("a");
+    const [userID, setUserID] = useState("");
     const [leaders, setLeaders] = useState({});
     useEffect(() => {
         get("/api/whoami").then((res) => {

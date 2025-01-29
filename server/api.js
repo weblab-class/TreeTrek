@@ -11,7 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-const Leader = require("./models/leader");
+const Leader = require("./models/Leader");
 const Lobby = require("./models/lobby");
 
 // import authentication library
@@ -59,9 +59,9 @@ router.get("/leaderboard", async (req, res) => {
 
 router.post("/spawn", (req, res) => {
   if (req.user) {
-    socketManager.addUserToGame(req.user);
+    socketManager.addUserToGame(req.user, req.body.avatar);
   }
-  res.send(true);
+  res.send({});
 });
 
 router.post("/despawn", (req, res) => {
