@@ -7,8 +7,12 @@ const FindLobby = () => {
   const navigate = useNavigate();
 
   const handleJoinLobby = async () => {
-    await get(`/api/joinlobby/${lobbyCode}`);
-    navigate(`/lobbym/${lobbyCode}`);
+    try {
+      await get(`/api/joinlobby/${lobbyCode}`);
+      navigate(`/lobbym/${lobbyCode}`);
+    } catch (error) {
+      alert("oops, please check code and try again");
+    }
   };
 
   const handleCreateLobby = async () => {

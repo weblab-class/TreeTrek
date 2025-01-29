@@ -1,6 +1,21 @@
 .GlobalLeaderboard-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.GlobalLeaderboard-container button {
+  margin-left: 10%;
+  margin-top: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.GlobalLeaderboard-container button:hover {
+  transform: translate(-5px, -5px) rotate(-5deg); /* Move a little */
+  filter: brightness(110%);
+}

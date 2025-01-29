@@ -11,18 +11,38 @@
 .Tutorial h1 {
   color: var(--primary);
   font-size: 70px;
+  margin-bottom: 17px;
+}
+
+.Tutorial-text h3 {
+  color: var(--primary);
+  font-size: 40px;
+  margin: 13px;
+  animation: colorChange 2s infinite alternate;
 }
 
 .Tutorial-text {
   color: var(--primary);
   width: 135%;
-  font-size: 23px;
-  background-color: #ffffe7;
-  padding-left: 21px;
-  padding-right: 18px;
+  font-size: 27px;
+  color: #ffffff;
+  background-color: #24341e;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 7px;
   padding-bottom: 7px;
   border-radius: 25px;
+  text-align: center;
+  line-height: 0.75;
+}
+
+.Tutorial-text p {
+  margin: 8px;
+}
+
+.Tutorial-text img {
+  margin-top: -5px;
+  border-radius: 20px;
 }
 
 .Tutorial-button {

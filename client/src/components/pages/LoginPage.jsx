@@ -33,7 +33,6 @@ const LoginPage = () => {
           <GoogleLogin onSuccess={handleLogin} onError={(err) => console.log(err)} />
         )}
       </div>
-      {/* <button>Play As Guest</button> */} {/* to be implemented later */}
     </div>
   );
 };

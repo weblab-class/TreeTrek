@@ -36,6 +36,7 @@ const router = createBrowserRouter(
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
       <Route path="/tutorial/" element={<Tutorial />} />
+      <Route path="/leaderboard/" element={<GlobalLeaderboard />} />
     </Route>
   )
 );

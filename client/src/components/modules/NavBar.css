@@ -1,0 +1,32 @@
+.NavBar-container {
+  padding: var(--s) var(--m);
+  background-color: var(--primary);
+}
+
+.NavBar-title {
+  color: var(--primary);
+  font-size: 50px;
+  letter-spacing: 10px;
+  position: absolute;
+  top: 8px;
+  left: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 50px;
+  letter-spacing: 10px;
+  color: var(--primary);
+}
+
+.logout-button:hover {
+  filter: brightness(500%);
+}
