@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, } from "react";
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../App';
@@ -47,7 +47,6 @@ const LobbyS = () => {
     return (
         <div className="character-selection">
             <h1>Character Selection</h1>
-            <div className="message-box"></div>
             <div className="character-selection-options">
                 <button className="left-button" onClick={handlePrevious}></button>
                 <div className="character-container">
