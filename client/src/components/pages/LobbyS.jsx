@@ -33,6 +33,7 @@ const LobbyS = () => {
             navigate("/game")
         );
     }
+    
     let playButton = null;
     if (userId) {
         post("/api/newlobby");

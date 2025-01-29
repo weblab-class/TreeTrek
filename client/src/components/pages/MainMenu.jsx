@@ -9,12 +9,18 @@ import './MainMenu.css';
 const MainMenu = () => {
   let navigate = useNavigate();
 
+  const handleCreateLobby = async () => {
+      const response = await post('/api/createlobby');
+      setLobbyCode(response.lobbyId);
+      navigate(`/lobbys/${response.lobbyId}`);
+  };
+
   return (
     <div className="MainMenu">
       <NavBar />
       <h1>Main Menu</h1>
       <div className="MainMenu-options">
-        <button onClick={() => navigate("/lobbys")} className="singleplayer-button">
+        <button onClick={() => handleCreateLobby()} className="singleplayer-button">
           <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"225px", height:"auto"}}/>
         </button>
         <button onClick={() => navigate("/findlobby")} className="multiplayer-button">

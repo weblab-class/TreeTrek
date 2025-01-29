@@ -147,16 +147,16 @@ const generateCode = () => {
 };
 
 // Create a new lobby
-router.post('/create-lobby', async (req, res) => {
+router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
-  // const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
   // console.log(lobby);
   await lobby.save();
   res.json({ lobbyId });
 });
 
 // Join a lobby
-router.get('/join-lobby/:code', async (req, res) => {
+router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
