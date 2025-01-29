@@ -57,11 +57,11 @@ const findLobbyByPlayer = async (playerId) => {
     const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
 
     if (!lobby) {
-      console.log("Lobby not found for player:", playerId);
+      // console.log("Lobby not found for player:", playerId);
       return null; // Handle case where no lobby is found
     }
 
-    console.log("Lobby found (api.js):", lobby);
+    // console.log("Lobby found (api.js):", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
@@ -91,33 +91,13 @@ router.get("/leaderboard", async (req, res) => {
 
 router.post("/spawn", (req, res) => {
   if (req.user && req.body.lobbyCode) {
-      socketManager.addUserToGame(req.user, req.body.avatar, req.body.lobbyCode);
+      socketManager.startGame(req.user.googleid, req.body.avatar, req.body.lobbyCode);
   }
   res.send(true);
 });
 
-// router.post("/despawn", async (req, res) => {
-//   if (req.user) {
-//     const lobbyCode = await findLobbyByPlayer(req.user.googleid);
-//     if (lobbyCode != null) {
-//       socketManager.removeUserFromGame(req.user, lobbyCode);
-//     }
-//   }
-//   res.send({});
-// });
-
 router.post("/newlobby", (req, res) => {
-  socketManager.newLobby(req.body.lobbyCode);
-  res.send({});
-})
-
-router.post("/newgame", async (req, res) => {
-  if (req.user) {
-    const lobbyCode = await findLobbyByPlayer(req.user.googleid);
-    if (lobbyCode != null) {
-      socketManager.startGame(lobbyCode);
-    }
-  }
+  socketManager.newLobby(req.user.googleid, req.body.lobbyCode);
   res.send({});
 })
 
@@ -164,6 +144,7 @@ router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
   const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], names: [req.user.name], readiness: [false] });
   await lobby.save();
+  socketManager.newLobby(req.user.googleid, lobbyId);
   res.json({ lobbyId });
 });
 
@@ -172,12 +153,45 @@ router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
+    socketManager.joinLobby(req.user.googleid, req.body.avatar, code);
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { names: req.user.name } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
     res.send({});
   } else {
     res.status(404).send({});
+  }
+});
+
+// Delete a lobby
+router.post("/leavelobby/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    console.log("attempting to leaveLobby");
+    const lobby = await Lobby.findOne({ players: { $in: [userId] } });
+    console.log("found lobby (LL-API): " + lobby);
+    if (!lobby) {
+        return res.status(404).json({ message: "Lobby not found for player" });
+    }
+    // findLobbyByPlayer(userId).then((code) => Lobby.deleteOne({code: code}));
+    // Remove the player from the lobby
+    await Lobby.findOneAndUpdate(
+        { code: lobby.code },
+        { $pull: { players: userId } },
+        { new: true }
+    );
+    // If the lobby is empty after removal, delete it
+    const updatedLobby = await Lobby.findOne({ code: lobby.code });
+    console.log("updated lobby (LL-API): " + updatedLobby);
+    if (updatedLobby.players.length === 0) {
+        await Lobby.deleteOne({ code: lobby.code });
+        console.log("Lobby deleted because it was empty");
+    }
+
+    console.log("Player removed from lobby");
+  } catch (error) {
+      console.error("Error deleting lobby:", error);
+      // res.status(500).json({ message: "Server error" });
   }
 });
 

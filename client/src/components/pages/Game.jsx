@@ -66,10 +66,6 @@ const Game = () => {
     loginModal = <div className="Game-login"> Please login first! </div>;
   };
 
-  useEffect(() => {
-    post("/api/newgame");  // runs again when paged refreshed... causes bug
-  }, []);
-
   return (
     <div className="Game-game">
       <BranchCounter branch={branch}/>

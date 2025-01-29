@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, } from 'react';
-import { avatarPlayer, readyPlayer } from "../../client-socket";
+import { avatarPlayer, readyPlayer, prepLobbyGame } from "../../client-socket";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
@@ -15,24 +15,36 @@ const LobbyM = () => {
   const { userId } = useContext(UserContext);
 
   const [lobbyPlayers, setLobbyPlayers] = useState({});
+  const [readyPlayers, setReadyPlayers] = useState(0);
 
   let navigate = useNavigate();
 
   useEffect(() => {
+    socket.on("newPlayer", () => {
+      get(`/api/lobbydata/${props.lobbyId}`).then((res) => {
+        res.players.forEach((pid, index) => {
+          setLobbyPlayers((players) => ({ ...players, [pid]: {name: res.names[index], avatar: "bear", ready: res.readiness[index]} }));
+        });
+      });
+    });
     socket.on("updateAvatar", ({id, avatar}) => {
       setLobbyPlayers((players) => ({ ...players, [id]: {...players[id], avatar: avatar} }));
     });
-    return () => {
-      socket.off("updateAvatar");
-    };
-  }, []);
-
-  useEffect(() => {
     socket.on("updateReadiness", ({id, ready}) => {
-      console.log(id + " " + ready);
+      if (ready) {
+        setReadyPlayers((readyPlayers) => readyPlayers + 1);
+      } else {
+        setReadyPlayers((readyPlayers) => readyPlayers - 1);
+      }
       setLobbyPlayers((players) => ({ ...players, [id]: {...players[id], ready: ready} }));
     });
+    socket.on("startLobbyGame", (code) => {
+      post("/api/spawn", { avatar: animal[currentIndex], lobbyCode: code }).then(() => navigate("/game"));
+    });
+
     return () => {
+      socket.off("newPlayer");
+      socket.off("updateAvatar");
       socket.off("updateReadiness");
     };
   }, []);
@@ -47,7 +59,7 @@ const LobbyM = () => {
 
   // TEMP
   useEffect(() => {
-    console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
+    // console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
   }, [lobbyPlayers]);
 
   // load in sprites
@@ -69,6 +81,21 @@ const LobbyM = () => {
     avatarPlayer(animal[currentIndex]);
   };
 
+
+  const handlePlay = () => {
+    prepLobbyGame();
+  }
+  let playButton = null;
+  if (lobbyPlayers[userId]) {
+    playButton = (
+      <div>
+          <button className={readyPlayers === Object.keys(lobbyPlayers).length ? "Lobby-ready" : "Lobby-not-ready"} onClick={ handlePlay }>
+            {readyPlayers === Object.keys(lobbyPlayers).length ? 'Play!' : 'Waiting...'}
+          </button>
+      </div>
+    );
+  }
+
   const handleReady = () => {
     if (lobbyPlayers[userId].ready) {
       readyPlayer(false);
@@ -87,32 +114,6 @@ const LobbyM = () => {
     );
   }
 
-  const handlePlay = () => {
-    post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
-        navigate("/game")
-    );
-  }
-
-  // let lobbyPlayers = [];
-  // for (let i = 0; i < names.length; i++) {
-  //   lobbyPlayers.push(
-  //     <div key={i}>
-  //       <div className="character-selection">
-  //         <h2>{names[i]}</h2>
-  //         <div className="character-selection-options">
-  //           <div className="character-container">
-  //             <img
-  //               src={sprites[currentIndex].src}
-  //               style={{ width: "275px", height: "auto" }}
-  //             />
-  //           </div>
-  //         </div>
-  //         <h2><i>{animal[currentIndex]}</i></h2>
-  //         <h2>{readiness[i]}</h2>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="Background">
@@ -133,14 +134,27 @@ const LobbyM = () => {
                       </div>
                       <button className="right-button" onClick={handleNext}></button>
                   </div>}
+                  {!isCurrentPlayer && <div className="character-selection-options">
+                      <div className="character-container">
+                          <img src={`/${avatar}left.png`}
+                          style={{width:"275px", height:"auto"}}/>
+                      </div>
+                  </div>}
                   {isCurrentPlayer && <h2><i>{animal[currentIndex]}</i></h2>}
                   {!isCurrentPlayer && <h2><i>{avatar}</i></h2>}
-                  <h2>{ready}</h2>
+                  {isCurrentPlayer && readyButton}
+                  {!isCurrentPlayer &&
+                    <div>
+                        <button className={ready ? "Lobby-ready" : "Lobby-not-ready"}>
+                          {ready ? 'Ready!' : 'Not Ready'}
+                        </button>
+                    </div>
+                  }
               </div>
             );
           })}
         </div>
-        {readyButton}
+        {readyPlayers === Object.keys(lobbyPlayers).length && playButton}
       </div>
     </div>
   );

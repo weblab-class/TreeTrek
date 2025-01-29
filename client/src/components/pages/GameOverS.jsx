@@ -31,7 +31,7 @@ const GameOverS = () => {
             return null; // Handle case where no lobby is found
         }
     
-        console.log("Lobby found (api.js):", lobby);
+        console.log("Lobby found (gameOver):", lobby);
         return lobby.code;
         } catch (error) {
         console.error("Error finding lobby:", error);
@@ -39,8 +39,9 @@ const GameOverS = () => {
     };
 
     const handlePlayAgain = async () => {
+        console.log("calling playagain");
         const lobbyCode = await findLobbyByPlayer(userId);
-        console.log("LobbyCode (gameover):" + lobbyCode);
+        console.log(lobbyCode);
         navigate(`/lobbys/${lobbyCode}`);
     };
 
@@ -64,7 +65,7 @@ const GameOverS = () => {
                     High Score: {highestGame}
                 </div>
 
-                <button onClick={() => handlePlayAgain}>
+                <button onClick={handlePlayAgain}>
                     Play Again
                 </button>
             </div>

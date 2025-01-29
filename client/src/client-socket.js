@@ -18,3 +18,7 @@ export const avatarPlayer = (avatar) => {
 export const readyPlayer = (ready) => {
   socket.emit("readyPlayer", ready);
 };
+
+export const prepLobbyGame = () => {
+  socket.emit("prepLobbyGame");
+};
