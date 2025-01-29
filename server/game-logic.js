@@ -126,6 +126,13 @@ const checkWin = () => {
 
 /** Check if player falls off branch */
 const checkGameOver = () => {
+  if (!gameState.multiplayer) {
+    for (let playerid in gameState.players) {
+      if (!gameState.players[playerid].alive) {
+        gameState.gameOver = true;
+      }
+    }
+  }
   return gameState.gameOver;
 };
 
