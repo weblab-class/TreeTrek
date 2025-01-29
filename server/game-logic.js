@@ -1,9 +1,6 @@
 /** constants */
 const ACORN_PROB = 0.2; // probability of acorn at any given branch
-const RIGHT_POS = 450; // position of right branch/player
-const LEFT_POS = 150; // position of left branch/player
 const VISIBLE_BRANCHES = 6; // number of visible branches onscreen at any given moment
-const BRANCH_SEP = 150; // distance between branches
 const avatars = ["cat", "beaver"];
 
 /** Utils! */
@@ -26,10 +23,11 @@ const computePlayersEatAcorns = () => {
 
 /** Game State */
 const gameState = {
+    multiplayer: false, // boolean for multiplayer
     winner: null, // multiplayer end game condition
     gameOver: false, // singleplayer end game condition
     players: {}, // dict of ids pointing to dictionary of position & avatar
-      // ex: {'13523': xPosition: "left", avatar: "beaver", index: branchIndex}, animation: 0}
+      // ex: {'13523': xPosition: "left", avatar: "beaver", index: branchIndex, alive: true, animation: 0}
     branches: [], // array of branch directions ex: ["right", "left", ...]
     acorns: [], // array of indices representing the branch index each acorn is on
     lowestBranchIndex: 0, // number of branches that have been popped for efficiency purposes
@@ -56,8 +54,12 @@ const spawnPlayer = (id) => {
     xPosition: gameState.branches[0],
     avatar: "cat", // idk how to find avatar for now
     index: 0,
+    alive: true,
     animation: 0,
   };
+  if (gameState.players.length == 2) {
+    gameState.multiplayer = true;
+  }
 };
 
 /** Adds acorns to the game state, initialized with random probability */
@@ -86,7 +88,7 @@ const movePlayer = (id, dir) => {
     gameState.players[id].xPosition = dir;
     gameState.players[id].animation = 1;
   } else if (dir === "right" || dir === "left") {
-    gameState.gameOver = true;
+    gameState.players[id].alive = false;
   }
 };
 
@@ -100,8 +102,20 @@ const updateAnimation = (pid, update) => {
 
 /** Check multiplayer win condition (only player left) */
 const checkWin = () => {
-  if (Object.keys(gameState.players).length == 1) {
-    gameState.winner = Object.keys(gameState.players);
+  if (gameState.multiplayer) {
+    let alivePlayers = 0;
+    let player = null;
+    for (let playerid in gameState.players) {
+      if (gameState.players[playerid].alive) {
+        alivePlayers += 1;
+        if (alivePlayers > 1) {
+          return false;
+        }
+        player = playerid;
+      }
+    }
+    gameState.winner = player;
+    gameState.gameOver = true;
     return true;
   }
 };
@@ -116,13 +130,15 @@ const updateGameState = (serverTime) => {
   gameState.time = serverTime;
   checkWin();
   checkGameOver();
-  //computePlayersEatAcorns();
 };
 
-/** Remove a player from the game state if they fall off a branch */
+/** Remove a player from the game state if they disconnect */
 const removePlayer = (id) => {
   if (gameState.players[id] != undefined) {
     delete gameState.players[id];
+    if (Object.keys(gameState.players).length == 1) {
+      gameState.multiplayer = false;
+    }
   }
 };
 
@@ -157,13 +173,6 @@ const resetGame = () => {
   gameState.branches = [];
   gameState.time = 0;
   spawnBranches();
-  // gameState = { // resets game state
-  //   winner: null,
-  //   gameOver: false,
-  //   players: {},
-  //   acorns: [],
-  //   lowestBranchIndex: 0
-  // };
 };
 
 module.exports = {

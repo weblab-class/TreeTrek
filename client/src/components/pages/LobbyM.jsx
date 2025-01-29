@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { get, post } from "../../utilities";
-import LobbyMWaitingRoom from './LobbyMWaitingRoom';
 import { useNavigate } from 'react-router-dom';
 
 const LobbyM = () => {
@@ -8,7 +7,6 @@ const LobbyM = () => {
   const navigate = useNavigate();
 
   const handleJoinLobby = async () => {
-    console.log("code: "+lobbyCode);
     await get(`/api/join-lobby/${lobbyCode}`);
     console.log(lobbyCode);
     navigate(`/lobbymwr/${lobbyCode}`);

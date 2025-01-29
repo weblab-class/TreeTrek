@@ -1,6 +1,7 @@
 const gameLogic = require("./game-logic");
 
 let io;
+let lobbies = {};
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
