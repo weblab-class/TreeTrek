@@ -9,7 +9,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: aliceblue;
+  background-color: #59814b;
   opacity: 0.8;
   border-radius: 15px;
 }
@@ -22,22 +22,32 @@
 
 .input-box {
   border-radius: 10px;
-  width: 300px;
+  width: 296px;
   height: 70px;
   text-align: center;
-  font-size: 20px;
+  font-size: 35px;
+  border-width: 4px;
+  border-color: #29457c;
+  font-family: "Micro 5", serif;
 }
 
 .lobby-container button {
   border-radius: 10px;
-  font-size: 30px;
+  color: #29457c;
+  font-size: 35px;
   width: 307px;
   padding: 25px;
   font-weight: bold;
   letter-spacing: 5px;
+  border-width: 4px;
+  border-color: #29457c;
+  background-color: aliceblue;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px #29457c;
 }
 
-.create-button {
+/* .create-button {
   padding: 5px;
   margin: 5px;
 }
@@ -45,4 +55,16 @@
 .join-button {
   padding: 5px;
   margin: 5px;
+} */
+
+/* When hovering, make it look pressed */
+.lobby-container button:hover {
+  transform: translateY(2px);
+  box-shadow: 0 2px #1d6a9d;
+}
+
+/* When clicking, make it press down more */
+.lobby-container button:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 #1d6a9d;
 }

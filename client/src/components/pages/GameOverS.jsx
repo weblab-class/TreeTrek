@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../modules/NavBar";
+import TwinklingStars from '../modules/TwinklingStars';
 
 import "../../utilities.css";
 import './GameOver.css';
@@ -21,6 +22,7 @@ const GameOverS = () => {
     return (
         <div>
             <NavBar />
+            <TwinklingStars />
             <div className = "GameOver">
                 <div className = "GameOver-title">
                     Game Over!

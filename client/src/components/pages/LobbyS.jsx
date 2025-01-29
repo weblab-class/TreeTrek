@@ -50,6 +50,9 @@ const LobbyS = () => {
             <NavBar />
             <div className="character-selection">
                 <h1>Character Selection</h1>
+                {/* <div className="decor">
+                    <img src = "/butterflygif.gif" alt="butterflygif"/>
+                </div> */}
                 <div className="character-selection-options">
                     <button className="left-button" onClick={handlePrevious}></button>
                     <div className="character-container">
