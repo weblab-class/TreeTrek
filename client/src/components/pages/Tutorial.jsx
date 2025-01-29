@@ -19,9 +19,9 @@ const Tutorial = () => {
                     <h3> Welcome to TreeTrek! </h3>
                     <p> Your goal is to climb as many branches as possible within the time limit. <br>
                     </br>To climb, press the right and left arrows on your keyboard. </p>
-                    <p> If the branch is on the same side as your character, press the arrow for that side to climb up. </p>
+                    <p> If the branch is on the same side as your character, press the arrow for that side to climb up (eg. press<i class="bi bi-caret-left"></i> to climb up). </p>
                     <img src="/sameBranches.png" alt="sameBranches" style={{width:"auto", height:"90px"}}></img>
-                    <p> Otherwise, click the other arrow to hop and climb onto a branch on the other side.</p>
+                    <p> Otherwise, click the other arrow to hop and climb onto a branch on the other side (eg. press<i class="bi bi-caret-left"></i>to climb left).</p>
                     <img src="/diffBranches.png" alt="diffBranches" style={{width:"auto", height:"90px"}}></img>
                     <p> Pressing the wrong arrow key will cause your character to fall, ending the game. The game also ends with the allocated time runs out.</p>
                     <p> Good luck and have fun! </p>

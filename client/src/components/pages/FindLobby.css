@@ -9,7 +9,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #59814b;
+  background-color: #00000077;
   opacity: 0.8;
   border-radius: 15px;
 }
@@ -25,37 +25,38 @@
   width: 296px;
   height: 70px;
   text-align: center;
-  font-size: 35px;
+  font-size: 40px;
   border-width: 4px;
   border-color: #29457c;
   font-family: "Micro 5", serif;
+  color: var(--primary--dim);
 }
 
 .lobby-container button {
   border-radius: 10px;
-  color: #29457c;
   font-size: 35px;
   width: 307px;
   padding: 25px;
   font-weight: bold;
   letter-spacing: 5px;
   border-width: 4px;
-  border-color: #29457c;
-  background-color: aliceblue;
   transition: all 0.1s ease-in-out;
   cursor: pointer;
-  box-shadow: 0 4px #29457c;
 }
 
-/* .create-button {
-  padding: 5px;
-  margin: 5px;
+.create-button {
+  color: white;
+  border-color: #8cd6ff;
+  background-color: #000000a8;
+  box-shadow: 0 4px #000000;
 }
 
 .join-button {
-  padding: 5px;
-  margin: 5px;
-} */
+  color: var(--primary);
+  border-color: #29457c;
+  background-color: aliceblue;
+  box-shadow: 0 4px #000000;
+}
 
 /* When hovering, make it look pressed */
 .lobby-container button:hover {

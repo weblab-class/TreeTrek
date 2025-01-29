@@ -19,7 +19,7 @@ const NavBar = () => {
 
         } catch (error) {
             console.error("Error deleting lobby:", error);
-        }
+        };
     };
 
     const handleNavigation = async (path) => {
@@ -44,7 +44,7 @@ const NavBar = () => {
                 >
                 Logout
                 </button>
-            )}
+            )};
         </div>
     );
 };
