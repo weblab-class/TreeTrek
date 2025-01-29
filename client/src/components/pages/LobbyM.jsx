@@ -59,7 +59,7 @@ const LobbyM = () => {
 
   // TEMP
   useEffect(() => {
-    console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
+    // console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
   }, [lobbyPlayers]);
 
   // load in sprites

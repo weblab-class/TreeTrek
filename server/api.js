@@ -57,11 +57,11 @@ const findLobbyByPlayer = async (playerId) => {
     const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
 
     if (!lobby) {
-      console.log("Lobby not found for player:", playerId);
+      // console.log("Lobby not found for player:", playerId);
       return null; // Handle case where no lobby is found
     }
 
-    console.log("Lobby found (api.js):", lobby);
+    // console.log("Lobby found (api.js):", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
@@ -96,18 +96,7 @@ router.post("/spawn", (req, res) => {
   res.send(true);
 });
 
-// router.post("/despawn", async (req, res) => {
-//   if (req.user) {
-//     const lobbyCode = await findLobbyByPlayer(req.user.googleid);
-//     if (lobbyCode != null) {
-//       socketManager.removeUserFromGame(req.user, lobbyCode);
-//     }
-//   }
-//   res.send({});
-// });
-
-router.post("/newlobby", (req, res) => { // only called in singleplayer??
-  console.log("what api newlobby");
+router.post("/newlobby", (req, res) => {
   socketManager.newLobby(req.user.googleid, req.body.lobbyCode);
   res.send({});
 })
@@ -165,7 +154,6 @@ router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
   const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], names: [req.user.name], readiness: [false] });
   await lobby.save();
-  console.log("woah crealobby api");
   socketManager.newLobby(req.user.googleid, lobbyId);
   res.json({ lobbyId });
 });
@@ -182,6 +170,38 @@ router.get('/joinlobby/:code', async (req, res) => {
     res.send({});
   } else {
     res.status(404).send({});
+  }
+});
+
+// Delete a lobby
+router.post("/leavelobby/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    console.log("attempting to leaveLobby");
+    const lobby = await Lobby.findOne({ players: { $in: [userId] } });
+    console.log("found lobby (LL-API): " + lobby);
+    if (!lobby) {
+        return res.status(404).json({ message: "Lobby not found for player" });
+    }
+    // findLobbyByPlayer(userId).then((code) => Lobby.deleteOne({code: code}));
+    // Remove the player from the lobby
+    await Lobby.findOneAndUpdate(
+        { code: lobby.code },
+        { $pull: { players: userId } },
+        { new: true }
+    );
+    // If the lobby is empty after removal, delete it
+    const updatedLobby = await Lobby.findOne({ code: lobby.code });
+    console.log("updated lobby (LL-API): " + updatedLobby);
+    if (updatedLobby.players.length === 0) {
+        await Lobby.deleteOne({ code: lobby.code });
+        console.log("Lobby deleted because it was empty");
+    }
+
+    console.log("Player removed from lobby");
+  } catch (error) {
+      console.error("Error deleting lobby:", error);
+      // res.status(500).json({ message: "Server error" });
   }
 });
 

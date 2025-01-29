@@ -17,11 +17,11 @@ const initGame = async (lobbyCode) => {
     const lobby = await Lobby.findOne({ code: lobbyCode });
 
     if (!lobby) {
-      console.log('Lobby not found');
+      // console.log('Lobby not found');
       return null; // Handle case where lobby doesn't exist
     }
 
-    console.log('Lobby initialized:', lobby);
+    // console.log('Lobby initialized:', lobby);
     lobbies[lobbyCode] = new GameLogic();
   } catch (error) {
     console.error('Error finding lobby:', error);
@@ -34,11 +34,11 @@ const findLobbyByPlayer = async (playerId) => {
     const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
 
     if (!lobby) {
-      console.log("Lobby not found for player:", playerId);
+      // console.log("Lobby not found for player:", playerId);
       return null; // Handle case where no lobby is found
     }
 
-    console.log("Lobby found:", lobby);
+    // console.log("Lobby found:", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
@@ -93,7 +93,6 @@ const startGame = (userid, avatar, lobbyCode) => {
   console.log(lobbies);
   gameInstance = lobbies[lobbyCode];
   gameInstance.spawnPlayer(userid, avatar);
-  console.log("startGameAPI" + gameInstance);
   gameInstance.spawnBranches();
   runGame(lobbyCode);
 }
@@ -102,6 +101,11 @@ const resetGame = (lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
   gameInstance.resetGame();
 }
+
+// const addUserToGame = (user, avatar, lobbyCode) => {
+//   gameInstance = lobbies[lobbyCode];
+//   gameInstance.spawnPlayer(user.googleid, avatar);
+// };
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user.googleid];
@@ -119,8 +123,6 @@ const addUser = (user, socket) => {
 const removeUser = (user, socket, lobbyCode) => {
   if (user) {
     delete userToSocketMap[user.googleid];
-    console.log(lobbies);
-    console.log(lobbyCode);
     gameInstance = lobbies[lobbyCode];
     if (gameInstance) {
       gameInstance.removePlayer(user.googleid);
