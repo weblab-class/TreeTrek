@@ -6,8 +6,8 @@ import LoginPage from "./components/pages/LoginPage";
 import MainMenu from "./components/pages/MainMenu";
 import GlobalLeaderboard from "./components/pages/GlobalLeaderboard";
 import LobbyS from "./components/pages/LobbyS";
+import FindLobby from "./components/pages/FindLobby";
 import LobbyM from "./components/pages/LobbyM";
-import LobbyMWaitingRoom from "./components/pages/LobbyMWaitingRoom";
 import Game from "./components/pages/Game";
 import GameOverS from "./components/pages/GameOverS";
 import Tutorial from "./components/pages/Tutorial";
@@ -31,8 +31,8 @@ const router = createBrowserRouter(
       <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/leaderboard/" element={<GlobalLeaderboard />} />
       <Route path="/lobbys/" element={<LobbyS />} />
-      <Route path="/lobbym/" element={<LobbyM />} />
-      <Route path="/lobbymwr/:lobbyId" element={<LobbyMWaitingRoom />}/>
+      <Route path="/findlobby/" element={<FindLobby />} />
+      <Route path="/lobbym/:lobbyId" element={<LobbyM />}/>
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
       <Route path="/tutorial/" element={<Tutorial />} />
