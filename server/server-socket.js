@@ -1,7 +1,7 @@
-const gameLogic = require("./game-logic");
+const GameLogic = require("./game-logic");
 
 let io;
-let lobbies = {};
+let lobbies = {}; // dict mapping lobby code to gameLogic object
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
@@ -10,55 +10,80 @@ const getSocketFromUserID = (userid) => userToSocketMap[userid];
 const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
 const getSocketFromSocketID = (socketid) => io.sockets.sockets.get(socketid);
 
-const sendGameState = () => {
-  io.emit("update", gameLogic.gameState);
-  Object.keys(gameLogic.gameState.players).forEach((pid) => {
-    if (gameLogic.gameState.players[pid].animation == 5) {
-      gameLogic.updateAnimation(pid, 0);
+/** Initializes a gameLogic object from the given lobby code */
+const initGame = async (lobbyCode) => {
+  try {
+    const lobby = await Lobby.findOne({ code: lobbyCode });
+
+    if (!lobby) {
+      console.log('Lobby not found');
+      return null; // Handle case where lobby doesn't exist
     }
-    else if (gameLogic.gameState.players[pid].animation != 0) {
-      gameLogic.updateAnimation(pid, 1);
-    }
-});
+
+    console.log('Lobby found:', lobby);
+    lobbies[lobbyCode] = new GameLogic();
+  } catch (error) {
+    console.error('Error finding lobby:', error);
+  }
 };
 
-const runGame = () => {
+const sendGameState = (lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
+  io.emit("update", gameInstance.gameState);
+  Object.keys(gameInstance.gameState.players).forEach((pid) => {
+    if (gameInstance.gameState.players[pid].animation == 5) {
+      gameInstance.updateAnimation(pid, 0);
+    }
+    else if (gameInstance.gameState.players[pid].animation != 0) {
+      gameInstance.updateAnimation(pid, 1);
+    }
+  });
+};
+
+const runGame = (lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
   let time = 0; // time in ms
   const intervalID = setInterval(() => {
     //console.log("interval start time " + timesRun);
-    gameLogic.updateGameState(time);
-    sendGameState(); // sends to frontend game component
+    gameInstance.updateGameState(time);
+    sendGameState(lobbyCode); // sends to frontend game component
 
     time += 1000 / 60;
     //console.log("time " + timesRun);
-    if (gameLogic.gameState.gameOver || time >= 30 * 1000) {
+    if (gameInstance.gameState.gameOver || time >= 30 * 1000) {
       //console.log('its over');
-      gameLogic.gameState.gameOver = true;
-      sendGameState();
+      gameInstance.gameState.gameOver = true;
+      sendGameState(lobbyCode);
       clearInterval(intervalID);
     }
   }, 1000 / 60); // 60 frames per second
 }
 
-const newLobby = () => {
-  gameLogic.resetGame();
+const newLobby = (lobbyCode) => {
+  initGame(lobbyCode);
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.resetGame();
 }
 
-const startGame = () => {
-  gameLogic.spawnBranches();
-  runGame();
+const startGame = (lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.spawnBranches();
+  runGame(lobbyCode);
 }
 
-const resetGame = () => {
-  gameLogic.resetGame();
+const resetGame = (lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.resetGame();
 }
 
-const addUserToGame = (user, avatar) => {
-  gameLogic.spawnPlayer(user._id, avatar);
+const addUserToGame = (user, avatar, lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.spawnPlayer(user._id, avatar);
 };
 
-const removeUserFromGame = (user) => {
-  gameLogic.removePlayer(user._id);
+const removeUserFromGame = (user, lobbyCode) => {
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.removePlayer(user._id);
 };
 
 const addUser = (user, socket) => {
@@ -74,10 +99,10 @@ const addUser = (user, socket) => {
   socketToUserMap[socket.id] = user;
 };
 
-const removeUser = (user, socket) => {
+const removeUser = (user, socket, lobbyCode) => {
   if (user) {
     delete userToSocketMap[user._id];
-    removeUserFromGame(user); // Remove user from game if they disconnect
+    removeUserFromGame(user, lobbyCode); // Remove user from game if they disconnect
   }
   delete socketToUserMap[socket.id];
 };

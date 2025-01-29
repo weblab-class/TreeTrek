@@ -23,9 +23,6 @@ const router = express.Router();
 // initialize socket
 const socketManager = require("./server-socket");
 
-// import random ID generator library
-const uuid = require('uuid');
-
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
@@ -37,10 +34,28 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
+// ** Helper function to find lobbyCode provided a user */
+const findLobbyByPlayer = async (playerId) => {
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
+
+    if (!lobby) {
+      console.log("Lobby not found for player:", playerId);
+      return null; // Handle case where no lobby is found
+    }
+
+    console.log("Lobby found:", lobby);
+    return lobby.code;
+  } catch (error) {
+    console.error("Error finding lobby:", error);
+  }
+};
+
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user)
+  if (req.user) {
     socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  }
   res.send({});
 });
 
@@ -59,14 +74,20 @@ router.get("/leaderboard", async (req, res) => {
 
 router.post("/spawn", (req, res) => {
   if (req.user) {
-    socketManager.addUserToGame(req.user, req.body.avatar);
+    const lobbyCode = findLobbyByPlayer(req.user._id);
+    if (lobbyCode != null) {
+      socketManager.addUserToGame(req.user, req.body.avatar, lobbyCode);
+    }
   }
-  res.send({});
+  res.send(true);
 });
 
 router.post("/despawn", (req, res) => {
   if (req.user) {
-    socketManager.removeUserFromGame(req.user);
+    const lobbyCode = findLobbyByPlayer(req.user._id);
+    if (lobbyCode != null) {
+      socketManager.removeUserFromGame(req.user, lobbyCode);
+    }
   }
   res.send({});
 });
@@ -77,7 +98,12 @@ router.post("/newlobby", (req, res) => {
 })
 
 router.post("/newgame", (req, res) => {
-  socketManager.startGame();
+  if (req.user) {
+    const lobbyCode = findLobbyByPlayer(req.user._id);
+    if (lobbyCode != null) {
+      socketManager.startGame(lobbyCode);
+    }
+  }
   res.send({});
 })
 
@@ -121,32 +147,42 @@ const generateCode = () => {
 };
 
 // Create a new lobby
-router.post('/createlobby', async (req, res) => {
+router.post('/create-lobby', async (req, res) => {
   const lobbyId = generateCode();
-  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  // const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  // console.log(lobby);
   await lobby.save();
   res.json({ lobbyId });
 });
 
 // Join a lobby
-router.get('/joinlobby/:code', async (req, res) => {
+router.get('/join-lobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
+  // console.log(lobby);
   if (!lobby) {
-    res.status(404).json({ error: 'Lobby not found' });
+    // res.status(404).json({ error: 'Lobby not found' });
     console.log('Lobby not found');
   } else {
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
-    console.log(lobby);
+    // console.log(lobby);
     res.send({});
   }
 });
 
-router.get("/lobbydata/:code", (req, res) => {
-  const code = req.params.code;
-  const lobby = Lobby.findOne({ code: code });
-});
+router.post("/spriteselect", (req, res) => {
+  User.updateOne({ googleid: req.user.googleid }, {
+    $set: {sprite: req.body.sprite}
+  }).then(res.send({}));
+})
+
+router.get("/spriteselect", (req, res) => {
+  User.findOne({ googleid: req.user.googleid }).then((userDB) => {
+    res.send({ sprite: userDB.sprite });
+  })
+})
+
 
 
 // anything else falls to this "not found" case
