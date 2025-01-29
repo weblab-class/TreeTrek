@@ -24,9 +24,9 @@ const MainMenu = () => {
       <MovingClouds/>
       <h1>Main Menu</h1>
       <div className="MainMenu-options">
-        <button onClick={() => navigate("/findlobby")} className="multiplayer-button">
+        {/* <button onClick={() => navigate("/findlobby")} className="multiplayer-button">
           <img src="/multiplayerButton.png" alt="Multiplayer" style={{width:"235px", height:"auto"}}/>
-        </button>
+        </button> */}
         <button onClick={() => handleCreateLobby()} className="singleplayer-button">
           <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"340px", height:"auto"}}/>
         </button>

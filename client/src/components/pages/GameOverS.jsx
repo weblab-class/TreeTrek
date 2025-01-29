@@ -21,12 +21,14 @@ const GameOverS = () => {
         })
     }, []);
 
-    const handlePlayAgain = async () => {
+    const handlePlayAgain = () => {
         get(`api/findlobby/${userId}`).then((data) => {
-            console.log(lobbyCode);
-            if (lobbyCode != null) {
-                navigate(`/lobbys/${lobbyCode}`);
+            console.log(data.lobbyCode);
+            if (data.lobbyCode != null) {
+                navigate(`/lobbys/${data.lobbyCode}`);
             }
+        }).catch(error => {
+            console.error("Error fetching lobby:", error);
         });
     };
 
