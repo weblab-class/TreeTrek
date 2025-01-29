@@ -1,18 +1,15 @@
-.NavBar-container {
-  padding: var(--s) var(--m);
-  background-color: var(--primary);
-}
-
 .NavBar-title {
   color: var(--primary);
   font-size: 50px;
   letter-spacing: 10px;
   position: absolute;
-  top: 8px;
+  top: 14px;
   left: 16px;
   background: none;
   border: none;
   cursor: pointer;
+  font-weight: bold;
+  animation: colorChange 2s infinite alternate;
 }
 
 .logout-button {
@@ -20,7 +17,7 @@
   border: none;
   cursor: pointer;
   position: absolute;
-  top: 8px;
+  top: 14px;
   right: 16px;
   font-size: 50px;
   letter-spacing: 10px;

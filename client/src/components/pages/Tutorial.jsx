@@ -1,5 +1,6 @@
 import React from 'react'
 import NavBar from "../modules/NavBar";
+import TwinklingStars from '../modules/TwinklingStars';
 import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
@@ -11,6 +12,7 @@ const Tutorial = () => {
     return (
         <div>
             <NavBar/>
+            <TwinklingStars/>
             <div className="Tutorial">
                 <h1>Tutorial</h1>
                 <div className="Tutorial-text">

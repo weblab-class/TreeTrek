@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { get, post } from "../../utilities";
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../modules/NavBar";
+import "./FindLobby.css";
+
 
 const FindLobby = () => {
   const [lobbyCode, setLobbyCode] = useState('');
@@ -23,19 +26,23 @@ const FindLobby = () => {
 
   return (
     <div>
-      <h2>Lobby Page</h2>
-      <button onClick={handleJoinLobby}>
-        Join Lobby
-      </button>
-      <input
-        type="text"
-        value={lobbyCode}
-        onChange={(e) => setLobbyCode(e.target.value)}
-        placeholder="Enter lobby code"
-      />
-      <button onClick={handleCreateLobby}>
-        Create Lobby
-      </button>
+      <Navbar />
+      <div className = "lobby-container">
+        {/* <h2>Lobby Page</h2> */}
+        <button onClick={handleCreateLobby}className = "create-button">
+          Create Lobby
+        </button>
+        <input
+          type="text"
+          value={lobbyCode}
+          onChange={(e) => setLobbyCode(e.target.value)}
+          placeholder="enter lobby code"
+          className="input-box"
+        />
+        <button onClick={handleJoinLobby} className = "join-button">
+          Join Lobby
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,65 +1,76 @@
+/* @keyframes glitch {
+  0% {
+    transform: translateY(0);
+    text-shadow: 2px 2px #ea920f, -2px -2px #ffee55;
+  }
+  20% {
+    transform: translateY(-3px);
+    text-shadow: -2px 2px #ea920f, 2px -2px #ffee55;
+  }
+  40% {
+    transform: translateY(2px);
+    text-shadow: 2px -2px #ea920f, -2px 2px #ffee55;
+  }
+  60% {
+    transform: translateY(-1px);
+    text-shadow: -2px -2px #ea920f, 2px 2px #ffee55;
+  }
+  80% {
+    transform: translateY(3px);
+    text-shadow: 3px -3px #ea920f, -3px 3px #ffee55;
+  }
+  100% {
+    transform: translateY(0);
+    text-shadow: 2px 2px #ea920f, -2px -2px #ffee55;
+  }
+} */
+
 .MainMenu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*flex-direction: column;
-  align-items: center;
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
 }
 
 .MainMenu h1 {
   color: var(--primary);
   font-size: 90px;
   letter-spacing: 10px;
-  margin-bottom: 15px;
-  text-align: center;
-  position: absolute;
-  top: 19%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 100px;
+  margin-bottom: 50px;
+  text-shadow: -3px -3px var(--primary--dim);
+  /* animation: glitch 3s infinite; */
 }
-/* }
+
 .MainMenu-options {
-  /* display: flex;
-  flex-direction: row; /* Ensure buttons are in one column */
-/*align-items: center; */
-/* position: relative;
   display: flex;
-  align-items: center;
-  gap: 50px; Space between buttons 
-} */
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 250px;
+  width: 100%;
+
+  margin-top: -30px;
+}
 
 .MainMenu-options button {
   background: none;
   border: none;
   cursor: pointer;
   transition: 0.3s ease-in-out;
+  z-index: 1;
 }
 
 .singleplayer-button {
-  color: var(--primary);
-  position: relative;
-  top: 205px;
-  left: 235px;
+  align-self: start;
 }
 
 .multiplayer-button {
-  color: var(--primary);
-  position: relative;
-  top: 310px;
-  left: -197px;
+  align-self: end;
 }
 
 .leaderboard-button {
-  color: var(--primary);
-  position: relative;
-  top: 310px;
-  right: 48px;
+  align-self: end;
 }
-
 .tutorial-button {
   color: var(--primary);
   position: fixed;
