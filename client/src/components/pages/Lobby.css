@@ -1,33 +1,55 @@
-.character-selection {
+.Background {
   background-image: url("../../waitingbg.jpg");
   background-size: cover;
   background-position: center;
   height: 100%;
   width: 100%;
   position: absolute;
-  text-align: center;
 }
 
-.character-selection h1 {
-  position: absolute;
-  top: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--primary);
-  font-size: 70px;
-}
-
-.character-selection-options {
+.Lobby {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.Lobby-players {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.Lobby h1 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 90px;
+}
+
+.character-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.character-selection h2 {
+  margin: 0;
+  color: white;
+  font-size: 36px;
+  font-weight: normal;
+}
+
+.character-selection-options {
   display: flex;
   flex: row;
   align-items: center;
   gap: 20px;
-  /* justify-content: space-evenly; */
-  /* row-gap: 300px; */
 }
 
 .character-selection .character-container {
@@ -82,10 +104,6 @@
 }
 
 .Lobby-play {
-  position: absolute;
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 40px;
   padding: 20px 40px;
   background-color: var(--primary);
@@ -98,5 +116,4 @@
 
 .Lobby-play:hover {
   background-color: var(--primary--dim);
-  transform: rotate(10deg);
 }

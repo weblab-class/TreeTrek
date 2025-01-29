@@ -9,8 +9,14 @@ import './Lobby.css';
 
 const LobbyS = () => {
     const { userId } = useContext(UserContext);
+    const [userName, setUserName] = useState("player");
     let navigate = useNavigate();
 
+    useEffect(() => {
+        get("/api/whoami").then((res) => {
+            setUserName(res.name);
+        });
+    }, []);
     // load in sprites
     let sprites = [];
     const animal = ["bear", "bird", "chicken", "deer", "dog", "duck", "fox", "hedgehog", "horse", "lion", "mouse", "panda", "penguin", "rabbit", "skunk", "squirrel", "tiger", "tim"];
@@ -46,17 +52,21 @@ const LobbyS = () => {
     };
 
     return (
-        <div>
+        <div className="Background">
             <NavBar />
-            <div className="character-selection">
+            <div className="Lobby">
                 <h1>Character Selection</h1>
-                <div className="character-selection-options">
-                    <button className="left-button" onClick={handlePrevious}></button>
-                    <div className="character-container">
-                        <img src={sprites[currentIndex].src}
-                        style={{width:"275px", height:"auto"}}/>
+                <div className="character-selection">
+                    <h2>{userName}</h2>
+                    <div className="character-selection-options">
+                        <button className="left-button" onClick={handlePrevious}></button>
+                        <div className="character-container">
+                            <img src={sprites[currentIndex].src}
+                            style={{width:"275px", height:"auto"}}/>
+                        </div>
+                        <button className="right-button" onClick={handleNext}></button>
                     </div>
-                    <button className="right-button" onClick={handleNext}></button>
+                    <h2><i>{animal[currentIndex]}</i></h2>
                 </div>
                 {playButton}
             </div>

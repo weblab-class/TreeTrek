@@ -123,7 +123,7 @@ const generateCode = () => {
 // Create a new lobby
 router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
-  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], names: [req.user.name], readiness: [false] });
   await lobby.save();
   res.json({ lobbyId });
 });
@@ -134,6 +134,7 @@ router.get('/joinlobby/:code', async (req, res) => {
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
+    await Lobby.findByIdAndUpdate(lobby._id, { $push: { names: req.user.name } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
     res.send({});
   } else {
@@ -141,9 +142,14 @@ router.get('/joinlobby/:code', async (req, res) => {
   }
 });
 
-router.get("/lobbydata/:code", (req, res) => {
+router.get("/lobbydata/:code", async (req, res) => {
   const code = req.params.code;
-  const lobby = Lobby.findOne({ code: code });
+  const lobby = await Lobby.findOne({ code: code });
+  if (lobby) {
+    res.send({players: lobby.players, names: lobby.names, readiness: lobby.readiness});
+  } else {
+    res.status(404).send({});
+  }
 });
 
 

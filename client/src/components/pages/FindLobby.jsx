@@ -30,7 +30,7 @@ const FindLobby = () => {
       <input
         type="text"
         value={lobbyCode}
-        onChange={(e) => setLobbyCode(e.target.value)}
+        onChange={(e) => setLobbyCode(e.target.value.toUpperCase())}
         placeholder="Enter lobby code"
       />
       <button onClick={handleCreateLobby}>
