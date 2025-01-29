@@ -3,6 +3,7 @@ import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../App';
 
+import NavBar from "../modules/NavBar";
 import "../../utilities.css";
 import './Lobby.css';
 
@@ -40,19 +41,22 @@ const LobbyS = () => {
     
 
     return (
-        <div className="character-selection">
-            <h1>Character Selection</h1>
-            <div className="message-box"></div>
-            <div className="character-selection-options">
-                <button className="left-button" onClick={handlePrevious}></button>
-                <div className="character-container">
-                    <img src={sprites[currentIndex].src} 
-                    alt={sprites[currentIndex].name}
-                    style={{width:"275px", height:"auto"}}/>
+        <div>
+            <NavBar />
+            <div className="character-selection">
+                <h1>Character Selection</h1>
+                <div className="message-box"></div>
+                <div className="character-selection-options">
+                    <button className="left-button" onClick={handlePrevious}></button>
+                    <div className="character-container">
+                        <img src={sprites[currentIndex].src} 
+                        alt={sprites[currentIndex].name}
+                        style={{width:"275px", height:"auto"}}/>
+                    </div>
+                    <button className="right-button" onClick={handleNext}></button>
                 </div>
-                <button className="right-button" onClick={handleNext}></button>
+                {spawnButton}
             </div>
-            {spawnButton}
         </div>
     );
 };

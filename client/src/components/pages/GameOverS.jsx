@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../modules/NavBar";
 
 import "../../utilities.css";
 import './GameOver.css';
@@ -18,25 +19,28 @@ const GameOverS = () => {
     }, []);
 
     return (
-        <div className = "GameOver">
-            <div className = "GameOver-title">
-                Game Over!
-            </div>
-
-            {highestGame == lastGame &&
-                <div className = "GameOver-newHighScore">
-                new high score!
+        <div>
+            <NavBar />
+            <div className = "GameOver">
+                <div className = "GameOver-title">
+                    Game Over!
                 </div>
-            }
-            <div className = "GameOver-scores">
-                Score: {lastGame}
-                <br></br>
-                High Score: {highestGame}
-            </div>
 
-            <button onClick={() => navigate("/lobbys")}>
-                Play Again
-            </button>
+                {highestGame == lastGame &&
+                    <div className = "GameOver-newHighScore">
+                    new high score!
+                    </div>
+                }
+                <div className = "GameOver-scores">
+                    Score: {lastGame}
+                    <br></br>
+                    High Score: {highestGame}
+                </div>
+
+                <button onClick={() => navigate("/lobbys")}>
+                    Play Again
+                </button>
+            </div>
         </div>
     );
 };
