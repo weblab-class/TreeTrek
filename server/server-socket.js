@@ -83,6 +83,7 @@ const addUserToGame = (user, avatar, lobbyCode) => {
 
 const removeUserFromGame = (user, lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
+  console.log(gameInstance.gameLogic);
   gameInstance.removePlayer(user._id);
 };
 

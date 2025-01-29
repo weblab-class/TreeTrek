@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from "../modules/NavBar";
+import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 
 
@@ -11,7 +12,6 @@ const MainMenu = () => {
 
   const handleCreateLobby = async () => {
       const response = await post('/api/createlobby');
-      setLobbyCode(response.lobbyId);
       navigate(`/lobbys/${response.lobbyId}`);
   };
 
