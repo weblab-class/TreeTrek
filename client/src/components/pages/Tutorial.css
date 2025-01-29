@@ -12,6 +12,7 @@
   color: var(--primary);
   font-size: 70px;
   margin-bottom: 17px;
+  letter-spacing: 8px;
 }
 
 .Tutorial-text h3 {
@@ -43,12 +44,15 @@
 .Tutorial-text img {
   margin-top: -5px;
   border-radius: 20px;
+  background: none;
+  border: none;
 }
 
-.Tutorial-button {
+.mainMenu-button {
   background: none;
   border: none;
   margin-top: 5px;
+  transition: 0.3s ease-in-out;
 }
 
 .Tutorial button:hover {

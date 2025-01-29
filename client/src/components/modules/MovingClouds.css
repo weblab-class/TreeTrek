@@ -1,0 +1,51 @@
+/* Cloud container */
+.sky {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Cloud styling */
+.cloud {
+  position: absolute;
+  width: 150px;
+  opacity: 0.8;
+  z-index: -1;
+  animation: moveClouds linear infinite;
+}
+
+/* Different positions & sizes */
+.cloud1 {
+  top: 68%;
+  width: 180px;
+  animation-duration: 50s;
+}
+.cloud2 {
+  top: 59%;
+  width: 120px;
+  animation-duration: 32s;
+}
+.cloud3 {
+  top: 50%;
+  width: 200px;
+  animation-duration: 45s;
+}
+.cloud4 {
+  top: 65%;
+  width: 160px;
+  animation-duration: 37s;
+}
+
+/* Cloud animation */
+@keyframes moveClouds {
+  from {
+    left: -200px;
+  }
+  to {
+    left: 100vw;
+  }
+}
