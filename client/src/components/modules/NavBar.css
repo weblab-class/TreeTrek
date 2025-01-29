@@ -1,3 +1,7 @@
+.NavBar {
+  z-index: 1;
+}
+
 .NavBar-title {
   color: var(--primary);
   font-size: 50px;

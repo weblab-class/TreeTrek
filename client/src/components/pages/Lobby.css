@@ -2,6 +2,12 @@
   background-image: url("../../waitingbg.jpg");
   background-size: cover;
   background-position: center;
+  z-index: -1;
+}
+.character-selection {
+  /* background-image: url("../../waitingbg.jpg");
+  background-size: cover;
+  background-position: center; */
   height: 100%;
   width: 100%;
   position: absolute;
