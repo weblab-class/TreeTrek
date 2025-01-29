@@ -57,7 +57,7 @@ router.post("/spawn", (req, res) => {
   if (req.user) {
     socketManager.addUserToGame(req.user);
   }
-  res.send(true);
+  res.send({});
 });
 
 router.post("/despawn", (req, res) => {

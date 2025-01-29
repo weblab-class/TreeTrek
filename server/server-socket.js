@@ -53,7 +53,7 @@ const resetGame = () => {
 }
 
 const addUserToGame = (user) => {
-  gameLogic.spawnPlayer(user._id);
+  gameLogic.spawnPlayer(user._id, user.avatar);
 };
 
 const removeUserFromGame = (user) => {

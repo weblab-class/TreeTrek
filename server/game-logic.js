@@ -51,13 +51,17 @@ const spawnBranches = () => {
 };
 
 /** Adds a player to the game state, initialized with position of 1st branch */
-const spawnPlayer = (id) => {
+const spawnPlayer = (id, avatar) => {
   gameState.players[id] = {
     xPosition: gameState.branches[0],
-    avatar: "tim", // idk how to find avatar for now
+    avatar: avatar,
     index: 0,
     animation: 0,
   };
+};
+
+const setAvatar = (id, avatar) => {
+  gameState.players[id].avatar = avatar;
 };
 
 /** Adds acorns to the game state, initialized with random probability */

@@ -28,6 +28,7 @@ function getOrCreateUser(user) {
       googleid: user.sub,
       highestGame: 0,
       lastGame: 0,
+      avatar: "bird",
     });
 
     return newUser.save();

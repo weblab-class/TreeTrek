@@ -1,6 +1,6 @@
 let canvas;
 
-let sprites = {
+const sprites = {
     leftBranch: null,
     rightBranch: null,
     bearleft: null,
