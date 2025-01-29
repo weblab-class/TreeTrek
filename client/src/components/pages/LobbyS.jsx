@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect, } from "react";
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../App';
+import { useParams } from "react-router-dom";
 
 import NavBar from "../modules/NavBar";
 import "../../utilities.css";
 import './Lobby.css';
 
 const LobbyS = () => {
+    let props = useParams();
     const { userId } = useContext(UserContext);
     let navigate = useNavigate();
 
@@ -29,14 +31,14 @@ const LobbyS = () => {
     };
 
     const handlePlay = () => {
-        post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
+        post("/api/spawn", { avatar: animal[currentIndex], lobbyCode: props.lobbyId }).then(() =>
             navigate("/game")
         );
     }
     
     let playButton = null;
     if (userId) {
-        post("/api/newlobby");
+        post("/api/newlobby", { lobbyCode: props.lobbyId });
         playButton = (
             <div>
                 <button className="Lobby-play" onClick={ handlePlay }>

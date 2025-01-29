@@ -31,11 +31,11 @@ class GameLogic {
   /** Adds first (VISIBLE_BRANCHES + 1) branches to game state, with random directions */
   spawnBranches() {
     for (let index = 0; index < (VISIBLE_BRANCHES + 1); index++) {
-        if (Math.random() < 0.5) {
-            this.gameState.branches.push("right");
-        } else {
-            this.gameState.branches.push("left");
-        }
+      if (Math.random() < 0.5) {
+          this.gameState.branches.push("right");
+      } else {
+          this.gameState.branches.push("left");
+      }
     }
   }
   

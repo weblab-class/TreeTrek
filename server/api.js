@@ -34,7 +34,24 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
-// ** Helper function to find lobbyCode provided a user */
+/** Helper function to search for lobbyCode based on player_.id */
+router.get("/lobby/player/:playerId", async (req, res) => {
+  const { playerId } = req.params; // Extract playerId from URL
+
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
+
+    if (!lobby) {
+      return res.status(404).json({ message: "Lobby not found for player" });
+    }
+
+    res.json({ lobbyCode: lobby.code }); // Return only the lobby code
+  } catch (error) {
+    console.error("Error finding lobby:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 const findLobbyByPlayer = async (playerId) => {
   try {
     const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
@@ -44,7 +61,7 @@ const findLobbyByPlayer = async (playerId) => {
       return null; // Handle case where no lobby is found
     }
 
-    console.log("Lobby found:", lobby);
+    console.log("Lobby found (api.js):", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
@@ -73,18 +90,16 @@ router.get("/leaderboard", async (req, res) => {
 })
 
 router.post("/spawn", (req, res) => {
-  if (req.user) {
-    const lobbyCode = findLobbyByPlayer(req.user._id);
-    if (lobbyCode != null) {
-      socketManager.addUserToGame(req.user, req.body.avatar, lobbyCode);
-    }
+  console.log("spawn lobbyCode:" + req.body.lobbyCode);
+  if (req.user && req.body.lobbyCode) {
+      socketManager.addUserToGame(req.user, req.body.avatar, req.body.lobbyCode);
   }
   res.send(true);
 });
 
-router.post("/despawn", (req, res) => {
+router.post("/despawn", async (req, res) => {
   if (req.user) {
-    const lobbyCode = findLobbyByPlayer(req.user._id);
+    const lobbyCode = await findLobbyByPlayer(req.user._id);
     if (lobbyCode != null) {
       socketManager.removeUserFromGame(req.user, lobbyCode);
     }
@@ -93,13 +108,13 @@ router.post("/despawn", (req, res) => {
 });
 
 router.post("/newlobby", (req, res) => {
-  socketManager.newLobby();
+  socketManager.newLobby(req.body.lobbyCode);
   res.send({});
 })
 
-router.post("/newgame", (req, res) => {
+router.post("/newgame", async (req, res) => {
   if (req.user) {
-    const lobbyCode = findLobbyByPlayer(req.user._id);
+    const lobbyCode = await findLobbyByPlayer(req.user._id);
     if (lobbyCode != null) {
       socketManager.startGame(lobbyCode);
     }
@@ -118,7 +133,7 @@ router.post("/gameover", async (req, res) => {
   } else {
     let lowestLeader = await Leader.findOne().sort({highestGame: 1});
     if (lowestLeader.highestGame < higherBranch) {
-      console.log(lowestLeader);
+      console.log("gameOver lowestLeader:" + lowestLeader);
       await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
         $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
       })
@@ -149,7 +164,7 @@ const generateCode = () => {
 // Create a new lobby
 router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
-  const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
+  const lobby = new Lobby({ code: lobbyId, players: [req.user._id], readiness: [false] });
   // console.log(lobby);
   await lobby.save();
   res.json({ lobbyId });
@@ -160,26 +175,13 @@ router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
-    await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
+    await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user._id } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
     res.send({});
   } else {
     res.status(404).send({});
   }
 });
-
-router.post("/spriteselect", (req, res) => {
-  User.updateOne({ googleid: req.user.googleid }, {
-    $set: {sprite: req.body.sprite}
-  }).then(res.send({}));
-})
-
-router.get("/spriteselect", (req, res) => {
-  User.findOne({ googleid: req.user.googleid }).then((userDB) => {
-    res.send({ sprite: userDB.sprite });
-  })
-})
-
 
 
 // anything else falls to this "not found" case

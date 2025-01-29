@@ -1,7 +1,8 @@
 const GameLogic = require("./game-logic");
+const Lobby = require("./models/lobby");
 
 let io;
-let lobbies = {}; // dict mapping lobby code to gameLogic object
+let lobbies = {}; // dict mapping lobby code to GameLogic object
 
 const userToSocketMap = {}; // maps user ID to socket object
 const socketToUserMap = {}; // maps socket ID to user object
@@ -20,10 +21,27 @@ const initGame = async (lobbyCode) => {
       return null; // Handle case where lobby doesn't exist
     }
 
-    console.log('Lobby found:', lobby);
+    console.log('Lobby initialized:', lobby);
     lobbies[lobbyCode] = new GameLogic();
   } catch (error) {
     console.error('Error finding lobby:', error);
+  }
+};
+
+/** Helper function to search for lobbyCode based on player_.id */
+const findLobbyByPlayer = async (playerId) => {
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
+
+    if (!lobby) {
+      console.log("Lobby not found for player:", playerId);
+      return null; // Handle case where no lobby is found
+    }
+
+    console.log("Lobby found:", lobby);
+    return lobby.code;
+  } catch (error) {
+    console.error("Error finding lobby:", error);
   }
 };
 
@@ -59,14 +77,18 @@ const runGame = (lobbyCode) => {
   }, 1000 / 60); // 60 frames per second
 }
 
-const newLobby = (lobbyCode) => {
-  initGame(lobbyCode);
+const newLobby = async (lobbyCode) => {
+  await initGame(lobbyCode);
   gameInstance = lobbies[lobbyCode];
+  console.log("newLobby (server-socket): " + gameInstance);
   gameInstance.resetGame();
 }
 
 const startGame = (lobbyCode) => {
+  console.log("Lobbies: " + lobbies);
+  console.log("LobbyCode:" + lobbyCode);
   gameInstance = lobbies[lobbyCode];
+  console.log("startGameAPI" + gameInstance);
   gameInstance.spawnBranches();
   runGame(lobbyCode);
 }
@@ -83,7 +105,8 @@ const addUserToGame = (user, avatar, lobbyCode) => {
 
 const removeUserFromGame = (user, lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
-  console.log(gameInstance.gameLogic);
+  console.log("removeUserFromGame lobbies (server-socket): " + lobbies);
+  console.log("removeUserFromGame (server-socket): " + gameInstance.gameState);
   gameInstance.removePlayer(user._id);
 };
 
@@ -118,10 +141,15 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         removeUser(user, socket);
       });
-      socket.on("move", (dir) => {
+      socket.on("move", async (dir) => {
         // Listen for moves from client and move player accordingly
         const user = getUserFromSocketID(socket.id);
-        if (user) gameLogic.movePlayer(user._id, dir);
+        if (user) {
+          const lobbyCode = await findLobbyByPlayer(user._id);
+          console.log("lobbies (SS exports): " + lobbies);
+          gameInstance = lobbies[lobbyCode];
+          gameInstance.movePlayer(user._id, dir);
+        }
       });
     });
   },
