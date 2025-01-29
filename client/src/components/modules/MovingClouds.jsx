@@ -3,7 +3,6 @@ import react from "react";
 import "../../utilities.css";
 import "./MovingClouds.css";
 
-
 const MovingClouds = () => {
     return (
         <div className="sky">

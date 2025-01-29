@@ -1,15 +1,13 @@
-/* Star container for the upper half */
 .sky {
   position: fixed;
   width: 100vw;
-  height: 10vh; /* Only in upper half */
+  height: 10vh;
   top: 0;
   left: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
-/* Stars */
 .star {
   position: absolute;
   width: 5px;
@@ -20,7 +18,6 @@
   animation: twinkle 1.5s infinite alternate ease-in-out;
 }
 
-/* Twinkling animation */
 @keyframes twinkle {
   0% {
     opacity: 0.3;
@@ -36,7 +33,6 @@
   }
 }
 
-/* Randomly position the stars in the upper half */
 .star:nth-child(1) {
   top: 10%;
   left: 20%;

@@ -13,8 +13,8 @@ const MainMenu = () => {
   let navigate = useNavigate();
 
   const handleCreateLobby = async () => {
-      const response = await post('/api/createlobby');
-      navigate(`/lobbys/${response.lobbyId}`);
+    const response = await post('/api/createlobby');
+    navigate(`/lobbys/${response.lobbyId}`);
   };
 
   return (
@@ -24,11 +24,11 @@ const MainMenu = () => {
       <MovingClouds/>
       <h1>Main Menu</h1>
       <div className="MainMenu-options">
-        <button onClick={() => handleCreateLobby()} className="singleplayer-button">
-          <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"340px", height:"auto"}}/>
-        </button>
         <button onClick={() => navigate("/findlobby")} className="multiplayer-button">
           <img src="/multiplayerButton.png" alt="Multiplayer" style={{width:"235px", height:"auto"}}/>
+        </button>
+        <button onClick={() => handleCreateLobby()} className="singleplayer-button">
+          <img src="/singleplayerButton.png" alt="SinglePlayer" style={{width:"340px", height:"auto"}}/>
         </button>
         <button onClick={() => navigate("/leaderboard")} className="leaderboard-button">
           <img src="/leaderboardButton.png" alt="Leaderboard" style={{width:"235px", height:"auto"}}/>

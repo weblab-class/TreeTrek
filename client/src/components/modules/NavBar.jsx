@@ -6,7 +6,6 @@ import "../../utilities.css";
 import "./NavBar.css"
 import { UserContext } from "../App";
 
-
 const NavBar = () => {
     const navigate = useNavigate();
     const { userId, handleLogout } = useContext(UserContext);
