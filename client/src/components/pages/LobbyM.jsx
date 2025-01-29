@@ -29,7 +29,7 @@ const LobbyM = () => {
 
   useEffect(() => {
     socket.on("updateReadiness", ({id, ready}) => {
-      console.log(id + " " + ready);
+      // console.log(id + " " + ready);
       setLobbyPlayers((players) => ({ ...players, [id]: {...players[id], ready: ready} }));
     });
     return () => {
@@ -47,7 +47,7 @@ const LobbyM = () => {
 
   // TEMP
   useEffect(() => {
-    console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
+    // console.log(lobbyPlayers); // This will log every time lobbyPlayers is updated
   }, [lobbyPlayers]);
 
   // load in sprites

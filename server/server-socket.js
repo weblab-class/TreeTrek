@@ -17,11 +17,11 @@ const initGame = async (lobbyCode) => {
     const lobby = await Lobby.findOne({ code: lobbyCode });
 
     if (!lobby) {
-      console.log('Lobby not found');
+      // console.log('Lobby not found');
       return null; // Handle case where lobby doesn't exist
     }
 
-    console.log('Lobby initialized:', lobby);
+    // console.log('Lobby initialized:', lobby);
     lobbies[lobbyCode] = new GameLogic();
   } catch (error) {
     console.error('Error finding lobby:', error);
@@ -34,11 +34,11 @@ const findLobbyByPlayer = async (playerId) => {
     const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
 
     if (!lobby) {
-      console.log("Lobby not found for player:", playerId);
+      // console.log("Lobby not found for player:", playerId);
       return null; // Handle case where no lobby is found
     }
 
-    console.log("Lobby found:", lobby);
+    // console.log("Lobby found:", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
@@ -77,15 +77,12 @@ const runGame = (lobbyCode) => {
 const newLobby = async (lobbyCode) => {
   await initGame(lobbyCode);
   gameInstance = lobbies[lobbyCode];
-  console.log("newLobby (server-socket): " + gameInstance);
+  // console.log("newLobby (server-socket): " + gameInstance);
   gameInstance.resetGame();
 }
 
 const startGame = (lobbyCode) => {
-  console.log("Lobbies: " + lobbies);
-  console.log("LobbyCode:" + lobbyCode);
   gameInstance = lobbies[lobbyCode];
-  console.log("startGameAPI" + gameInstance);
   gameInstance.spawnBranches();
   runGame(lobbyCode);
 }
@@ -116,10 +113,7 @@ const addUser = (user, socket) => {
 const removeUser = (user, socket, lobbyCode) => {
   if (user) {
     delete userToSocketMap[user.googleid];
-    console.log(lobbies);
-    console.log(lobbyCode);
     gameInstance = lobbies[lobbyCode];
-    console.log(gameInstance);
     gameInstance.removePlayer(user.googleid);
     // removeUserFromGame(user, lobbyCode); // Remove user from game if they disconnect
   }
@@ -143,7 +137,6 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         if (user) {
           const lobbyCode = await findLobbyByPlayer(user.googleid);
-          console.log("lobbies (SS exports): " + lobbies);
           gameInstance = lobbies[lobbyCode];
           gameInstance.movePlayer(user.googleid, dir);
         }
@@ -154,7 +147,7 @@ module.exports = {
       });
       socket.on("readyPlayer", (ready) => {
         const user = getUserFromSocketID(socket.id);
-        console.log(user + " " + ready);
+        // console.log(user + " " + ready);
         if (user) socket.emit("updateReadiness", { id: user.googleid, ready: ready });
       });
     });
