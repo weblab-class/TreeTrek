@@ -21,28 +21,13 @@ const GameOverS = () => {
         })
     }, []);
 
-    /** Helper function to search for lobbyCode based on player_.id */
-    const findLobbyByPlayer = async (playerId) => {
-        try {
-        const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
-    
-        if (!lobby) {
-            console.log("Lobby not found for player:", playerId);
-            return null; // Handle case where no lobby is found
-        }
-    
-        console.log("Lobby found (gameOver):", lobby);
-        return lobby.code;
-        } catch (error) {
-        console.error("Error finding lobby:", error);
-        }
-    };
-
     const handlePlayAgain = async () => {
-        console.log("calling playagain");
-        const lobbyCode = await findLobbyByPlayer(userId);
-        console.log(lobbyCode);
-        navigate(`/lobbys/${lobbyCode}`);
+        get(`api/findlobby/${userId}`).then((data) => {
+            console.log(lobbyCode);
+            if (lobbyCode != null) {
+                navigate(`/lobbys/${lobbyCode}`);
+            }
+        });
     };
 
     return (
