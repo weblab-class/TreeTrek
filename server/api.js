@@ -23,9 +23,6 @@ const router = express.Router();
 // initialize socket
 const socketManager = require("./server-socket");
 
-// import random ID generator library
-const uuid = require('uuid');
-
 router.post("/login", auth.login);
 router.post("/logout", auth.logout);
 router.get("/whoami", (req, res) => {
@@ -37,10 +34,45 @@ router.get("/whoami", (req, res) => {
   res.send(req.user);
 });
 
+/** Helper function to search for lobbyCode based on player_.id */
+router.get("/lobby/player/:playerId", async (req, res) => {
+  const { playerId } = req.params; // Extract playerId from URL
+
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
+
+    if (!lobby) {
+      return res.status(404).json({ message: "Lobby not found for player" });
+    }
+
+    res.json({ lobbyCode: lobby.code }); // Return only the lobby code
+  } catch (error) {
+    console.error("Error finding lobby:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+const findLobbyByPlayer = async (playerId) => {
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [playerId] } });
+
+    if (!lobby) {
+      console.log("Lobby not found for player:", playerId);
+      return null; // Handle case where no lobby is found
+    }
+
+    console.log("Lobby found (api.js):", lobby);
+    return lobby.code;
+  } catch (error) {
+    console.error("Error finding lobby:", error);
+  }
+};
+
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
-  if (req.user)
+  if (req.user) {
     socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
+  }
   res.send({});
 });
 
@@ -58,26 +90,35 @@ router.get("/leaderboard", async (req, res) => {
 })
 
 router.post("/spawn", (req, res) => {
-  if (req.user) {
-    socketManager.addUserToGame(req.user, req.body.avatar);
+  console.log("spawn lobbyCode:" + req.body.lobbyCode);
+  if (req.user && req.body.lobbyCode) {
+      socketManager.addUserToGame(req.user, req.body.avatar, req.body.lobbyCode);
   }
-  res.send({});
+  res.send(true);
 });
 
-router.post("/despawn", (req, res) => {
+router.post("/despawn", async (req, res) => {
   if (req.user) {
-    socketManager.removeUserFromGame(req.user);
+    const lobbyCode = await findLobbyByPlayer(req.user._id);
+    if (lobbyCode != null) {
+      socketManager.removeUserFromGame(req.user, lobbyCode);
+    }
   }
   res.send({});
 });
 
 router.post("/newlobby", (req, res) => {
-  socketManager.newLobby();
+  socketManager.newLobby(req.body.lobbyCode);
   res.send({});
 })
 
-router.post("/newgame", (req, res) => {
-  socketManager.startGame();
+router.post("/newgame", async (req, res) => {
+  if (req.user) {
+    const lobbyCode = await findLobbyByPlayer(req.user._id);
+    if (lobbyCode != null) {
+      socketManager.startGame(lobbyCode);
+    }
+  }
   res.send({});
 })
 
@@ -92,7 +133,7 @@ router.post("/gameover", async (req, res) => {
   } else {
     let lowestLeader = await Leader.findOne().sort({highestGame: 1});
     if (lowestLeader.highestGame < higherBranch) {
-      console.log(lowestLeader);
+      console.log("gameOver lowestLeader:" + lowestLeader);
       await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
         $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
       })

@@ -12,7 +12,7 @@ const NavBar = () => {
     const { userId, handleLogout } = useContext(UserContext);
 
     return (
-        <nav className="NavBar">
+        <div className="NavBar">
             <button onClick ={() => navigate("/mainmenu")} className="NavBar-title">TreeTrek</button>          
             {userId && (
                 <button
@@ -26,7 +26,7 @@ const NavBar = () => {
                 Logout
                 </button>
             )}
-        </nav>
+        </div>
     );
 };
 

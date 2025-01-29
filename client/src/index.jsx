@@ -33,6 +33,7 @@ const router = createBrowserRouter(
       <Route path="/lobbys/" element={<LobbyS />} />
       <Route path="/findlobby/" element={<FindLobby />} />
       <Route path="/lobbym/:lobbyId" element={<LobbyM />}/>
+      <Route path="/lobbys/:lobbyId" element={<LobbyS />}/>
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
       <Route path="/tutorial/" element={<Tutorial />} />
