@@ -132,14 +132,12 @@ router.post('/createlobby', async (req, res) => {
 router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
-  if (!lobby) {
-    res.status(404).json({ error: 'Lobby not found' });
-    console.log('Lobby not found');
-  } else {
+  if (lobby) {
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
-    console.log(lobby);
     res.send({});
+  } else {
+    res.status(404).send({});
   }
 });
 
