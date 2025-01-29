@@ -28,15 +28,16 @@ const LobbyS = () => {
     };
 
     const handlePlay = () => {
-        post("/api/newlobby");
+        post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
+            navigate("/game")
+        );
     }
     let playButton = null;
     if (userId) {
         post("/api/newlobby");
-        post("/api/spawn");
         playButton = (
             <div>
-                <button className="Lobby-play" onClick={() => {navigate("/game"); }}>
+                <button className="Lobby-play" onClick={ handlePlay }>
                     Play!
                 </button>
             </div>
