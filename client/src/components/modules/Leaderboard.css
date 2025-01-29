@@ -55,5 +55,5 @@
   }
 
   .Leaderboard-item-current-player .score {
-    color: #3a9d23;
+    color: var(--green);
   }

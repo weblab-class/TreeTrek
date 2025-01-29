@@ -97,6 +97,15 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         if (user) gameLogic.movePlayer(user._id, dir);
       });
+      socket.on("avatarPlayer", (avatar) => {
+        const user = getUserFromSocketID(socket.id);
+        if (user) socket.emit("updateAvatar", { id: user.googleid, avatar: avatar });
+      });
+      socket.on("readyPlayer", (ready) => {
+        const user = getUserFromSocketID(socket.id);
+        console.log(user + " " + ready);
+        if (user) socket.emit("updateReadiness", { id: user.googleid, ready: ready });
+      });
     });
   },
 

@@ -5,7 +5,7 @@ import BranchCounter from "../modules/BranchCounter";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { drawCanvas, drawPlayer } from "../../canvasManager";
-import { handleInput } from "../../input";
+import { handleGameInput } from "../../input";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
@@ -23,11 +23,11 @@ const Game = () => {
 
   // add event listener on mount
   useEffect(() => {
-    window.addEventListener("keydown", handleInput);
+    window.addEventListener("keydown", handleGameInput);
 
     // remove event listener on unmount
     return () => {
-      window.removeEventListener("keydown", handleInput);
+      window.removeEventListener("keydown", handleGameInput);
     };
   }, []);
 

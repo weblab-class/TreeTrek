@@ -103,6 +103,26 @@
   background-color: #ffffffcc;
 }
 
+.Lobby-not-ready {
+  font-size: 40px;
+  padding: 20px 18px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.Lobby-ready {
+  font-size: 40px;
+  padding: 20px 40px;
+  background-color: var(--green);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .Lobby-play {
   font-size: 40px;
   padding: 20px 40px;
@@ -111,7 +131,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .Lobby-play:hover {
