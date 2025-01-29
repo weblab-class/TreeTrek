@@ -29,7 +29,7 @@ router.get("/whoami", (req, res) => {
   if (!req.user) {
     // not logged in
     return res.send({});
-  }
+  };
 
   res.send(req.user);
 });
@@ -43,13 +43,13 @@ router.get("/lobby/player/:playerId", async (req, res) => {
 
     if (!lobby) {
       return res.status(404).json({ message: "Lobby not found for player" });
-    }
+    };
 
     res.json({ lobbyCode: lobby.code }); // Return only the lobby code
   } catch (error) {
     console.error("Error finding lobby:", error);
     res.status(500).json({ message: "Server error" });
-  }
+  };
 });
 
 const findLobbyByPlayer = async (playerId) => {
@@ -59,20 +59,20 @@ const findLobbyByPlayer = async (playerId) => {
     if (!lobby) {
       // console.log("Lobby not found for player:", playerId);
       return null; // Handle case where no lobby is found
-    }
+    };
 
     // console.log("Lobby found (api.js):", lobby);
     return lobby.code;
   } catch (error) {
     console.error("Error finding lobby:", error);
-  }
+  };
 };
 
 router.post("/initsocket", (req, res) => {
   // do nothing if user not logged in
   if (req.user) {
     socketManager.addUser(req.user, socketManager.getSocketFromSocketID(req.body.socketid));
-  }
+  };
   res.send({});
 });
 
@@ -87,19 +87,19 @@ router.get("/leaderboard", async (req, res) => {
     leaders[leader.googleid] = {name: leader.name, highestGame: leader.highestGame};
   });
   res.send(leaders);
-})
+});
 
 router.post("/spawn", (req, res) => {
   if (req.user && req.body.lobbyCode) {
       socketManager.startGame(req.user.googleid, req.body.avatar, req.body.lobbyCode);
-  }
+  };
   res.send(true);
 });
 
 router.post("/newlobby", (req, res) => {
   socketManager.newLobby(req.user.googleid, req.body.lobbyCode);
   res.send({});
-})
+});
 
 router.post("/gameover", async (req, res) => {
   let userDB = await User.findOne({ googleid: req.user.googleid });
@@ -108,26 +108,26 @@ router.post("/gameover", async (req, res) => {
   if (await Leader.findOne({ googleid: req.user.googleid })) {
     await Leader.updateOne({ googleid: req.user.googleid }, {
       $set: {highestGame: higherBranch}
-    })
+    });
   } else {
     let lowestLeader = await Leader.findOne().sort({highestGame: 1});
     if (lowestLeader.highestGame < higherBranch) {
       await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
         $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
-      })
-    }
-  }
+      });
+    };
+  };
 
   User.updateOne({ googleid: req.user.googleid }, {
     $set: {highestGame: higherBranch, lastGame: req.body.gameBranch}
   }).then(res.send({}));
-})
+});
 
 router.get("/gameover", (req, res) => {
   User.findOne({ googleid: req.user.googleid }).then((userDB) => {
     res.send({ highestGame: userDB.highestGame, lastGame: userDB.lastGame });
-  })
-})
+  });
+});
 
 // Helper function to generate 4-letter lobby code
 const generateCode = () => {
@@ -135,7 +135,7 @@ const generateCode = () => {
   let code = '';
   for (let i = 0; i < 4; i++) {
     code += letters.charAt(Math.floor(Math.random() * letters.length));
-  }
+  };
   return code;
 };
 
@@ -160,7 +160,7 @@ router.get('/joinlobby/:code', async (req, res) => {
     res.send({});
   } else {
     res.status(404).send({});
-  }
+  };
 });
 
 // Delete a lobby
@@ -172,7 +172,7 @@ router.post("/leavelobby/:userId", async (req, res) => {
     console.log("found lobby (LL-API): " + lobby);
     if (!lobby) {
         return res.status(404).json({ message: "Lobby not found for player" });
-    }
+    };
     // findLobbyByPlayer(userId).then((code) => Lobby.deleteOne({code: code}));
     // Remove the player from the lobby
     await Lobby.findOneAndUpdate(
@@ -186,13 +186,13 @@ router.post("/leavelobby/:userId", async (req, res) => {
     if (updatedLobby.players.length === 0) {
         await Lobby.deleteOne({ code: lobby.code });
         console.log("Lobby deleted because it was empty");
-    }
+    };
 
     console.log("Player removed from lobby");
   } catch (error) {
       console.error("Error deleting lobby:", error);
       // res.status(500).json({ message: "Server error" });
-  }
+  };
 });
 
 router.get("/lobbydata/:code", async (req, res) => {
@@ -202,7 +202,7 @@ router.get("/lobbydata/:code", async (req, res) => {
     res.send({players: lobby.players, names: lobby.names, readiness: lobby.readiness});
   } else {
     res.status(404).send({});
-  }
+  };
 });
 
 

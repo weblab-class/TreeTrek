@@ -25,7 +25,7 @@ const LobbyS = () => {
     for (let i = 0; i < animal.length; i++) {
         sprites.push(new Image());
         sprites[i].src = `/${animal[i]}left.png`;
-    }
+    };
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const handleNext = () => {
@@ -40,7 +40,7 @@ const LobbyS = () => {
         post("/api/spawn", { avatar: animal[currentIndex], lobbyCode: props.lobbyId }).then(() =>
             navigate("/game")
         );
-    }
+    };
     
     let playButton = null;
     if (userId) {
@@ -55,7 +55,7 @@ const LobbyS = () => {
     };
 
     return (
-        <div className="Background">
+        <body className="Background">
             <NavBar />
             <div className="Lobby">
                 <h1>Character Selection</h1>
@@ -73,7 +73,7 @@ const LobbyS = () => {
                 </div>
                 {playButton}
             </div>
-        </div>
+        </body>
     );
 };
 

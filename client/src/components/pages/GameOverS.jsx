@@ -29,13 +29,13 @@ const GameOverS = () => {
         if (!lobby) {
             console.log("Lobby not found for player:", playerId);
             return null; // Handle case where no lobby is found
-        }
+        };
     
         console.log("Lobby found (gameOver):", lobby);
-        return lobby.code;
+        return lobby.code
         } catch (error) {
         console.error("Error finding lobby:", error);
-        }
+        };
     };
 
     const handlePlayAgain = async () => {

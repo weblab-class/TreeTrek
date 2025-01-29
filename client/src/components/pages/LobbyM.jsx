@@ -68,7 +68,7 @@ const LobbyM = () => {
   for (let i = 0; i < animal.length; i++) {
     sprites.push(new Image());
     sprites[i].src = `/${animal[i]}left.png`;
-  }
+  };
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const handleNext = () => {
@@ -84,7 +84,7 @@ const LobbyM = () => {
 
   const handlePlay = () => {
     prepLobbyGame();
-  }
+  };
   let playButton = null;
   if (lobbyPlayers[userId]) {
     playButton = (
@@ -94,15 +94,15 @@ const LobbyM = () => {
           </button>
       </div>
     );
-  }
+  };
 
   const handleReady = () => {
     if (lobbyPlayers[userId].ready) {
       readyPlayer(false);
     } else {
       readyPlayer(true);
-    }
-  }
+    };
+  };
   let readyButton = null;
   if (lobbyPlayers[userId]) {
     readyButton = (
@@ -112,11 +112,11 @@ const LobbyM = () => {
           </button>
       </div>
     );
-  }
+  };
 
 
   return (
-    <div className="Background">
+    <body className="Background">
       <NavBar />
       <div className="Lobby">
         <h1>Lobby ID: {props.lobbyId}</h1>
@@ -156,7 +156,7 @@ const LobbyM = () => {
         </div>
         {readyPlayers === Object.keys(lobbyPlayers).length && playButton}
       </div>
-    </div>
+    </body>
   );
 };
 

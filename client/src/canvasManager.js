@@ -75,7 +75,7 @@ const drawSprite = (
         context.drawImage(drawSprite, drawX, drawY, scaledWidth, scaledHeight);
     } else {
         console.error(`Sprite ${sprite} is not loaded yet.`);
-    }
+    };
 };
 
 /** drawing functions */
@@ -105,15 +105,15 @@ export const drawCanvas = (drawState, canvasRef, pid) => {
         for (let b = 0; b < 6; b++) {
             let player = drawState.players[pid];
             drawBranch(context, convertCoord((b + 0.5) * canvas.height / 7), drawState.branches[player.index + b]);
-        }
-    }
+        };
+    };
 };
 
 const animatedPlayerSpecs = (player, bottomIndex, branchSpacing) => {
     let specs = {
         y: (player.index - bottomIndex) * branchSpacing,
         scale: 0,
-    }
+    };
 
     if (player.animation <= 5) {
         specs.y += branchSpacing * 0.1 * player.animation;
@@ -121,10 +121,10 @@ const animatedPlayerSpecs = (player, bottomIndex, branchSpacing) => {
     } else { // shouldnt happen
         specs.y = 0;
         specs.scale = 0;
-    }
+    };
 
     return specs;
-}
+};
 
 export const drawPlayer = (player, canvasRef) => {
     // use canvas reference of canvas element to get reference to canvas object
@@ -139,7 +139,7 @@ export const drawPlayer = (player, canvasRef) => {
         x = canvas.width / 4;
     } else {
         x = 3 * canvas.width / 4;
-    }
+    };
     let { y, scale } = animatedPlayerSpecs(player, player.index, canvas.height / 7);
     drawSprite(context, x, convertCoord(0.9 * canvas.height / 7 + y), player.avatar + `${player.xPosition}`, 0.1 + scale, "center");
 };

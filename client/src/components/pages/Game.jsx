@@ -52,7 +52,7 @@ const Game = () => {
         //post("/api/despawn")
         navigate("/gameovers") // assuming singleplayer, directly go to gameover page
       );
-    }
+    };
     drawCanvas(update, canvasRef, userId);
     drawPlayer(update.players[userId], playerRef);
     // Object.values(update.players).forEach((player) => {
