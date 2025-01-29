@@ -7,14 +7,12 @@ const FindLobby = () => {
   const navigate = useNavigate();
 
   const handleJoinLobby = async () => {
-    await get(`/api/join-lobby/${lobbyCode}`);
-    console.log(lobbyCode);
+    await get(`/api/joinlobby/${lobbyCode}`);
     navigate(`/lobbym/${lobbyCode}`);
   };
 
   const handleCreateLobby = async () => {
-    const response = await post('/api/create-lobby');
-    console.log(response);
+    const response = await post('/api/createlobby');
     setLobbyCode(response.lobbyId);
     navigate(`/lobbym/${response.lobbyId}`);
   };

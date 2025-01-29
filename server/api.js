@@ -121,21 +121,19 @@ const generateCode = () => {
 };
 
 // Create a new lobby
-router.post('/create-lobby', async (req, res) => {
+router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
   const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], readiness: [false] });
-  console.log(lobby);
   await lobby.save();
   res.json({ lobbyId });
 });
 
 // Join a lobby
-router.get('/join-lobby/:code', async (req, res) => {
+router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
-  console.log(lobby);
   if (!lobby) {
-    // res.status(404).json({ error: 'Lobby not found' });
+    res.status(404).json({ error: 'Lobby not found' });
     console.log('Lobby not found');
   } else {
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
@@ -145,18 +143,10 @@ router.get('/join-lobby/:code', async (req, res) => {
   }
 });
 
-router.post("/spriteselect", (req, res) => {
-  User.updateOne({ googleid: req.user.googleid }, {
-    $set: {sprite: req.body.sprite}
-  }).then(res.send({}));
-})
-
-router.get("/spriteselect", (req, res) => {
-  User.findOne({ googleid: req.user.googleid }).then((userDB) => {
-    res.send({ sprite: userDB.sprite });
-  })
-})
-
+router.get("/lobbydata/:code", (req, res) => {
+  const code = req.params.code;
+  const lobby = Lobby.findOne({ code: code });
+});
 
 
 // anything else falls to this "not found" case
