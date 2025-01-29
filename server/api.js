@@ -89,9 +89,9 @@ router.get("/leaderboard", async (req, res) => {
   res.send(leaders);
 })
 
-router.post("/spawn", (req, res) => {
+router.post("/spawn", (req, res) => { //only called on play button click, try to delete?
   if (req.user && req.body.lobbyCode) {
-      socketManager.addUserToGame(req.user, req.body.avatar, req.body.lobbyCode);
+      socketManager.joinLobby(req.user.googleid, req.body.avatar, req.body.lobbyCode);
   }
   res.send(true);
 });
@@ -106,8 +106,9 @@ router.post("/spawn", (req, res) => {
 //   res.send({});
 // });
 
-router.post("/newlobby", (req, res) => {
-  socketManager.newLobby(req.body.lobbyCode);
+router.post("/newlobby", (req, res) => { // only called in singleplayer??
+  console.log("what api newlobby");
+  socketManager.newLobby(req.user.googleid, req.body.lobbyCode);
   res.send({});
 })
 
@@ -164,6 +165,8 @@ router.post('/createlobby', async (req, res) => {
   const lobbyId = generateCode();
   const lobby = new Lobby({ code: lobbyId, players: [req.user.googleid], names: [req.user.name], readiness: [false] });
   await lobby.save();
+  console.log("woah crealobby api");
+  socketManager.newLobby(req.user.googleid, lobbyId);
   res.json({ lobbyId });
 });
 
@@ -172,6 +175,7 @@ router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
+    socketManager.joinLobby(req.user, req.body.avatar, code);
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { names: req.user.name } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });

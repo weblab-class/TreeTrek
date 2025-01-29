@@ -74,17 +74,36 @@ const runGame = (lobbyCode) => {
   }, 1000 / 60); // 60 frames per second
 }
 
-const newLobby = async (lobbyCode) => {
+const newLobby = async (userid, lobbyCode) => {
+  console.log("hi newlobby serversocket");
+  let socket = getSocketFromUserID(userid);
+  console.log("code: " + lobbyCode);
+  console.log(socket);
+  console.log(userToSocketMap);
+  socket.join(lobbyCode);
+  socket.to(lobbyCode).emit('user joined', socket.id);
   await initGame(lobbyCode);
   gameInstance = lobbies[lobbyCode];
-  console.log("newLobby (server-socket): " + gameInstance);
   gameInstance.resetGame();
+}
+
+const joinLobby = (userid, avatar, lobbyCode) => {
+  console.log("hello joinlobby serversocket");
+  let socket = getSocketFromUserID(userid);
+  console.log("code: " + lobbyCode);
+  console.log(socket);
+  console.log(userToSocketMap);
+  socket.join(lobbyCode);
+  socket.to(lobbyCode).emit('user joined', socket.id);
+
+  gameInstance = lobbies[lobbyCode];
+  gameInstance.spawnPlayer(userid, avatar);
 }
 
 const startGame = (lobbyCode) => {
   console.log("Lobbies: " + lobbies);
   console.log("LobbyCode:" + lobbyCode);
-  gameInstance = lobbies[lobbyCode];
+  gameInstance = lobbies[lobbyCode]; // need let?
   console.log("startGameAPI" + gameInstance);
   gameInstance.spawnBranches();
   runGame(lobbyCode);
@@ -94,11 +113,6 @@ const resetGame = (lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
   gameInstance.resetGame();
 }
-
-const addUserToGame = (user, avatar, lobbyCode) => {
-  gameInstance = lobbies[lobbyCode];
-  gameInstance.spawnPlayer(user.googleid, avatar);
-};
 
 const addUser = (user, socket) => {
   const oldSocket = userToSocketMap[user.googleid];
@@ -133,17 +147,21 @@ module.exports = {
     io.on("connection", (socket) => {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
+        console.log(`socket has disconnected ${socket.id}`);
         const user = getUserFromSocketID(socket.id);
-        findLobbyByPlayer(user.googleid).then((code) =>removeUser(user, socket, code));
-        gameInstance.removePlayer(user.googleid);
-        findLobbyByPlayer(user.googleid).then((code) => Lobby.deleteOne({code: code}));
+        if (user) {
+          if (gameInstance) {
+            gameInstance.removePlayer(user.googleid);
+          }
+          findLobbyByPlayer(user.googleid).then((code) => removeUser(user, socket, code));
+          findLobbyByPlayer(user.googleid).then((code) => Lobby.deleteOne({code: code}));
+        }
       });
       socket.on("move", async (dir) => {
         // Listen for moves from client and move player accordingly
         const user = getUserFromSocketID(socket.id);
         if (user) {
           const lobbyCode = await findLobbyByPlayer(user.googleid);
-          console.log("lobbies (SS exports): " + lobbies);
           gameInstance = lobbies[lobbyCode];
           gameInstance.movePlayer(user.googleid, dir);
         }
@@ -152,10 +170,12 @@ module.exports = {
         const user = getUserFromSocketID(socket.id);
         if (user) socket.emit("updateAvatar", { id: user.googleid, avatar: avatar });
       });
-      socket.on("readyPlayer", (ready) => {
+      socket.on("readyPlayer", async (ready) => {
         const user = getUserFromSocketID(socket.id);
-        console.log(user + " " + ready);
-        if (user) socket.emit("updateReadiness", { id: user.googleid, ready: ready });
+        if (user) {
+          const lobbyCode = await findLobbyByPlayer(user.googleid);
+          io.to(lobbyCode).emit("updateReadiness", { id: user.googleid, ready: ready });
+        }
       });
     });
   },
@@ -166,7 +186,7 @@ module.exports = {
   getSocketFromUserID: getSocketFromUserID,
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
-  addUserToGame: addUserToGame,
+  joinLobby: joinLobby,
   // removeUserFromGame: removeUserFromGame,
   newLobby: newLobby,
   startGame: startGame,

@@ -22,6 +22,11 @@ const LobbyM = () => {
     socket.on("updateAvatar", ({id, avatar}) => {
       setLobbyPlayers((players) => ({ ...players, [id]: {...players[id], avatar: avatar} }));
     });
+
+    socket.on("user joined", (id) => {
+      console.log("YAY " + id);
+    });
+
     return () => {
       socket.off("updateAvatar");
     };
@@ -69,6 +74,14 @@ const LobbyM = () => {
     avatarPlayer(animal[currentIndex]);
   };
 
+
+  const handlePlay = () => {
+    post("/api/spawn", { avatar: animal[currentIndex] });
+    // post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
+    //     navigate("/game")
+    // );
+  }
+
   const handleReady = () => {
     if (lobbyPlayers[userId].ready) {
       readyPlayer(false);
@@ -80,39 +93,13 @@ const LobbyM = () => {
   if (lobbyPlayers[userId]) {
     readyButton = (
       <div>
-          <button className={lobbyPlayers[userId].ready ? "Lobby-ready" : "Lobby-not-ready"} onClick={ handleReady }>
+          <button className={lobbyPlayers[userId].ready ? "Lobby-ready" : "Lobby-not-ready"} onClick={ handlePlay }>
             {lobbyPlayers[userId].ready ? 'Ready!' : 'Not Ready'}
           </button>
       </div>
     );
   }
 
-  const handlePlay = () => {
-    post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
-        navigate("/game")
-    );
-  }
-
-  // let lobbyPlayers = [];
-  // for (let i = 0; i < names.length; i++) {
-  //   lobbyPlayers.push(
-  //     <div key={i}>
-  //       <div className="character-selection">
-  //         <h2>{names[i]}</h2>
-  //         <div className="character-selection-options">
-  //           <div className="character-container">
-  //             <img
-  //               src={sprites[currentIndex].src}
-  //               style={{ width: "275px", height: "auto" }}
-  //             />
-  //           </div>
-  //         </div>
-  //         <h2><i>{animal[currentIndex]}</i></h2>
-  //         <h2>{readiness[i]}</h2>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="Background">
