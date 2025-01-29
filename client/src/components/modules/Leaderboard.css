@@ -41,3 +41,19 @@
   .Leaderboard-item .score {
     color: #3a9d23;
   }
+
+  .Leaderboard-item-current-player {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 36px;
+    background-color: #ffd500cf;
+  }
+
+  .Leaderboard-item-current-player .player {
+    color: white;
+  }
+
+  .Leaderboard-item-current-player .score {
+    color: #3a9d23;
+  }

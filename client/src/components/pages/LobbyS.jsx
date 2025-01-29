@@ -11,11 +11,14 @@ const LobbyS = () => {
     const { userId } = useContext(UserContext);
     let navigate = useNavigate();
 
-    
-    const sprites = [
-        { name: 'cat', src: './cat.png' },
-        { name: 'beaver', src: './beaver.png' }
-    ];
+    // load in sprites
+    let sprites = [];
+    const animal = ["bear", "bird", "chicken", "deer", "dog", "duck", "fox", "hedgehog", "horse", "lion", "mouse", "panda", "penguin", "rabbit", "skunk", "squirrel", "tiger", "tim"];
+    for (let i = 0; i < animal.length; i++) {
+        sprites.push(new Image());
+        sprites[i].src = `/${animal[i]}left.png`;
+    }
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const handleNext = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % sprites.length);
@@ -25,38 +28,36 @@ const LobbyS = () => {
           (prevIndex - 1 + sprites.length) % sprites.length);
     };
 
-
-    let spawnButton = null;
+    const handlePlay = () => {
+        post("/api/spawn", { avatar: animal[currentIndex] }).then(() =>
+            navigate("/game")
+        );
+    }
+    let playButton = null;
     if (userId) {
         post("/api/newlobby");
-        post("/api/spawn");
-        spawnButton = (
+        playButton = (
             <div>
-                <button className="Lobby-spawn" onClick={() => {navigate("/game"); }}>
+                <button className="Lobby-play" onClick={ handlePlay }>
                     Play!
                 </button>
             </div>
         );
     };
-    
 
     return (
-        <div>
-            <NavBar />
-            <div className="character-selection">
-                <h1>Character Selection</h1>
-                <div className="message-box"></div>
-                <div className="character-selection-options">
-                    <button className="left-button" onClick={handlePrevious}></button>
-                    <div className="character-container">
-                        <img src={sprites[currentIndex].src} 
-                        alt={sprites[currentIndex].name}
-                        style={{width:"275px", height:"auto"}}/>
-                    </div>
-                    <button className="right-button" onClick={handleNext}></button>
+        <div className="character-selection">
+            <h1>Character Selection</h1>
+            <div className="message-box"></div>
+            <div className="character-selection-options">
+                <button className="left-button" onClick={handlePrevious}></button>
+                <div className="character-container">
+                    <img src={sprites[currentIndex].src}
+                    style={{width:"275px", height:"auto"}}/>
                 </div>
-                {spawnButton}
+                <button className="right-button" onClick={handleNext}></button>
             </div>
+            {playButton}
         </div>
     );
 };

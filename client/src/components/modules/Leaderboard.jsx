@@ -5,21 +5,25 @@ import "./Leaderboard.css";
  * Component that shows countdown from 30 seconds
  *
  * Proptypes
- * @param {dict} players key: id, value: score
+ * @param {String} playerid
+ * @param {dict} players key: googleid, value: {name, highestGame}
  */
 const Leaderboard = (props) => {
-  const sortedPlayers = Object.entries(props.players).sort((a, b) => b[1] - a[1]);
+  const sortedPlayers = Object.entries(props.players).sort((a, b) => b[1].highestGame - a[1].highestGame);
 
   return (
     <div className="Leaderboard">
       <div className="Leaderboard-title">Leaderboard</div>
       <ul className="Leaderboard-list">
-        {sortedPlayers.map(([player, score], index) => (
-          <li key={player} className="Leaderboard-item">
-            <span className="player">{index + 1}. {player}</span>
-            <span className="score">{score}</span>
+        {sortedPlayers.map(([player, {name, highestGame}], index) => {
+          const isCurrentPlayer = player === props.playerid;
+          return (
+          <li key={player} className={`Leaderboard-item${isCurrentPlayer ? '-current-player' : ''}`}>
+            <span className="player">{index + 1}. {name}</span>
+            <span className="score">{highestGame}</span>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );

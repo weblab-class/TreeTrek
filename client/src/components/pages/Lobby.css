@@ -31,11 +31,12 @@
 }
 
 .character-selection .left-button {
-  --r: 18px; /* border radius */
-  width: 100px;
+  --r: 5px;
+  width: 50px;
   aspect-ratio: 1/2;
+  border: 0;
   --_g: calc(var(--r) / tan(22.5deg)) right var(--r), #000 98%, #0000 101%;
-  -webkit-mask: conic-gradient(
+  mask: conic-gradient(
         from 247.5deg at calc(100% + 100% / tan(22.5deg) - var(--r) / (3 * sqrt(2) - 4)) 50%,
         #000 45deg,
         #0000 0
@@ -44,15 +45,21 @@
     radial-gradient(var(--r) at calc(var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%),
     radial-gradient(var(--r) at top var(--_g)), radial-gradient(var(--r) at bottom var(--_g));
   clip-path: polygon(0 50%, 100% 100%, 100% 0);
-  background: linear-gradient(45deg, #fa6900, #c02942);
+  background: #ffffff70;
+  transition: background-color 0.2s ease;
+}
+
+.character-selection .left-button:hover {
+  background-color: #ffffffcc;
 }
 
 .character-selection .right-button {
-  --r: 18px; /* border radius */
-  width: 100px;
+  --r: 5px;
+  width: 50px;
   aspect-ratio: 1/2;
+  border: 0;
   --_g: calc(var(--r) / tan(22.5deg)) left var(--r), #000 98%, #0000 101%;
-  -webkit-mask: conic-gradient(
+  mask: conic-gradient(
         from 67.5deg at calc(var(--r) / (3 * sqrt(2) - 4) - 100% / tan(22.5deg)) 50%,
         #000 45deg,
         #0000 0
@@ -61,10 +68,15 @@
     radial-gradient(var(--r) at calc(100% - var(--r) * sqrt(2)) 50%, #000 98%, #0000 101%),
     radial-gradient(var(--r) at top var(--_g)), radial-gradient(var(--r) at bottom var(--_g));
   clip-path: polygon(100% 50%, 0 100%, 0 0);
-  background: linear-gradient(45deg, #fa6900, #c02942);
+  background: #ffffff70;
+  transition: background-color 0.2s ease;
 }
 
-.Lobby-spawn {
+.character-selection .right-button:hover {
+  background-color: #ffffffcc;
+}
+
+.Lobby-play {
   font-size: 40px;
   padding: 20px 40px;
   background-color: var(--primary);
@@ -76,7 +88,7 @@
   margin-top: 30px;
 }
 
-.Lobby-spawn:hover {
+.Lobby-play:hover {
   background-color: var(--primary--dim);
   transform: rotate(10deg);
 }

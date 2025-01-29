@@ -41,16 +41,15 @@
   }
 }
 
-/* Animation for color changing effect */
 @keyframes colorChange {
   0% {
-    color: #8de258; /* Original color (green) */
+    color: #8de258;
   }
   50% {
-    color: #ffcc00; /* Mid color (yellow) */
+    color: #ffcc00;
   }
   100% {
-    color: #ff6347; /* End color (tomato red) */
+    color: #ff6347;
   }
 }
 
