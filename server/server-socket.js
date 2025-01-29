@@ -74,12 +74,16 @@ const runGame = (lobbyCode) => {
   }, 1000 / 60); // 60 frames per second
 }
 
-const newLobby = async (userid, lobbyCode) => {
+const newLobby = async (userid, lobbyCode) => { // lobbys post/newlobby & post/createlobby
   let socket = getSocketFromUserID(userid);
-  socket.join(lobbyCode);
-  await initGame(lobbyCode);
-  gameInstance = lobbies[lobbyCode];
-  gameInstance.resetGame();
+  if (socket) {
+    socket.join(lobbyCode);
+    await initGame(lobbyCode);
+    gameInstance = lobbies[lobbyCode];
+    if (gameInstance) {
+      gameInstance.resetGame();
+    }
+  }
 }
 
 const joinLobby = (userid, lobbyCode) => {
@@ -89,17 +93,12 @@ const joinLobby = (userid, lobbyCode) => {
 }
 
 const startGame = (userid, avatar, lobbyCode) => {
-  console.log("startGame" + lobbyCode);
-  console.log(lobbies);
   gameInstance = lobbies[lobbyCode];
-  gameInstance.spawnPlayer(userid, avatar);
-  gameInstance.spawnBranches();
-  runGame(lobbyCode);
-}
-
-const resetGame = (lobbyCode) => {
-  gameInstance = lobbies[lobbyCode];
-  gameInstance.resetGame();
+  if (gameInstance) {
+    gameInstance.resetGame();
+    gameInstance.spawnPlayer(userid, avatar);
+    runGame(lobbyCode);
+  }
 }
 
 // const addUserToGame = (user, avatar, lobbyCode) => {
@@ -191,6 +190,5 @@ module.exports = {
   joinLobby: joinLobby,
   newLobby: newLobby,
   startGame: startGame,
-  resetGame: resetGame,
   getIo: () => io,
 };

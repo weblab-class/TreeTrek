@@ -101,16 +101,6 @@ router.post("/newlobby", (req, res) => {
   res.send({});
 })
 
-router.post("/newgame", async (req, res) => {
-  if (req.user) {
-    const lobbyCode = await findLobbyByPlayer(req.user.googleid);
-    if (lobbyCode != null) {
-      socketManager.startGame(lobbyCode);
-    }
-  }
-  res.send({});
-})
-
 router.post("/gameover", async (req, res) => {
   let userDB = await User.findOne({ googleid: req.user.googleid });
   let higherBranch = req.body.gameBranch > userDB.highestGame ? req.body.gameBranch : userDB.highestGame;
