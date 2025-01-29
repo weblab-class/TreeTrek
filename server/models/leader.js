@@ -6,5 +6,6 @@ const LeaderSchema = new mongoose.Schema({
   highestGame: Number,
 });
 
-// compile model from schema
-module.exports = mongoose.model("leader", LeaderSchema);
+const Leader = mongoose.model("leader", LeaderSchema);
+
+module.exports = Leader;

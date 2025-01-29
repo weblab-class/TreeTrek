@@ -7,5 +7,6 @@ const UserSchema = new mongoose.Schema({
   lastGame: Number,
 });
 
-// compile model from schema
-module.exports = mongoose.model("user", UserSchema);
+const User = mongoose.model("user", UserSchema);
+
+module.exports = User;

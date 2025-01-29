@@ -3,7 +3,7 @@ import { get, post } from "../../utilities";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../modules/NavBar";
 import "./FindLobby.css";
-
+import "../../utilities.css";
 
 const FindLobby = () => {
   const [lobbyCode, setLobbyCode] = useState('');
