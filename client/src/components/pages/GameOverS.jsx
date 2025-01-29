@@ -38,7 +38,6 @@ const GameOverS = () => {
     };
 
     const handlePlayAgain = async () => {
-        console.log(userId);
         const lobbyCode = await findLobbyByPlayer(userId);
         console.log("LobbyCode (gameover):" + lobbyCode);
         navigate(`/lobbys/${lobbyCode}`);

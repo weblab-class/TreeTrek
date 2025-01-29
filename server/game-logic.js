@@ -1,7 +1,6 @@
 /** constants */
 // const ACORN_PROB = 0.2; // probability of acorn at any given branch
 const VISIBLE_BRANCHES = 6; // number of visible branches onscreen at any given moment
-const avatars = ["cat", "beaver"];
 
 class GameLogic {
   constructor() {

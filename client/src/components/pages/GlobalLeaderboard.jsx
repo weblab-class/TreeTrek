@@ -4,6 +4,7 @@ import NavBar from "../modules/NavBar";
 import TwinklingStars from '../modules/TwinklingStars';
 
 import { get, post } from "../../utilities";
+import { UserContext } from '../App';
 import { useNavigate } from "react-router-dom";
 
 import "../../utilities.css";
@@ -11,13 +12,10 @@ import './GlobalLeaderboard.css';
 
 const GlobalLeaderboard = () => {
     let navigate = useNavigate();
+    const { userId } = useContext(UserContext);
 
-    const [userID, setUserID] = useState("");
     const [leaders, setLeaders] = useState({});
     useEffect(() => {
-        get("/api/whoami").then((res) => {
-            setUserID(res.googleid);
-        });
         get("/api/leaderboard").then((leaders) => {
             setLeaders(leaders);
         });
@@ -28,7 +26,7 @@ const GlobalLeaderboard = () => {
             <NavBar />
             <TwinklingStars />
             <div className="GlobalLeaderboard-container">
-                <Leaderboard playerid={userID} players={leaders} />
+                <Leaderboard playerid={userId} players={leaders} />
                 <button className="mainMenu-button" onClick={() => navigate("/mainmenu")}>
                         <img src="/mainMenuButton.png" alt="menuButton" style={{width:"auto", height:"90px"}}/>
                 </button>

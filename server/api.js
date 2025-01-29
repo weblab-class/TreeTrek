@@ -11,7 +11,7 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
-const Leader = require("./models/Leader");
+const Leader = require("./models/leader");
 const Lobby = require("./models/lobby");
 
 // import authentication library
@@ -90,22 +90,21 @@ router.get("/leaderboard", async (req, res) => {
 })
 
 router.post("/spawn", (req, res) => {
-  console.log("spawn lobbyCode:" + req.body.lobbyCode);
   if (req.user && req.body.lobbyCode) {
       socketManager.addUserToGame(req.user, req.body.avatar, req.body.lobbyCode);
   }
   res.send(true);
 });
 
-router.post("/despawn", async (req, res) => {
-  if (req.user) {
-    const lobbyCode = await findLobbyByPlayer(req.user._id);
-    if (lobbyCode != null) {
-      socketManager.removeUserFromGame(req.user, lobbyCode);
-    }
-  }
-  res.send({});
-});
+// router.post("/despawn", async (req, res) => {
+//   if (req.user) {
+//     const lobbyCode = await findLobbyByPlayer(req.user.googleid);
+//     if (lobbyCode != null) {
+//       socketManager.removeUserFromGame(req.user, lobbyCode);
+//     }
+//   }
+//   res.send({});
+// });
 
 router.post("/newlobby", (req, res) => {
   socketManager.newLobby(req.body.lobbyCode);
@@ -114,7 +113,7 @@ router.post("/newlobby", (req, res) => {
 
 router.post("/newgame", async (req, res) => {
   if (req.user) {
-    const lobbyCode = await findLobbyByPlayer(req.user._id);
+    const lobbyCode = await findLobbyByPlayer(req.user.googleid);
     if (lobbyCode != null) {
       socketManager.startGame(lobbyCode);
     }
@@ -133,7 +132,6 @@ router.post("/gameover", async (req, res) => {
   } else {
     let lowestLeader = await Leader.findOne().sort({highestGame: 1});
     if (lowestLeader.highestGame < higherBranch) {
-      console.log("gameOver lowestLeader:" + lowestLeader);
       await Leader.updateOne({highestGame: lowestLeader.highestGame}, {
         $set: {name: req.user.name, googleid: req.user.googleid, highestGame: higherBranch}
       })

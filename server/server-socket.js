@@ -62,14 +62,11 @@ const runGame = (lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
   let time = 0; // time in ms
   const intervalID = setInterval(() => {
-    //console.log("interval start time " + timesRun);
     gameInstance.updateGameState(time);
     sendGameState(lobbyCode); // sends to frontend game component
 
     time += 1000 / 60;
-    //console.log("time " + timesRun);
     if (gameInstance.gameState.gameOver || time >= 30 * 1000) {
-      //console.log('its over');
       gameInstance.gameState.gameOver = true;
       sendGameState(lobbyCode);
       clearInterval(intervalID);
@@ -100,18 +97,11 @@ const resetGame = (lobbyCode) => {
 
 const addUserToGame = (user, avatar, lobbyCode) => {
   gameInstance = lobbies[lobbyCode];
-  gameInstance.spawnPlayer(user._id, avatar);
-};
-
-const removeUserFromGame = (user, lobbyCode) => {
-  gameInstance = lobbies[lobbyCode];
-  console.log("removeUserFromGame lobbies (server-socket): " + lobbies);
-  console.log("removeUserFromGame (server-socket): " + gameInstance.gameState);
-  gameInstance.removePlayer(user._id);
+  gameInstance.spawnPlayer(user.googleid, avatar);
 };
 
 const addUser = (user, socket) => {
-  const oldSocket = userToSocketMap[user._id];
+  const oldSocket = userToSocketMap[user.googleid];
   if (oldSocket && oldSocket.id !== socket.id) {
     // there was an old tab open for this user, force it to disconnect
     // FIXME: is this the behavior you want?
@@ -119,14 +109,19 @@ const addUser = (user, socket) => {
     delete socketToUserMap[oldSocket.id];
   }
 
-  userToSocketMap[user._id] = socket;
+  userToSocketMap[user.googleid] = socket;
   socketToUserMap[socket.id] = user;
 };
 
 const removeUser = (user, socket, lobbyCode) => {
   if (user) {
-    delete userToSocketMap[user._id];
-    removeUserFromGame(user, lobbyCode); // Remove user from game if they disconnect
+    delete userToSocketMap[user.googleid];
+    console.log(lobbies);
+    console.log(lobbyCode);
+    gameInstance = lobbies[lobbyCode];
+    console.log(gameInstance);
+    gameInstance.removePlayer(user.googleid);
+    // removeUserFromGame(user, lobbyCode); // Remove user from game if they disconnect
   }
   delete socketToUserMap[socket.id];
 };
@@ -139,16 +134,18 @@ module.exports = {
       console.log(`socket has connected ${socket.id}`);
       socket.on("disconnect", (reason) => {
         const user = getUserFromSocketID(socket.id);
-        removeUser(user, socket);
+        findLobbyByPlayer(user.googleid).then((code) =>removeUser(user, socket, code));
+        gameInstance.removePlayer(user.googleid);
+        findLobbyByPlayer(user.googleid).then((code) => Lobby.deleteOne({code: code}));
       });
       socket.on("move", async (dir) => {
         // Listen for moves from client and move player accordingly
         const user = getUserFromSocketID(socket.id);
         if (user) {
-          const lobbyCode = await findLobbyByPlayer(user._id);
+          const lobbyCode = await findLobbyByPlayer(user.googleid);
           console.log("lobbies (SS exports): " + lobbies);
           gameInstance = lobbies[lobbyCode];
-          gameInstance.movePlayer(user._id, dir);
+          gameInstance.movePlayer(user.googleid, dir);
         }
       });
       socket.on("avatarPlayer", (avatar) => {
@@ -170,7 +167,7 @@ module.exports = {
   getUserFromSocketID: getUserFromSocketID,
   getSocketFromSocketID: getSocketFromSocketID,
   addUserToGame: addUserToGame,
-  removeUserFromGame: removeUserFromGame,
+  // removeUserFromGame: removeUserFromGame,
   newLobby: newLobby,
   startGame: startGame,
   resetGame: resetGame,

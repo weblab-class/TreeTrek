@@ -49,8 +49,7 @@ const Game = () => {
     if (update.gameOver) { // idk why but this runs twice..
       update.gameOver = false;
       post("/api/gameover", { gameBranch: update.players[userId].index }).then(() =>
-        post("/api/despawn")
-      ).then(() =>
+        //post("/api/despawn")
         navigate("/gameovers") // assuming singleplayer, directly go to gameover page
       );
     }

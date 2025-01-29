@@ -21,7 +21,6 @@ import {
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-//TODO: REPLACE WITH YOUR OWN CLIENT_ID
 const GOOGLE_CLIENT_ID = "740397720964-3fo97kk41qmd6j2pnggs9gkhffrvn2gs.apps.googleusercontent.com";
 
 const router = createBrowserRouter(
@@ -30,14 +29,12 @@ const router = createBrowserRouter(
       <Route path="/" element={<LoginPage />} />
       <Route path="/mainmenu/" element={<MainMenu />} />
       <Route path="/leaderboard/" element={<GlobalLeaderboard />} />
-      <Route path="/lobbys/" element={<LobbyS />} />
       <Route path="/findlobby/" element={<FindLobby />} />
       <Route path="/lobbym/:lobbyId" element={<LobbyM />}/>
       <Route path="/lobbys/:lobbyId" element={<LobbyS />}/>
       <Route path="/game/" element={<Game />} />
       <Route path="/gameovers/" element={<GameOverS />} />
       <Route path="/tutorial/" element={<Tutorial />} />
-      <Route path="/leaderboard/" element={<GlobalLeaderboard />} />
     </Route>
   )
 );

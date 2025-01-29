@@ -3,6 +3,7 @@ import { avatarPlayer, readyPlayer } from "../../client-socket";
 import { socket } from "../../client-socket.js";
 import { get, post } from "../../utilities";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../App';
 import { useParams } from "react-router-dom";
 
 import NavBar from "../modules/NavBar";
@@ -11,13 +12,8 @@ import './Lobby.css';
 
 const LobbyM = () => {
   let props = useParams();
+  const { userId } = useContext(UserContext);
 
-  const [userID, setUserID] = useState("");
-  useEffect(() => {
-      get("/api/whoami").then((res) => {
-          setUserID(res.googleid);
-      });
-  }, []);
   const [lobbyPlayers, setLobbyPlayers] = useState({});
 
   let navigate = useNavigate();
@@ -74,18 +70,18 @@ const LobbyM = () => {
   };
 
   const handleReady = () => {
-    if (lobbyPlayers[userID].ready) {
+    if (lobbyPlayers[userId].ready) {
       readyPlayer(false);
     } else {
       readyPlayer(true);
     }
   }
   let readyButton = null;
-  if (lobbyPlayers[userID]) {
+  if (lobbyPlayers[userId]) {
     readyButton = (
       <div>
-          <button className={lobbyPlayers[userID].ready ? "Lobby-ready" : "Lobby-not-ready"} onClick={ handleReady }>
-            {lobbyPlayers[userID].ready ? 'Ready!' : 'Not Ready'}
+          <button className={lobbyPlayers[userId].ready ? "Lobby-ready" : "Lobby-not-ready"} onClick={ handleReady }>
+            {lobbyPlayers[userId].ready ? 'Ready!' : 'Not Ready'}
           </button>
       </div>
     );
@@ -125,7 +121,7 @@ const LobbyM = () => {
         <h1>Lobby ID: {props.lobbyId}</h1>
         <div className="Lobby-players">
           {Object.entries(lobbyPlayers).map(([id, {name, avatar, ready}]) => {
-            const isCurrentPlayer = id === userID;
+            const isCurrentPlayer = id === userId;
             return (
               <div className="character-selection" key={id}>
                   <h2>{name}</h2>
