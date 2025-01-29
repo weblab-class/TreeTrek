@@ -163,6 +163,23 @@ router.get('/joinlobby/:code', async (req, res) => {
   }
 });
 
+// Search for lobby based on player_.id
+router.get("/findlobby/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const lobby = await Lobby.findOne({ players: { $in: [userId] } });
+    if (!lobby) {
+        console.log("Lobby not found for player:", playerId);
+        return null; // Handle case where no lobby is found
+    }
+
+    console.log("Lobby found (gameOver):", lobby);
+    return lobby.code;
+  } catch (error) {
+    console.error("Error finding lobby:", error);
+  }
+});
+
 // Delete a lobby
 router.post("/leavelobby/:userId", async (req, res) => {
   const { userId } = req.params;
