@@ -89,9 +89,9 @@ router.get("/leaderboard", async (req, res) => {
   res.send(leaders);
 })
 
-router.post("/spawn", (req, res) => { //only called on play button click, try to delete?
+router.post("/spawn", (req, res) => {
   if (req.user && req.body.lobbyCode) {
-      socketManager.joinLobby(req.user.googleid, req.body.avatar, req.body.lobbyCode);
+      socketManager.startGame(req.user.googleid, req.body.avatar, req.body.lobbyCode);
   }
   res.send(true);
 });
@@ -175,7 +175,7 @@ router.get('/joinlobby/:code', async (req, res) => {
   const code = req.params.code;
   const lobby = await Lobby.findOne({ code: code });
   if (lobby) {
-    socketManager.joinLobby(req.user, req.body.avatar, code);
+    socketManager.joinLobby(req.user.googleid, req.body.avatar, code);
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { players: req.user.googleid } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { names: req.user.name } }, { new: true });
     await Lobby.findByIdAndUpdate(lobby._id, { $push: { readiness: false } }, { new: true });
